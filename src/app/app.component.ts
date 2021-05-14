@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import * as $ from 'jquery';
+
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  
+  pic1:string= "assets/img/avatar.png";
   title = 'Edefter';
+  isLogin:boolean = false;
+
+
+  login(){
+    this.isLogin = true;
+  }
+  
 }
