@@ -4,12 +4,14 @@ import { LoginComponent } from "./login/login.component";
 import { ActionComponent } from "./action/action.component";
 import { TestComponent } from "./test/test.component";
 import { TableComponent } from "./table/table.component";
+import { CustomerComponent } from "./customer/customer.component";
 
 const routes: Routes = [
   {path : "action" , component : ActionComponent },
   {path : "login"  , component : LoginComponent },
   {path : "test"   , component : TestComponent  },
   {path : "table"   , component : TableComponent  },
+  {path : "customer"   , component : CustomerComponent  },
   {path : ""       , redirectTo : "login" , pathMatch: "full"}
 ];
 

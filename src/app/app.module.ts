@@ -14,6 +14,7 @@ import { ActionComponent } from './action/action.component';
 import { FooterComponent } from './footer/footer.component';
 import { TestComponent } from './test/test.component';
 import { TableComponent } from './table/table.component';
+import { CustomerComponent } from './customer/customer.component';
 
 
 
@@ -26,7 +27,8 @@ import { TableComponent } from './table/table.component';
     ActionComponent,
     FooterComponent,
     TestComponent,
-    TableComponent
+    TableComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,

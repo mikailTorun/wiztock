@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   password: string = "";
   login() {
 
-    this.auth.login(this.username, this.password).subscribe((response: any) => {
+    this.auth.login( this.username, this.password ).subscribe((response: any) => {
       this.data = response;
       console.warn(" datamız burada ", this.data.success);
       if (this.data.success == true) {
