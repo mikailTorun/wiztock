@@ -46,8 +46,25 @@ export class AuthServiceService {
     return throwError(
       'Something bad happened; please try again later.');
   }
- 
-  submitForm():Observable<any> {
+
+  login(username:string, password:string):Observable<any>{
+    let data:any;
+    let formData: any = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("func", "loginFunction");
+    return  this.http.post<any>("http://localhost:4200/api/Admin/Controller/index.php", formData).pipe(
+      tap( data => {
+        
+        if (data.err == 500) {
+          console.warn("HATA KODUNUZ",data.err);  
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  submitForm(username:string, password:string):Observable<any> {
     let data:any;
     let formData: any = new FormData();
     formData.append("name", "mikail");

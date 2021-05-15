@@ -19,7 +19,7 @@ export class ActionComponent implements OnInit {
 
   getData():any{
 
-    this.auth.submitForm().subscribe((response:any) =>{
+    this.auth.submitForm("a","a").subscribe((response:any) =>{
       this.data = response;
       console.warn(" datamız burada ",this.data);
     });

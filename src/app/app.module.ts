@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -32,7 +32,9 @@ import { TableComponent } from './table/table.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
