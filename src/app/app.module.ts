@@ -11,10 +11,12 @@ import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { MenuComponent } from './menu/menu.component';
 import { ActionComponent } from './action/action.component';
-import { FooterComponent } from './footer/footer.component';
 import { TestComponent } from './test/test.component';
 import { TableComponent } from './table/table.component';
 import { CustomerComponent } from './customer/customer.component';
+import {DefaultModule} from "./layouts/default/default.module";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 
@@ -25,10 +27,9 @@ import { CustomerComponent } from './customer/customer.component';
     NavComponent,
     MenuComponent,
     ActionComponent,
-    FooterComponent,
     TestComponent,
     TableComponent,
-    CustomerComponent
+    CustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +37,9 @@ import { CustomerComponent } from './customer/customer.component';
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    DefaultModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

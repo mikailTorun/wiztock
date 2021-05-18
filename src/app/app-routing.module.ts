@@ -5,14 +5,41 @@ import { ActionComponent } from "./action/action.component";
 import { TestComponent } from "./test/test.component";
 import { TableComponent } from "./table/table.component";
 import { CustomerComponent } from "./customer/customer.component";
+import {DefaultComponent} from "./layouts/default/default.component";
+import {CustomersComponent} from "./modules/customers/customers.component";
+import {DashboardComponent} from "./modules/dashboard/dashboard.component";
+import {AuthGuard} from "./helpers/auth.guard";
 
 const routes: Routes = [
-  {path : "action" , component : ActionComponent },
+  {
+    path:'',
+    component: DefaultComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent
+      },
+      {
+        path: 'customers',
+        component: CustomersComponent
+      }
+    ],
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path:"**",
+    redirectTo: ''
+  }
+  /*{path : "action" , component : ActionComponent },
   {path : "login"  , component : LoginComponent },
   {path : "test"   , component : TestComponent  },
   {path : "table"   , component : TableComponent  },
   {path : "customer"   , component : CustomerComponent  },
-  {path : ""       , redirectTo : "login" , pathMatch: "full"}
+  {path : ""       , redirectTo : "login" , pathMatch: "full"}*/
 ];
 
 @NgModule({

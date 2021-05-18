@@ -2,7 +2,6 @@
 
 <app-menu></app-menu>
 
-<app-footer></app-footer>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -45,15 +44,15 @@
             </div>
             <div class="card-body">
               Start creating your amazing application!
-              
+
               <a href="action#" class="btn btn-dark " (click)="writeConsole()">TEST</a>
 
               {{a | currency}}
 
               <div id="id"></div>
-              
+
               <div *ngIf="condition; else elseBlock">Content to render when condition is true.</div>
-              
+
               <ng-template #elseBlock>Content to render when condition is false.</ng-template>
 
             </div>
