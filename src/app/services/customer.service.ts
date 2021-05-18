@@ -36,6 +36,7 @@ export class CustomerService {
     formData.append("customer_is_corporate", customer.customer_is_corporate ? '1' : '0');
     formData.append("customer_is_customer", "1");
     formData.append("customer_is_supplier","0");
+    formData.append("corporate_title", customer.corporate_title);
     formData.append("corporate_short_name", customer.corporate_short_name);
     formData.append("corporate_tax_office", customer.corporate_tax_number);
     formData.append("corporate_tax_number", customer.corporate_tax_number);
