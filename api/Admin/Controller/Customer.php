@@ -107,12 +107,12 @@ class Customer extends AppParent{
         // will handle any SQL query
         $params = Array(10, 1, 10, 11, 2, 10);
         $q = "(
-            SELECT cp.title Name, c.customer_id, c.email , c.phone , c.is_corporate FROM customer c, corporate cp
+            SELECT cp.title name, c.customer_id, c.email , c.phone , c.is_corporate FROM customer c, corporate cp
                 WHERE 
                     c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_customer=1
                
         ) UNION (
-            SELECT i.name_surname Name, c.customer_id, c.email , c.phone , c.is_corporate FROM customer c, individual i
+            SELECT i.name_surname name, c.customer_id, c.email , c.phone , c.is_corporate FROM customer c, individual i
                 WHERE 
                     c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1
         )";
