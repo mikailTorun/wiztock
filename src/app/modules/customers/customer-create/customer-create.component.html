@@ -1,0 +1,213 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/">DashBoard</a></li>
+          <li class="breadcrumb-item"><a routerLink="/customers">Customers</a></li>
+          <li class="breadcrumb-item active">{{ customer_id ? "Edit Customer" : "New Customer"}}</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="m-auto col-8">
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{ customer_id ? "Edit Customer" : "New Customer"}}</h3>
+            <div class="card-tools">
+            </div>
+          </div>
+          <form [formGroup]="customerForm">
+            <div class="card-body">
+
+              <!-- Radio Buttons -->
+              <div class="row">
+                <div class="form-group clearfix">
+                  <label class="mr-2">Customer Type:</label>
+                  <div class="icheck-primary d-inline mr-2">
+                    <input type="radio" id="corporateRadio" formControlName="customer_is_corporate" [value]="1"
+                           (change)="radioChangeHandler($event)">
+                    <label for="corporateRadio">
+                      Corporate
+                    </label>
+                  </div>
+                  <div class="icheck-primary d-inline">
+                    <input type="radio" id="individualRadio" formControlName="customer_is_corporate" [value]="0"
+                           (change)="radioChangeHandler($event)">
+                    <label for="individualRadio">
+                      Individual
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="is_corporate">
+                <!-- Corporate Title -->
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="companyName">
+                      Company Name
+                    </label>
+                    <input type="text" formControlName="corporate_title" class="form-control form-control-sm"
+                           id="companyName">
+                  </div>
+                </div>
+
+                <!-- Corporate Tax Office -->
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="taxOffice">
+                      Tax Office
+                    </label>
+                    <input type="text" formControlName="corporate_tax_office" class="form-control form-control-sm"
+                           id="taxOffice">
+                  </div>
+                </div>
+
+                <!-- Corporate Tax Number -->
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="taxNumber">
+                      Tax Number
+                    </label>
+                    <input type="text" formControlName="corporate_tax_number" class="form-control form-control-sm"
+                           data-inputmask='"mask": "99999999999"' data-mask id="taxNumber">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Individual Name Surname -->
+              <div class="row" *ngIf="!is_corporate">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="name_surname">
+                      Full Name
+                    </label>
+                    <input type="text" formControlName="individual_name_surname" class="form-control form-control-sm"
+                           id="name_surname">
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <!-- Corporate Shortname -->
+                <div class="col-6" *ngIf="is_corporate">
+                  <div class="form-group">
+                    <label for="shortName">
+                      Company Short Name
+                    </label>
+                    <input type="text" formControlName="corporate_short_name" class="form-control form-control-sm"
+                           id="shortName">
+                  </div>
+                </div>
+
+                <!-- Individual Social Security-->
+                <div class="col-6" *ngIf="!is_corporate">
+                  <div class="form-group">
+                    <label for="ssn">
+                      Social Security Number
+                    </label>
+                    <input type="text" formControlName="individual_ssn" class="form-control form-control-sm" id="ssn">
+                  </div>
+                </div>
+
+                <!-- Customer Email -->
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="email">
+                      Email
+                    </label>
+                    <input type="text" formControlName="customer_email" class="form-control form-control-sm" id="email">
+                  </div>
+                </div>
+
+                <!-- Custoer Phone -->
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="taxNumber">
+                      Phone
+                    </label>
+                    <input type="text" formControlName="customer_phone" class="form-control form-control-sm"
+                           data-inputmask='"mask": "(999) 999 99 99"' data-mask id="Phone">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <!-- Customer Address-->
+                <div class="col-6">
+                  <div class="form-group">
+                    <label>Address</label>
+                    <textarea
+                      formControlName="customer_address"
+                      class="form-control form-control-sm" rows="4" cols="35"
+                      style="margin-top: 0; margin-bottom: 0; height: 107px;"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="row">
+
+                    <!-- Customer Town-->
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="town">
+                          Town
+                        </label>
+                        <input type="text" formControlName="customer_town" class="form-control form-control-sm" id="town">
+                      </div>
+                    </div>
+
+                    <!-- Custoner City -->
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="city">
+                          City
+                        </label>
+                        <input type="text" formControlName="customer_city" class="form-control form-control-sm" id="city">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+
+                    <!-- Customer Postal Code -->
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="postalCode">
+                          Postal Code
+                        </label>
+                        <input type="text" formControlName="customer_postal_code" class="form-control form-control-sm" id="postalCode">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-danger">Close</button>
+              <button type="button" (click)="addCustomer()" class="btn btn-success float-right">{{ customer_id ? "Update" : "Save"}}</button>
+            </div>
+            <!-- /.card-footer -->
+          </form>
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+

@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {DefaultComponent} from "./default.component";
-import {CustomersComponent} from "../../modules/customers/customers.component";
 import {RouterModule} from "@angular/router";
-import {DashboardComponent} from "../../modules/dashboard/dashboard.component";
 import {SharedModule} from "../../shared/shared.module";
+import {AllModule} from "../../modules/all.module";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 
 @NgModule({
   declarations: [
     DefaultComponent,
-    DashboardComponent,
-    CustomersComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule
-  ]
+    SharedModule,
+    AllModule,
+    MatDialogModule,
+  ],
 })
 export class DefaultModule { }
