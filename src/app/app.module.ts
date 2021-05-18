@@ -7,41 +7,26 @@ import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { NavComponent } from './nav/nav.component';
-import { MenuComponent } from './menu/menu.component';
-import { ActionComponent } from './action/action.component';
-import { TestComponent } from './test/test.component';
-import { TableComponent } from './table/table.component';
-import { CustomerComponent } from './customer/customer.component';
+
 import {DefaultModule} from "./layouts/default/default.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    NavComponent,
-    MenuComponent,
-    ActionComponent,
-    TestComponent,
-    TableComponent,
-    CustomerComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DefaultModule,
-    BrowserAnimationsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        CommonModule,
+        DefaultModule,
+        BrowserAnimationsModule
+    ],
+    providers: [],
+    exports: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

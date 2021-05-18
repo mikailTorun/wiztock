@@ -2,6 +2,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { AjaxRequestService}   from "../service/ajax-request.service";
 
+declare var $: any;
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
@@ -15,13 +16,15 @@ export class CustomerComponent implements OnInit {
     this.getCustomerList();
   }
 
+
+
   getCustomerList(){
     this.ajax.getCustomerList().subscribe((response:any) =>{
       this.customerList = response.data;
       console.warn(" datamız burada ", this.customerList);
     });
   }
-  
+
 
 
 
