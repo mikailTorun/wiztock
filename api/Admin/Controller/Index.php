@@ -8,6 +8,8 @@ require_once 'AppParent.php';
 require_once 'Employee.php';
 require_once 'Company.php';
 require_once 'Customer.php';
+require_once 'Product.php';
+require_once 'Category.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
@@ -26,6 +28,8 @@ class Index extends AppParent{
 */
 $login = new DatabaseFunc();
 $Customer = new Customer();
+$Product  = new Product();
+$Category = new Category();
 
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
     AppPArent::dumpResponse( $login->login());
@@ -40,4 +44,12 @@ if (strcmp($_POST["func"] , "getCustomer") == 0) {
     AppPArent::dumpResponse( $Customer->getCustomer());
 }
 
-
+if (strcmp($_POST["func"] , "addProduct") == 0) {
+    AppPArent::dumpResponse( $Product->addProduct());
+}
+if (strcmp($_POST["func"] , "addCategory") == 0) {
+    AppPArent::dumpResponse( $Category->addCategory());
+}
+if (strcmp($_POST["func"] , "getAllCategories") == 0) {
+    AppPArent::dumpResponse( $Category->getAllCategories());
+}

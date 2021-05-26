@@ -60,9 +60,9 @@ class Customer extends AppParent{
     function getCustomer(){
         $db = new DatabaseFunc();
 
-        $params = array(intval($_POST["customer"]["customer_id"]));
+        $params = array(intval($_POST["customer_id"]));
 
-        if(strcmp($_POST["customer"]["is_corporate"] , "1")==0){
+        if(strcmp($_POST["is_corporate"] , "1")==0){
             
             $q = "(
                 SELECT cp.title, cp.short_name, cp.tax_office,cp.tax_number, c.customer_id, c.email , c.phone ,c.address,c.town,c.city, c.postal_code, c.is_corporate FROM customer c, corporate cp
@@ -206,6 +206,7 @@ class Customer extends AppParent{
                 return $response;
                
             }else{
+				
                 $corporate = new Corporate();
                 $corporate -> setCorporate_id($this->getCustomer_id());
                 $corporate -> setTitle($_POST["corporate_title"]);
