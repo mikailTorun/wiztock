@@ -74,7 +74,7 @@ class Category extends AppParent{
         }
 	}
     function getCategoryById(){
-        s($_POST["product_category_id"]);die;
+        
         
         $this->db->db->where('product_category_id',$_POST["product_category_id"]);
         $category = $this->db->db->get("product_category");
