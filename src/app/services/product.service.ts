@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Product} from "../models/products";
+import {Product} from "../models/product";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -16,7 +16,7 @@ export class ProductService {
   addProduct(product:Product) {
     let formData = new FormData();
     formData.append('product', JSON.stringify(product));
-    formData.append('func', "addData");
+    formData.append('func', "addProduct");
     return this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
         console.log(res);
