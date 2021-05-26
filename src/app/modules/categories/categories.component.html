@@ -56,10 +56,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                <tr *ngFor="let category of categoryService.categories" (click) = "getCategory()">
+                  <td>{{category.product_category_id}}</td>
+                  <td>{{category.title}}</td>
+                  <td>{{category.description}}</td>
                 </tr>
                 </tbody>
               </table>

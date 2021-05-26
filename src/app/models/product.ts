@@ -1,15 +1,15 @@
 export class Product {
-  product_id:any;
-  product_category_id:any;
-  product_name:any;
-  uom_id:any;
-  code:any;
-  barcode:any;
-  is_inventory_tracking:any;
-  initial_stock_amount:any;
-  is_notifying:any;
-  notification_amount:any;
-  purchasing_price:any;
-  selling_price:any;
-  tax_id:any;
+  product_id!: number;
+  product_category_id!:number;
+  product_name!:string;
+  uom_id!:number;
+  code!:string;
+  barcode!:string;
+  is_inventory_tracking:boolean = false;
+  initial_stock_amount!:number;
+  is_notifying:boolean = false;
+  notification_amount!:number;
+  purchasing_price!:number;
+  selling_price!:number;
+  tax_id!:number;
 }

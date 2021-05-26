@@ -14,10 +14,14 @@ export class CategoriesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-  }
 
+  }
 
   addCategoryButtonHandler() {
     this.categoryService.addCategory(this.category);
+  }
+
+  getCategory() {
+
   }
 }
