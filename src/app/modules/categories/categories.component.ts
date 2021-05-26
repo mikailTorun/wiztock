@@ -25,8 +25,9 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.addCategory(this.category);
   }
 
-  getCategory() {
+  getCategory(category_id: number) {
 
+    this.categoryService.getCategoryById(category_id);
   }
 
   deleteCategoryButtonHandler(product_category_id: number) {

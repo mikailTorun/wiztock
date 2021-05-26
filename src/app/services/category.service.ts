@@ -32,10 +32,10 @@ export class CategoryService {
       });
   }
 
-  getCategoriesById(category_id: number) {
+  getCategoryById(category_id: number) {
     let formData: any = new FormData();
     formData.appen("product_category_id", category_id);
-    formData.append("func", "getCategoriesById");
+    formData.append("func", "getCategoryById");
     return this.http.post<any>(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
         return res["data"];
