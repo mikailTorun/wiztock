@@ -25,7 +25,7 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.addCategory(this.category);
   }
 
-  getCategory(product_category_id: number) {
+  getCategory() {
 
   }
 
