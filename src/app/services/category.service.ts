@@ -28,7 +28,7 @@ export class CategoryService {
     formData.append("func", "getAllCategories");
     this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
-        this.categories =res["data"];
+        this.categories = res["data"];
       });
   }
 

@@ -53,6 +53,7 @@
                   <th>#</th>
                   <th>Category Name</th>
                   <th>Description</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -60,6 +61,7 @@
                   <td>{{category.product_category_id}}</td>
                   <td>{{category.title}}</td>
                   <td>{{category.description}}</td>
+                  <td><button (click)="deleteCategoryButtonHandler(category.product_category_id)" type="button" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>
                 </tbody>
               </table>
