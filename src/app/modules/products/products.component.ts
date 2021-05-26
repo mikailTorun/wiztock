@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Product} from "../../models/products";
-import {CustomerService} from "../../services/customer.service";
+import {Product} from "../../models/product";
 import {ProductService} from "../../services/product.service";
 
 declare var $: any;
