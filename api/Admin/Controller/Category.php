@@ -73,6 +73,30 @@ class Category extends AppParent{
             return (($response)); 
         }
 	}
+    function getCategoryById(){
+        s($_POST["product_category_id"]);die;
+        
+        $this->db->db->where('product_category_id',$_POST["product_category_id"]);
+        $category = $this->db->db->get("product_category");
+
+        if(!$category){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =$db->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+           
+            $response['data']=  $category ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+    }
 }
 		
     
