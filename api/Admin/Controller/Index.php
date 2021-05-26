@@ -53,6 +53,6 @@ if (strcmp($_POST["func"] , "addCategory") == 0) {
 if (strcmp($_POST["func"] , "getAllCategories") == 0) {
     AppPArent::dumpResponse( $Category->getAllCategories());
 }
-if (strcmp($_POST["func"] , "getCategoriesById") == 0) {
+if (strcmp($_POST["func"] , "getCategoryById") == 0) {
     AppPArent::dumpResponse( $Category->getCategoryById());
 }
