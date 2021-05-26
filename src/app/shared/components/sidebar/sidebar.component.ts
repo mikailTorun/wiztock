@@ -54,6 +54,10 @@ export class SidebarComponent implements OnInit {
         {
           title:'Warehouses',
           path: '/warehouses'
+        },
+        {
+          title:'Categories',
+          path: '/categories'
         }
       ]
     }

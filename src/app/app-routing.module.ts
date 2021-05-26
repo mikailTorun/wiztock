@@ -12,6 +12,7 @@ import {TaxesComponent} from "./modules/taxes/taxes.component";
 import {WarehousesComponent} from "./modules/warehouses/warehouses.component";
 import {ProductsComponent} from "./modules/products/products.component";
 import {ShipmentsComponent} from "./modules/shipments/shipments.component";
+import {CategoriesComponent} from "./modules/categories/categories.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       {path: 'customers/:id', component: CustomerPreviewComponent},
       {path: 'units', component: UnitsComponent},
       {path: 'taxes', component: TaxesComponent},
+      {path: 'categories', component: CategoriesComponent},
       {path: 'warehouses', component: WarehousesComponent},
       {path: 'products', component: ProductsComponent},
       {path: 'shipments', component:ShipmentsComponent}

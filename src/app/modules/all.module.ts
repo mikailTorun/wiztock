@@ -17,6 +17,7 @@ import { WarehousesComponent } from './warehouses/warehouses.component';
 import { UnitsComponent } from './units/units.component';
 import { ShipmentsComponent } from './shipments/shipments.component';
 import { TaxesComponent } from './taxes/taxes.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 
@@ -34,6 +35,7 @@ import { TaxesComponent } from './taxes/taxes.component';
     UnitsComponent,
     ShipmentsComponent,
     TaxesComponent,
+    CategoriesComponent,
   ],
   imports: [
     CommonModule,
