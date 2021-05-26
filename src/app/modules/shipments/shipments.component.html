@@ -1,0 +1,192 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Customers</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/">DashBoard</a></li>
+          <li class="breadcrumb-item active">Product</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+
+
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Product List</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-block btn-success btn-flat" (click)="newShipmentButtonHandler()">
+                New Product
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <table id="customerTable" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Unit</th>
+                <th>Purchasing Price</th>
+                <th>Sales Price</th>
+                <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center">
+                  <button class="btn btn-sm btn-success mr-2"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-primary mr-2"><i class="fas fa-book-open"></i></button>
+                  <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+
+<div class="modal fade" id="productForm" role="dialog" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">New Product</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="col row">
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">PRODUCT NAME</div>
+            <input type="text" class="form-control form-control-sm"
+                   id="product_name" placeholder="">
+          </div>
+        </div>
+
+        <div class="col row">
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">CATEGORY</div>
+            <select id="product_category_id" class="form-control form-control-sm">
+              <option>Category 1</option>
+              <option>Category 2</option>
+              <option>Category 3</option>
+              <option>Category 4</option>
+              <option>Category 5</option>
+            </select>
+          </div>
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">UNIT</div>
+            <select id="product_uom_id" class="form-control form-control-sm">
+              <option>kg</option>
+              <option>piece(s)</option>
+              <option>m</option>
+              <option>lt</option>
+              <option>box(es)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col row">
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">CODE</div>
+            <input type="text" class="form-control form-control-sm"
+                   id="product_code" placeholder="">
+          </div>
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">BARCODE</div>
+            <input type="text" class="form-control form-control-sm"
+                   id="product_barcode" placeholder="">
+          </div>
+        </div>
+
+        <div class="col row">
+          <div class="col mb-2">
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="product_is_inventory_tracking">
+                <label class="form-check-label text-xs font-weight-bold  text-uppercase mb-1">INVENTROY TRACKING</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="product_is_notifying">
+                <label class="form-check-label text-xs font-weight-bold  text-uppercase mb-1">NOTIFY</label>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">INITIAL AMOUNT</div>
+            <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty"
+                   id="product_initial_amount" placeholder="">
+          </div>
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">NOTIFICATION AMOUNT</div>
+            <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty"
+                   id="product_notification_amount" placeholder="">
+          </div>
+        </div>
+
+        <div class="row col">
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">PURCHASING PRICE</div>
+            <input type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched"
+                   id="product_purchasing_price" placeholder="">
+          </div>
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">SELLING PRICE</div>
+            <input type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched"
+                   id="product_selling_price" placeholder="">
+          </div>
+
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX</div>
+            <select id="product_tax_id" class="form-control form-control-sm">
+              <option>18% VAT</option>
+              <option>5% SCT</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

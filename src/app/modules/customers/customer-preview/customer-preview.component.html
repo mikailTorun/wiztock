@@ -1,0 +1,171 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/">DashBoard</a></li>
+          <li class="breadcrumb-item"><a routerLink="/customers">Customers</a></li>
+          <li class="breadcrumb-item active">Customer Information</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="m-auto col-8">
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{is_corporate ? corporate_short_name: individual_name_surname}}</h3>
+            <div class="card-tools">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="col mr-2 mb-4" *ngIf="is_corporate">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">COMPANY TITLE</div>
+              <div class="h5 mb-0 text-gray-800 text-sm">{{corporate_title}}</div>
+            </div>
+
+            <div class="col mr-2 mb-4" *ngIf="is_corporate">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1" >COMPANY SORT NAME</div>
+              <div class="h5 mb-0 text-gray-800 text-sm">{{corporate_short_name}}</div>
+            </div>
+
+            <div class="col mr-2 mb-4" *ngIf="!is_corporate">
+              <div class="row no-gutters align-items-center">
+                <div class="col-9" >
+                  <div class="text-xs font-weight-bold  text-uppercase mb-1">NAME SURNAME</div>
+                  <div class="h5 mb-0 text-gray-800 text-sm">{{individual_name_surname}}</div>
+                </div>
+                <div class="col-3" >
+                  <div class="text-xs font-weight-bold  text-uppercase mb-1">SSN</div>
+                  <div class="h5 mb-0 text-gray-800 text-sm">{{individual_ssn}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col mr-2 mb-4">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">PHONE</div>
+              <div class="h5 mb-0 text-gray-800 text-sm">{{customer_phone}}</div>
+            </div>
+
+            <div class="col mr-2 mb-4">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">EMAIL</div>
+              <div class="h5 mb-0 text-gray-800 text-sm">{{customer_email}}</div>
+            </div>
+
+            <div class="col mr-2 mb-4">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">ADDRESS</div>
+              <div class="h5 mb-0 text-gray-800 text-sm">{{customer_address}}</div>
+            </div>
+
+            <div class="col mr-2 mb-4">
+              <div class="row no-gutters align-items-center" *ngIf="is_corporate">
+                <div class="col-4">
+                  <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX INFORMATION</div>
+                </div>
+                <div class="col-4">
+                  <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX NUMBER</div>
+                  <div class="h5 mb-0 text-gray-800 text-sm">{{corporate_tax_number}}</div>
+                </div>
+                <div class="col-4">
+                  <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX OFFICE</div>
+                  <div class="h5 mb-0 text-gray-800 text-sm">{{corporate_tax_office}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="is_corporate">
+              <Button style="float: right;" class="btn btn-primary btn-sm mb-2"(click)="createContactHandler()">Add Contact</Button>
+              <table class="table table-striped table-bordered table-hover text-xs">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>FullName</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr (click)="createContactSubmitHandler()">
+                  <td>1</td>
+                  <td>Mark Otto</td>
+                  <td>0(212) 641 17 35</td>
+                  <td>mark@ankaramobilya.com</td>
+                </tr>
+                <tr (click)="createContactCancelSubmitHandler()">
+                  <td>2</td>
+                  <td>Jacob Thornton</td>
+                  <td>0(542) 412 95 54</td>
+                  <td>jacob@ankaramobilya.com</td>
+                </tr>
+                <tr (click)="createContactCancelSubmitHandler()">
+                  <td>3</td>
+                  <td>Larry Bird</td>
+                  <td>0(532)316 71 49</td>
+                  <td>larry@ankaramobilya.com</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+<div class="modal fade" id="createCompanyContact">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Default Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">FULL NAME</div>
+          <input [(ngModel)]="corporate_person_name_surname" type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="corporate_person_name_surname" placeholder="">
+        </div>
+
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">PHONE</div>
+          <input [(ngModel)]="corporate_person_phone" type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="corporate_person_phone" placeholder="">
+        </div>
+
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">E-MAIL</div>
+          <input [(ngModel)]="corporate_person_phone" type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched" id="corporate_person_email" placeholder="">
+        </div>
+
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
+          <textarea [(ngModel)]="corporate_person_description" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="corporate_person_description" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

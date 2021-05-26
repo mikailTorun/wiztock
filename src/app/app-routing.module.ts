@@ -6,6 +6,12 @@ import {CustomersComponent} from "./modules/customers/customers.component";
 import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 import {AuthGuard} from "./helpers/auth.guard";
 import {CustomerCreateComponent} from "./modules/customers/customer-create/customer-create.component";
+import {CustomerPreviewComponent} from "./modules/customers/customer-preview/customer-preview.component";
+import {UnitsComponent} from "./modules/units/units.component";
+import {TaxesComponent} from "./modules/taxes/taxes.component";
+import {WarehousesComponent} from "./modules/warehouses/warehouses.component";
+import {ProductsComponent} from "./modules/products/products.component";
+import {ShipmentsComponent} from "./modules/shipments/shipments.component";
 
 const routes: Routes = [
   {
@@ -14,7 +20,14 @@ const routes: Routes = [
       {path: '', component: DashboardComponent},
       {path: 'customers', component: CustomersComponent},
       {path: 'customers/create', component: CustomerCreateComponent},
-      {path: 'customers/edit/:id', component: CustomerCreateComponent}
+      {path: 'customers/edit/:id', component: CustomerCreateComponent},
+      {path: 'customers/:id', component: CustomerPreviewComponent},
+      {path: 'units', component: UnitsComponent},
+      {path: 'taxes', component: TaxesComponent},
+      {path: 'warehouses', component: WarehousesComponent},
+      {path: 'products', component: ProductsComponent},
+      {path: 'shipments', component:ShipmentsComponent}
+
     ], canActivate: [AuthGuard]
   },
   {path: 'login', component: LoginComponent},

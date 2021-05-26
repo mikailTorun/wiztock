@@ -10,6 +10,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {PhonePipe} from "../helpers/phone.pipe";
 import { CustomerCreateComponent } from './customers/customer-create/customer-create.component';
 import {RouterModule} from "@angular/router";
+import {CustomerPreviewComponent} from "./customers/customer-preview/customer-preview.component";
+import { SuppliersComponent } from './suppliers/suppliers.component';
+import { ProductsComponent } from './products/products.component';
+import { WarehousesComponent } from './warehouses/warehouses.component';
+import { UnitsComponent } from './units/units.component';
+import { ShipmentsComponent } from './shipments/shipments.component';
+import { TaxesComponent } from './taxes/taxes.component';
 
 
 
@@ -19,7 +26,14 @@ import {RouterModule} from "@angular/router";
     DashboardComponent,
     LoginComponent,
     PhonePipe,
-    CustomerCreateComponent
+    CustomerCreateComponent,
+    CustomerPreviewComponent,
+    SuppliersComponent,
+    ProductsComponent,
+    WarehousesComponent,
+    UnitsComponent,
+    ShipmentsComponent,
+    TaxesComponent,
   ],
   imports: [
     CommonModule,
@@ -34,7 +48,8 @@ import {RouterModule} from "@angular/router";
     CustomersComponent,
     DashboardComponent,
     LoginComponent,
-    PhonePipe
+    PhonePipe,
+    CustomerPreviewComponent,
   ]
 })
 export class AllModule { }

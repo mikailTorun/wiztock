@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost/api/Admin/Controller/Index.php'
+  apiUrl: 'http://localhost:4200/api/Admin/Controller/Index.php'
 };
 
 /*
