@@ -18,19 +18,20 @@ export class CategoryService {
     formData.append('category', JSON.stringify(category));
     formData.append('func', "addCategory");
     return this.http.post(environment.apiUrl, formData)
-      .subscribe((res: any) => {
-        console.log(res);
-        if(res["success"]) {
-          $(document).Toasts('create', {
-            class: 'bg-success',
-            title: 'Success',
-            delay: 3000,
-            autohide: true,
-            body: 'New Category was added.'
-          });
-        }
+      .pipe(map((res: any)=> {
+        return res;
+      }));
+  }
 
-      });
+  updateCategories(category: Category) {
+    let formData = new FormData();
+    formData.append('category', JSON.stringify(category));
+    formData.append('func', "updateCategory");
+    return this.http.post(environment.apiUrl, formData)
+      .pipe(map((res: any)=> {
+        return res;
+      }));
+
   }
 
   getAllCategories() {
@@ -44,7 +45,6 @@ export class CategoryService {
 
   getCategoryById(category_id: number) {
     let formData: any = new FormData();
-    console.log(category_id);
     formData.append("product_category_id", category_id);
     formData.append("func", "getCategoryById");
     return this.http.post(environment.apiUrl, formData)
@@ -53,28 +53,8 @@ export class CategoryService {
       }));
   }
 
-  updateCategories(category: Category) {
-    let formData = new FormData();
-    formData.append('category', JSON.stringify(category));
-    formData.append('func', "updateCategory");
-    return this.http.post(environment.apiUrl, formData)
-      .subscribe((res: any) => {
-        if(res["success"]) {
-          $(document).Toasts('create', {
-            class: 'bg-success',
-            title: 'Success',
-            delay: 3000,
-            autohide: true,
-            body: 'New Category was updated.'
-          });
-          return res;
-        }
-      });
-  }
-
   deleteCategory(category_id: number) {
     let formData: any = new FormData();
-    console.log(category_id);
     formData.append("product_category_id", category_id);
     formData.append("func", "deleteCategory");
     return this.http.post(environment.apiUrl, formData)
