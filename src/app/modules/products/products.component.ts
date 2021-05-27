@@ -6,7 +6,6 @@ import {UnitService} from "../../services/unit.service";
 import {TaxService} from "../../services/tax.service";
 import {Tax} from "../../models/tax";
 import {Toasts} from "../../helpers/toasts";
-import {Unit} from "../../models/unit";
 
 declare var $: any;
 
@@ -52,12 +51,12 @@ export class ProductsComponent implements OnInit {
     this.tax = this.taxObj.rate;
   }
 
-  editUnitButtonHandler(product_id: number) {
+  editProductButtonHandler(product_id: number) {
     $('#unitForm').modal('show');
     this.getProduct(product_id);
   }
 
-  deleteUnitButtonHandler(product: Product) {
+  deleteProductButtonHandler(product: Product) {
     this.deleteProduct(product);
   }
 
