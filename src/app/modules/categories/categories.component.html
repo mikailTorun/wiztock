@@ -35,7 +35,7 @@
 
           <div class="card-body">
             <div class="row" *ngIf="categoryService.categories">
-              <table class="table table-striped table-bordered table-hover text-xs" >
+              <table class="table table-striped table-bordered table-hover text-xs">
                 <thead>
                 <tr>
                   <th>#</th>
@@ -94,16 +94,19 @@
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">CATEGORY NAME</div>
           <input [(ngModel)]="category.title" type="text"
-                 class="form-control form-control-sm {{isEmptyField && !category.title ? 'is-invalid' :'' }}" id="warehouse_name"
+                 class="form-control form-control-sm {{isEmptyField && !category.title ? 'is-invalid' :'' }}"
+                 id="category_title"
                  placeholder="">
-          <div class="text-xs text-danger font-weight-bold  mb-1">{{isEmptyField && !category.title ? 'Category name cannot be left blank!' :'' }}</div>
+          <div
+            class="text-xs text-danger font-weight-bold  mb-1">{{isEmptyField && !category.title ? 'Category name cannot be left blank!' : '' }}</div>
         </div>
 
 
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
           <input [(ngModel)]="category.description" type="text"
-                 class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_town"
+                 class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty"
+                 id="category_description"
                  placeholder="">
         </div>
 
@@ -111,7 +114,7 @@
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" (click)="closeCategoryButtonHandler()">Close</button>
         <button type="button" class="btn btn-primary"
-                (click)="saveButtonHandler()">{{ category.product_category_id ? "Update" : "Save"}}
+                (click)="saveButtonHandler()">{{ category.product_category_id ? "Update" : "Save" }}
         </button>
       </div>
     </div>
