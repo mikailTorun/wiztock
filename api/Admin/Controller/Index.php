@@ -10,6 +10,7 @@ require_once 'Company.php';
 require_once 'Customer.php';
 require_once 'Product.php';
 require_once 'Category.php';
+require_once 'Unit.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
@@ -30,6 +31,7 @@ $login = new DatabaseFunc();
 $Customer = new Customer();
 $Product  = new Product();
 $Category = new Category();
+$Unit = new Unit();
 
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
     AppPArent::dumpResponse( $login->login());
@@ -61,4 +63,19 @@ if (strcmp($_POST["func"] , "updateCategory") == 0) {
 }
 if (strcmp($_POST["func"] , "deleteCategory") == 0) {
     AppPArent::dumpResponse( $Category->deleteCategory());
+}
+if (strcmp($_POST["func"] , "addUnit") == 0) {
+    AppPArent::dumpResponse( $Unit->addUnit());
+}
+if (strcmp($_POST["func"] , "getAllUnit") == 0) {
+    AppPArent::dumpResponse( $Unit->getAllUnit());
+}
+if (strcmp($_POST["func"] , "getUnitById") == 0) {
+    AppPArent::dumpResponse( $Unit->getUnitById());
+}
+if (strcmp($_POST["func"] , "updateUnit") == 0) {
+    AppPArent::dumpResponse( $Unit->updateUnit());
+}
+if (strcmp($_POST["func"] , "deleteUnit") == 0) {
+    AppPArent::dumpResponse( $Unit->deleteUnit());
 }

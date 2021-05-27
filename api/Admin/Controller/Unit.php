@@ -9,24 +9,22 @@ require_once 'AppParent.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Category extends AppParent{
+class Unit extends AppParent{
     private $db="";
     public function __construct() {
         $this->db = new DatabaseFunc();
     }
     
 
-	function addCategory(){
-        $post = json_decode( $_POST["category"],true);
+	function addUnit(){
+        $post = json_decode( $_POST["unit_of_measurement"],true);
         $data = array (
             "company_id" => $_SESSION["Admin_Company"]["company"][0]["company_id"],
             "title" => $post["title"],
             "description" => $post["description"]
         );
-        
-
-        $id =  $this->db->db->insert ('product_category', $data);
-        
+        $id =  $this->db->db->insert ('unit_of_measurement', $data);
+       
         if(!$id){
             $response['data']=  "" ;
             $response['success']  =false;
@@ -45,11 +43,12 @@ class Category extends AppParent{
             return (($response)); 
         }
 	}
-    function getAllCategories(){
+    function getAllUnit(){
+        
         $this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        $category = $this->db->db->get("product_category");
-
-        if(!$category){
+        $unit = $this->db->db->get("unit_of_measurement");
+        
+        if(!$unit){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
@@ -59,7 +58,7 @@ class Category extends AppParent{
             return (($response)); 
         }else{
            
-            $response['data']=  $category ;
+            $response['data']=  $unit ;
             $response['success']  =true;
             $response['errMsg']   =null;
             $response['warnMsg']  =null;
@@ -67,13 +66,13 @@ class Category extends AppParent{
             return (($response)); 
         }
 	}
-    function getCategoryById(){
+    function getUnitById(){
         
-        
-        $this->db->db->where('product_category_id',$_POST["product_category_id"]);
-        $category = $this->db->db->get("product_category");
+       
+        $this->db->db->where('uom_id',$_POST["uom_id"]);
+        $unit = $this->db->db->get("unit_of_measurement");
 
-        if(!$category){
+        if(!$unit){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
@@ -83,7 +82,7 @@ class Category extends AppParent{
             return (($response)); 
         }else{
            
-            $response['data']=  $category ;
+            $response['data']=  $unit ;
             $response['success']  =true;
             $response['errMsg']   =null;
             $response['warnMsg']  =null;
@@ -91,15 +90,16 @@ class Category extends AppParent{
             return (($response)); 
         }
     }
-    function updateCategory(){
-        $post = json_decode($_POST["category"],true);
+    function updateUnit(){
+        $post = json_decode($_POST["unit_of_measurement"],true);
         $data = array (
             "company_id" => $post["company_id"],
             "title" => $post["title"],
             "description" => $post["description"]
         );
-        $this->db->db->where ('product_category_id', $post["product_category_id"]);
-        $update =  $this->db->db->update ('product_category', $data); 
+        $this->db->db->where ('uom_id', $post["uom_id"]);
+        $update =  $this->db->db->update ('unit_of_measurement', $data); 
+
         if(!$update){
             $response['data']=  "" ;
             $response['success']  =false;
@@ -118,10 +118,10 @@ class Category extends AppParent{
             return (($response)); 
         }
     }
-    function deleteCategory(){
-        
-        $this->db->db->where('product_category_id', intval($_POST["product_category_id"]));
-        $delete = $this->db->db->delete('product_category') ;
+    function deleteUnit(){
+       
+        $this->db->db->where('uom_id', intval($_POST["uom_id"]));
+        $delete = $this->db->db->delete('unit_of_measurement') ;
         if($delete){
             $response['data']=  $delete ;
             $response['success']  =true;
