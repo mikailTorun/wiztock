@@ -49,7 +49,6 @@ export class TaxService {
     this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
         this.taxes = res["data"];
-        console.log(this.taxes);
       });
   }
 

@@ -49,7 +49,6 @@ export class UnitService {
     this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
         this.units = res["data"];
-        console.log(this.units);
       });
   }
 

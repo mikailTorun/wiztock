@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Product} from "../../models/product";
 import {ProductService} from "../../services/product.service";
 import {CategoryService} from "../../services/category.service";
+import {UnitService} from "../../services/unit.service";
+import {TaxService} from "../../services/tax.service";
+import {Tax} from "../../models/tax";
+import {Toasts} from "../../helpers/toasts";
 
 declare var $: any;
 
@@ -12,28 +16,38 @@ declare var $: any;
 })
 export class ProductsComponent implements OnInit {
   product: Product = new Product();
-  tax: any = 18;
+  tax: number = 0;
+  taxObj!: Tax;
+
   constructor(
     public productService: ProductService,
-    public categoryService: CategoryService
-  ) { }
+    public categoryService: CategoryService,
+    public unitService: UnitService,
+    public taxService: TaxService
+  ) {
+  }
 
   ngOnInit(): void {
     this.categoryService.getAllCategories();
+    this.unitService.getAllUnit();
+    this.taxService.getAllTax();
   }
 
   newProductButtonHandler() {
     $('#productForm').modal('show');
     this.product.product_category_id = this.categoryService.categories[0].product_category_id;
+    this.product.uom_id = this.unitService.units[0].uom_id;
+    this.product.tax_id = this.taxService.taxes[0].tax_id;
+    this.taxObj = this.taxService.taxes[0];
+    this.tax = this.taxObj.rate;
   }
 
   closeButtonHandler() {
     $('#productForm').modal('hide');
   }
 
-  saveButtonHandler()  {
-    console.log(this.product);
-    this.productService.addProduct(this.product);
+  saveButtonHandler() {
+    this.saveProduct();
   }
 
   changeSellingPriceHandler(event: any) {
@@ -43,12 +57,13 @@ export class ProductsComponent implements OnInit {
   }
 
   changePurchasingHandler(event: any) {
-    this.product.purchasing_price = parseFloat(event.target.value);
+    this.product.purchasing_price = parseFloat(event.target.value ? event.target.value : 0);
     this.calculateSellingPrice();
   }
 
-  setTax(event: any) {
-    this.tax = event.target.value;
+  setTax(tax: Tax) {
+    this.tax = tax.rate;
+    this.product.tax_id = tax.tax_id;
     this.calculateSellingPrice();
   }
 
@@ -56,6 +71,15 @@ export class ProductsComponent implements OnInit {
     const taxAmount = this.tax / 100.0 + 1;
     let sPrice = this.product.purchasing_price * taxAmount;
     this.product.selling_price = sPrice ? sPrice : 0;
+  }
+
+  saveProduct() {
+    this.productService.addProduct(this.product).subscribe((res:any)=>{
+      if (res["success"]) {
+        Toasts.successToast("A new tax of measurement is added");
+
+      }
+    });
   }
 
 }

@@ -28,7 +28,7 @@ export class TaxesComponent implements OnInit {
     this.isEmptyField = false;
   }
 
-  newUOFButtonHandler() {
+  newTaxButtonHandler() {
     $('#taxForm').modal('show');
     this.clearField();
   }
@@ -71,7 +71,6 @@ export class TaxesComponent implements OnInit {
   }
 
   saveTax() {
-    console.log(this.tax);
     this.taxService.addTax(this.tax).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.successToast("A new tax of measurement is added");
