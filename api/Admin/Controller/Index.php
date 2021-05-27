@@ -12,6 +12,7 @@ require_once 'Product.php';
 require_once 'Category.php';
 require_once 'Unit.php';
 require_once 'Tax.php';
+require_once 'Warehouse.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
@@ -34,6 +35,7 @@ $Product  = new Product();
 $Category = new Category();
 $Unit = new Unit();
 $tax = new Tax();
+$warehouse = new Warehouse();
 
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
     AppPArent::dumpResponse( $login->login());
@@ -95,4 +97,19 @@ if (strcmp($_POST["func"] , "getTaxById") == 0) {
 }
 if (strcmp($_POST["func"] , "updateTax") == 0) {
     AppPArent::dumpResponse( $tax->updateTax());
+}
+if (strcmp($_POST["func"] , "getAllWarehouse") == 0) {
+    AppPArent::dumpResponse( $warehouse->getAllWarehouse());
+}
+if (strcmp($_POST["func"] , "addWarehouse") == 0) {
+    AppPArent::dumpResponse( $warehouse->addWarehouse());
+}
+if (strcmp($_POST["func"] , "getWarehouseById") == 0) {
+    AppPArent::dumpResponse( $warehouse->getWarehouseById());
+}
+if (strcmp($_POST["func"] , "updateWarehouse") == 0) {
+    AppPArent::dumpResponse( $warehouse->updateWarehouse());
+}
+if (strcmp($_POST["func"] , "deleteWarehouse") == 0) {
+    AppPArent::dumpResponse( $warehouse->deleteWarehouse());
 }
