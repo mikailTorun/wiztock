@@ -24,38 +24,18 @@
           <div class="card-header">
             <h3 class="card-title">Product Categories</h3>
             <div class="card-tools">
+              <button
+                type="button"
+                class="btn btn-sm btn-block btn-success btn-flat"
+                (click)="newCategoryButtonHandler()">
+                Add New Category
+              </button>
             </div>
           </div>
 
           <div class="card-body">
-
-            <div class="row mb-2">
-              <div class="col-4">
-                <div class="text-xs font-weight-bold  text-uppercase mb-1">CATEGORY NAME</div>
-                <input [(ngModel)]="category.title" type="text" class="form-control form-control-sm "
-                       id="category_name">
-              </div>
-              <div class="col-4">
-                <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
-                <input [(ngModel)]="category.description" type="text" class="form-control form-control-sm"
-                       id="description">
-              </div>
-              <div class="col-2">
-                <span class="align-middle ">
-                   <Button class="text-xs mt-4 btn btn-primary btn-sm"
-                           (click)="addCategoryButtonHandler()"> {{ category.product_category_id ? "Update" : "Add"}} Category</Button>
-                </span>
-              </div>
-              <div class="col-2">
-                <span class="align-middle ">
-                   <Button class="text-xs mt-4 btn btn-warning btn-sm"
-                           (click)="clearFieldButtonHandler()">Clear Fields</Button>
-                </span>
-              </div>
-            </div>
-
-            <div class="row">
-              <table class="table table-striped table-bordered table-hover text-xs">
+            <div class="row" *ngIf="categoryService.categories">
+              <table class="table table-striped table-bordered table-hover text-xs" >
                 <thead>
                 <tr>
                   <th>#</th>
@@ -70,14 +50,23 @@
                   <td> {{category.title}}</td>
                   <td>{{category.description}}</td>
                   <td style="width: 1px; white-space: nowrap;">
-                    <button (click)="getCategory(category.product_category_id)" class="btn btn-sm btn-success mr-2"><i
+                    <button (click)="editCategoryButtonHandler(category.product_category_id)"
+                            type="button"
+                            class="btn btn-sm btn-success mr-2"><i
                       class="fas fa-edit"></i></button>
-                    <button type="button"
+                    <button (click)="deleteCategoryButtonHandler(category)"
+                            type="button"
                             class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                   </td>
                 </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div class="callout callout-warning" *ngIf="!categoryService.categories">
+              <h5>Info</h5>
+
+              <p>There is no category to list.</p>
             </div>
           </div>
           <div class="card-footer">
@@ -92,3 +81,42 @@
 <!-- /.content -->
 
 
+<div class="modal fade" id="categoryForm" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{category.product_category_id ? "Edit Category" : "Add New Category"}}</h4>
+        <button type="button" class="close" (click)="closeCategoryButtonHandler()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">CATEGORY NAME</div>
+          <input [(ngModel)]="category.title" type="text"
+                 class="form-control form-control-sm {{isEmptyField && !category.title ? 'is-invalid' :'' }}" id="warehouse_name"
+                 placeholder="">
+          <div class="text-xs text-danger font-weight-bold  mb-1">{{isEmptyField && !category.title ? 'Category name cannot be left blank!' :'' }}</div>
+        </div>
+
+
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
+          <input [(ngModel)]="category.description" type="text"
+                 class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_town"
+                 placeholder="">
+        </div>
+
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="closeCategoryButtonHandler()">Close</button>
+        <button type="button" class="btn btn-primary"
+                (click)="saveButtonHandler()">{{ category.product_category_id ? "Update" : "Save"}}
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
