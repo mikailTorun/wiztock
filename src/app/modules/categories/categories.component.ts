@@ -94,7 +94,6 @@ export class CategoriesComponent implements OnInit {
         Toasts.dangerToast( "The category " + category.title + " was deleted" );
         this.getCategoriesList();
         this.clearField();
-        this.closeCategoryButtonHandler();
       }
     });
   }
