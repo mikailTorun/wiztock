@@ -22,16 +22,34 @@ export class CategoriesComponent implements OnInit {
   }
 
   addCategoryButtonHandler() {
-    this.categoryService.addCategory(this.category);
+    if(this.category.product_category_id) {
+      this.updateCategory();
+    } else {
+      this.saveCategory();
+    }
+    this.getCategoriesList();
+    this.clearFieldButtonHandler();
   }
 
   getCategory(category_id: number) {
-
-    this.categoryService.getCategoryById(category_id);
+    this.categoryService.getCategoryById(category_id).subscribe((res:Category) => {
+      this.category = res;
+    });
   }
 
   deleteCategoryButtonHandler(product_category_id: number) {
-
+    this.categoryService.deleteCategory(product_category_id);
   }
 
+  saveCategory() {
+    this.categoryService.addCategory(this.category);
+  }
+
+  updateCategory() {
+    this.categoryService.updateCategories(this.category);
+  }
+
+  clearFieldButtonHandler() {
+    this.category = new Category();
+  }
 }

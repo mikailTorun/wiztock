@@ -30,12 +30,12 @@
           <div class="card-body">
 
             <div class="row mb-2">
-              <div class="col-5">
+              <div class="col-4">
                 <div class="text-xs font-weight-bold  text-uppercase mb-1">CATEGORY NAME</div>
                 <input [(ngModel)]="category.title" type="text" class="form-control form-control-sm "
                        id="category_name">
               </div>
-              <div class="col-5">
+              <div class="col-4">
                 <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
                 <input [(ngModel)]="category.description" type="text" class="form-control form-control-sm"
                        id="description">
@@ -43,9 +43,14 @@
               <div class="col-2">
                 <span class="align-middle ">
                    <Button class="text-xs mt-4 btn btn-primary btn-sm"
-                           (click)="addCategoryButtonHandler()">Add Category</Button>
+                           (click)="addCategoryButtonHandler()"> {{ category.product_category_id ? "Update" : "Add"}} Category</Button>
                 </span>
-
+              </div>
+              <div class="col-2">
+                <span class="align-middle ">
+                   <Button class="text-xs mt-4 btn btn-warning btn-sm"
+                           (click)="clearFieldButtonHandler()">Clear Fields</Button>
+                </span>
               </div>
             </div>
 
@@ -56,17 +61,18 @@
                   <th>#</th>
                   <th>Category Name</th>
                   <th>Description</th>
-                  <th></th>
+                  <th>Edit / Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let category of categoryService.categories"
-                    (click)="getCategory(category.product_category_id)">
-                  <td>{{category.product_category_id}}</td>
-                  <td>{{category.title}}</td>
+                <tr *ngFor="let category of categoryService.categories; let i = index">
+                  <td>{{i + 1}}</td>
+                  <td> {{category.title}}</td>
                   <td>{{category.description}}</td>
-                  <td>
-                    <button (click)="deleteCategoryButtonHandler(category.product_category_id)" type="button"
+                  <td style="width: 1px; white-space: nowrap;">
+                    <button (click)="getCategory(category.product_category_id)" class="btn btn-sm btn-success mr-2"><i
+                      class="fas fa-edit"></i></button>
+                    <button type="button"
                             class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                   </td>
                 </tr>

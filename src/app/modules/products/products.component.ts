@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Product} from "../../models/product";
 import {ProductService} from "../../services/product.service";
+import {CategoryService} from "../../services/category.service";
 
 declare var $: any;
 
@@ -13,15 +14,17 @@ export class ProductsComponent implements OnInit {
   product: Product = new Product();
   tax: any = 18;
   constructor(
-    public productService: ProductService
+    public productService: ProductService,
+    public categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
-
+    this.categoryService.getAllCategories();
   }
 
   newProductButtonHandler() {
     $('#productForm').modal('show');
+    this.product.product_category_id = this.categoryService.categories[0].product_category_id;
   }
 
   closeButtonHandler() {
@@ -29,6 +32,7 @@ export class ProductsComponent implements OnInit {
   }
 
   saveButtonHandler()  {
+    console.log(this.product);
     this.productService.addProduct(this.product);
   }
 
