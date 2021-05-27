@@ -11,6 +11,7 @@ require_once 'Customer.php';
 require_once 'Product.php';
 require_once 'Category.php';
 require_once 'Unit.php';
+require_once 'Tax.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
@@ -32,6 +33,7 @@ $Customer = new Customer();
 $Product  = new Product();
 $Category = new Category();
 $Unit = new Unit();
+$tax = new Tax();
 
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
     AppPArent::dumpResponse( $login->login());
@@ -78,4 +80,19 @@ if (strcmp($_POST["func"] , "updateUnit") == 0) {
 }
 if (strcmp($_POST["func"] , "deleteUnit") == 0) {
     AppPArent::dumpResponse( $Unit->deleteUnit());
+}
+if (strcmp($_POST["func"] , "getAllTax") == 0) {
+    AppPArent::dumpResponse( $tax->getAllTax());
+}
+if (strcmp($_POST["func"] , "addTax") == 0) {
+    AppPArent::dumpResponse( $tax->addTax());
+}
+if (strcmp($_POST["func"] , "deleteTax") == 0) {
+    AppPArent::dumpResponse( $tax->deleteTax());
+}
+if (strcmp($_POST["func"] , "getTaxById") == 0) {
+    AppPArent::dumpResponse( $tax->getTaxById());
+}
+if (strcmp($_POST["func"] , "updateTax") == 0) {
+    AppPArent::dumpResponse( $tax->updateTax());
 }
