@@ -6,6 +6,7 @@ import {UnitService} from "../../services/unit.service";
 import {TaxService} from "../../services/tax.service";
 import {Tax} from "../../models/tax";
 import {Toasts} from "../../helpers/toasts";
+import {Unit} from "../../models/unit";
 
 declare var $: any;
 
@@ -15,7 +16,8 @@ declare var $: any;
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  product: Product = new Product();
+  product!: Product;
+  isEmptyField!: boolean;
   tax: number = 0;
   taxObj!: Tax;
 
@@ -28,13 +30,21 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.productService.getAllProduct();
     this.categoryService.getAllCategories();
     this.unitService.getAllUnit();
     this.taxService.getAllTax();
+    this.clearField();
+  }
+
+  clearField() {
+    this.product = new Product();
+    this.isEmptyField =false;
   }
 
   newProductButtonHandler() {
     $('#productForm').modal('show');
+    this.clearField();
     this.product.product_category_id = this.categoryService.categories[0].product_category_id;
     this.product.uom_id = this.unitService.units[0].uom_id;
     this.product.tax_id = this.taxService.taxes[0].tax_id;
@@ -42,12 +52,70 @@ export class ProductsComponent implements OnInit {
     this.tax = this.taxObj.rate;
   }
 
+  editUnitButtonHandler(product_id: number) {
+    $('#unitForm').modal('show');
+    this.getProduct(product_id);
+  }
+
+  deleteUnitButtonHandler(product: Product) {
+    this.deleteProduct(product);
+  }
+
   closeButtonHandler() {
     $('#productForm').modal('hide');
   }
 
+
   saveButtonHandler() {
-    this.saveProduct();
+    this.checkEmptyFields();
+    if(!this.isEmptyField) {
+      if (this.product.product_id) {
+        this.updateProduct();
+      } else {
+        this.saveProduct();
+      }
+    }
+  }
+
+  getProduct(product_id: number) {
+    this.productService.getProductById(product_id).subscribe((res: Product) => {
+      this.product = res;
+    });
+  }
+
+  getProductList() {
+    this.productService.getAllProduct();
+  }
+
+  saveProduct() {
+    this.productService.addProduct(this.product).subscribe((res:any)=>{
+      if (res["success"]) {
+        Toasts.successToast("A new tax of measurement is added");
+        this.getProductList();
+        this.clearField();
+      }
+    });
+  }
+
+  updateProduct() {
+    return this.productService.updateProduct(this.product).subscribe((res: any) => {
+      if (res["success"]) {
+        Toasts.successToast("The category " + this.product.product_name + " was updated");
+        this.getProductList();
+        this.clearField();
+        this. closeButtonHandler();
+      }
+    });
+  }
+
+  deleteProduct(product: Product) {
+    return this.productService.deleteProduct(product.product_id).subscribe((res: any) => {
+      if (res["success"]) {
+        Toasts.dangerToast( "The category " + product.product_name + " was deleted" );
+        this.getProductList();
+        this.clearField();
+      }
+    });
   }
 
   changeSellingPriceHandler(event: any) {
@@ -73,13 +141,13 @@ export class ProductsComponent implements OnInit {
     this.product.selling_price = sPrice ? sPrice : 0;
   }
 
-  saveProduct() {
-    this.productService.addProduct(this.product).subscribe((res:any)=>{
-      if (res["success"]) {
-        Toasts.successToast("A new tax of measurement is added");
+  checkEmptyFields() {
+    if(!this.product.product_name) {
+      this.isEmptyField = true;
+    } else {
+      this.isEmptyField =false;
 
-      }
-    });
+    }
   }
 
 }

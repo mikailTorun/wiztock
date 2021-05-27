@@ -41,17 +41,17 @@
                 <th>Amount</th>
                 <th>Unit</th>
                 <th>Purchasing Price</th>
-                <th>Sales Price</th>
+                <th>Selling Price</th>
                 <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+              <tr *ngFor="let product of productService.products">
+                <td>{{product.product_name}}</td>
+                <td>{{product.initial_stock_amount}}</td>
+                <td>{{product.uom_id}}</td>
+                <td>{{product.purchasing_price}}</td>
+                <td>{{product.selling_price}}</td>
                 <td style="text-align: center">
                   <button class="btn btn-sm btn-success mr-2"><i class="fas fa-edit"></i></button>
                   <button class="btn btn-sm btn-primary mr-2"><i class="fas fa-book-open"></i></button>

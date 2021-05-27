@@ -1,5 +1,6 @@
 export class Product {
   product_id!: number;
+  company_id!: number;
   product_category_id!:number;
   product_name!:string;
   uom_id!:number;
