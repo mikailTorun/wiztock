@@ -27,7 +27,7 @@
               <button
                 type="button"
                 class="btn btn-block btn-success btn-flat"
-                (click)="newWarehouseButtonClickHandler()">
+                (click)="newWarehouseButtonHandler()">
                 New Warehouse
               </button>
             </div>
@@ -35,28 +35,40 @@
 
           <div class="card-body">
 
-            <div class="row">
+            <div class="row" *ngIf="warehouseService.warehouses">
               <table class="table table-striped table-bordered table-hover text-xs">
                 <thead>
                 <tr>
                   <th>#</th>
                   <th>Warehouse</th>
                   <th>Location</th>
+                  <th>Edit / Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr >
-                  <td>1</td>
-                  <td>Central Depot</td>
-                  <td>Güngören/İstanbul</td>
-                </tr>
-                <tr >
-                  <td>2</td>
-                  <td>Gölcük Depot</td>
-                  <td>Gölcük/Kocaeli</td>
+                <tr *ngFor="let warehouse of warehouseService.warehouses; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ warehouse.name }}</td>
+                  <td>{{ warehouse.town}}/ {{warehouse.city}}</td>
+                  <td style="width: 1px; white-space: nowrap;">
+                    <button
+                      (click)="editWarehouseButtonHandler(warehouse.warehouse_id)"
+                      type="button"
+                      class="btn btn-sm btn-success mr-2"><i
+                      class="fas fa-edit"></i></button>
+                    <button
+                      (click)="deleteWarehouseButtonHandler(warehouse)"
+                      type="button"
+                      class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                  </td>
                 </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div class="callout callout-warning" *ngIf="!warehouseService.warehouses">
+              <h5>Info</h5>
+              <p>There is no warehouse to list.</p>
             </div>
           </div>
           <div class="card-footer">
@@ -71,44 +83,62 @@
 <!-- /.content -->
 
 
-<div class="modal fade" id="warehouseForm">
+<div class="modal fade" id="warehouseForm"  data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">New Warehouse</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" (click)="closeWarehouseButtonHandler()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">WAREHOUSE NAME</div>
-          <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_name" placeholder="">
+          <input [(ngModel)]="warehouse.name" type="text"
+                 class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_name"
+                 placeholder="">
+          <div
+            class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !warehouse.name ? 'Warehouse name cannot be left blank!' : '' }}</div>
         </div>
 
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">ADDRESS</div>
-          <textarea class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_address" rows="3"></textarea>
+          <textarea [(ngModel)]="warehouse.address"
+                    class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty"
+                    id="warehouse_address" rows="3"></textarea>
+          <div
+            class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !warehouse.address ? 'Warehouse address cannot be left blank!' : '' }}</div>
         </div>
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">TOWN</div>
-          <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_town" placeholder="">
+          <input [(ngModel)]="warehouse.town" type="text"
+                 class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="warehouse_town"
+                 placeholder="">
+          <div
+            class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !warehouse.town ? 'Warehouse town cannot be left blank!' : '' }}</div>
         </div>
 
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">CITY</div>
-          <input  type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched" id="warehouse_city" placeholder="">
+          <input [(ngModel)]="warehouse.city" type="text" class="form-control form-control-sm " id="warehouse_city"
+                 placeholder="">
+          <div
+            class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !warehouse.city ? 'Warehouse city cannot be left blank!' : '' }}</div>
         </div>
 
         <div class="col mr-2 mb-2">
           <div class="text-xs font-weight-bold  text-uppercase mb-1">POSTAL CODE</div>
-          <input  type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched" id="warehouse_postal_code" placeholder="">
+          <input [(ngModel)]="warehouse.postal_code" type="text" class="form-control form-control-sm "
+                 id="warehouse_postal_code" placeholder="">
+          <div
+            class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !warehouse.postal_code ? 'Warehouse postal code cannot be left blank!' : '' }}</div>
         </div>
 
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" (click)="closeWarehouseButtonHandler()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveButtonHandler()">Save</button>
       </div>
     </div>
     <!-- /.modal-content -->
