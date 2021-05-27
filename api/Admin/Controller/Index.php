@@ -29,13 +29,13 @@ class Index extends AppParent{
     }
 }
 */
-$login = new DatabaseFunc();
-$Customer = new Customer();
-$Product  = new Product();
-$Category = new Category();
-$Unit = new Unit();
-$tax = new Tax();
-$warehouse = new Warehouse();
+$login      = new DatabaseFunc();
+$Customer   = new Customer();
+$Product    = new Product();
+$Category   = new Category();
+$Unit       = new Unit();
+$tax        = new Tax();
+$warehouse  = new Warehouse();
 
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
     AppPArent::dumpResponse( $login->login());
@@ -52,6 +52,9 @@ if (strcmp($_POST["func"] , "getCustomer") == 0) {
 
 if (strcmp($_POST["func"] , "addProduct") == 0) {
     AppPArent::dumpResponse( $Product->addProduct());
+}
+if (strcmp($_POST["func"] , "getAllProduct") == 0) {
+    AppPArent::dumpResponse( $Product->getAllProduct());
 }
 if (strcmp($_POST["func"] , "addCategory") == 0) {
     AppPArent::dumpResponse( $Category->addCategory());
