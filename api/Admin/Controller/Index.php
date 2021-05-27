@@ -56,3 +56,9 @@ if (strcmp($_POST["func"] , "getAllCategories") == 0) {
 if (strcmp($_POST["func"] , "getCategoryById") == 0) {
     AppPArent::dumpResponse( $Category->getCategoryById());
 }
+if (strcmp($_POST["func"] , "updateCategory") == 0) {
+    AppPArent::dumpResponse( $Category->updateCategory());
+}
+if (strcmp($_POST["func"] , "deleteCategory") == 0) {
+    AppPArent::dumpResponse( $Category->deleteCategory());
+}
