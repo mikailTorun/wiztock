@@ -24,50 +24,51 @@
           <div class="card-header">
             <h3 class="card-title">Taxes</h3>
             <div class="card-tools">
+              <button
+                (click)="newUOFButtonHandler()"
+                type="button"
+                class="btn btn-sm btn-block btn-success btn-flat">
+                Add New Tax
+              </button>
             </div>
           </div>
 
           <div class="card-body">
-
-            <div class="row mb-2">
-              <div class="col-5">
-                <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX RATE</div>
-                <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="corporate_person_name_surname" placeholder="">
-              </div>
-              <div class="col-5">
-                <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
-                <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty" id="corporate_person_name_surname" placeholder="">
-              </div>
-              <div class="col-2">
-                <span class="align-middle ">
-                   <Button  class=" mt-4 btn btn-primary btn-sm">Add Unit</Button>
-                </span>
-
-              </div>
-            </div>
-
             <div class="row">
-              <table class="table table-striped table-bordered table-hover text-xs">
+              <table class="table table-striped table-bordered table-hover text-xs"
+                     *ngIf="taxService.taxes">
                 <thead>
                 <tr>
                   <th>#</th>
-                  <th>Rate</th>
+                  <th>UOF Title</th>
                   <th>Description</th>
+                  <th>Edit / Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr >
-                  <td>1</td>
-                  <td>18</td>
-                  <td>Value Added Tax</td>
-                </tr>
-                <tr >
-                  <td>2</td>
-                  <td>5</td>
-                  <td>Special Communication Tax</td>
+                <tr *ngFor="let tax of taxService.taxes; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ tax.rate }}</td>
+                  <td>{{ tax.description }}</td>
+                  <td style="width: 1px; white-space: nowrap;">
+                    <button
+                      (click)="editTaxButtonHandler(tax.tax_id)"
+                      type="button"
+                      class="btn btn-sm btn-success mr-2"><i
+                      class="fas fa-edit"></i></button>
+                    <button
+                      (click)="deleteTaxButtonHandler(tax)"
+                      type="button"
+                      class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                  </td>
                 </tr>
                 </tbody>
               </table>
+            </div>
+
+            <div class="callout callout-warning" *ngIf="!taxService.taxes">
+              <h5>Info</h5>
+              <p>There is no tax of measurement to list.</p>
             </div>
           </div>
           <div class="card-footer">
@@ -82,3 +83,44 @@
 <!-- /.content -->
 
 
+<div class="modal fade" id="taxForm" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add New Tax</h4>
+        <button type="button" class="close" (click)="closeTaxButtonHandler()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX RATE</div>
+          <input [(ngModel)]="tax.rate" type="text"
+                 class="form-control form-control-sm {{isEmptyField && !tax.rate ? 'is-invalid' :'' }}"
+                 id="tax_rate"
+                 placeholder="">
+          <div
+            class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !tax.rate ? 'Tax rate cannot be left blank!' : '' }}</div>
+        </div>
+
+
+        <div class="col mr-2 mb-2">
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">DESCRIPTION</div>
+          <input [(ngModel)]="tax.description" type="text"
+                 class="form-control form-control-sm" id="uom_description"
+                 placeholder="">
+        </div>
+
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="closeTaxButtonHandler()">Close</button>
+        <button type="button" class="btn btn-primary"
+                (click)="saveButtonHandler()">{{ tax.tax_id ? "Update" : "Save" }}
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

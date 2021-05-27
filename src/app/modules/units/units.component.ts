@@ -27,13 +27,13 @@ export class UnitsComponent implements OnInit {
     this.isEmptyField = false;
   }
 
-  newUOFButtonHandler() {
-    $('#uofForm').modal('show');
+  newUnitButtonHandler() {
+    $('#unitForm').modal('show');
     this.clearField();
   }
 
   editUnitButtonHandler(uom_id: number) {
-    $('#uofForm').modal('show');
+    $('#unitForm').modal('show');
     this.getUnit(uom_id);
   }
 
@@ -42,7 +42,7 @@ export class UnitsComponent implements OnInit {
   }
 
   closeUnitButtonHandler() {
-    $('#uofForm').modal('hide');
+    $('#unitForm').modal('hide');
   }
 
   async saveButtonHandler() {
@@ -90,8 +90,6 @@ export class UnitsComponent implements OnInit {
         this. closeUnitButtonHandler();
       }
     });
-
-
   }
 
   deleteUnit(unit: Unit) {
@@ -102,10 +100,7 @@ export class UnitsComponent implements OnInit {
         this.clearField();
       }
     });
-
-
   }
-
 
   checkEmptyFields() {
     if(!this.unit.title) {
