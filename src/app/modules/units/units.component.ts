@@ -70,7 +70,6 @@ export class UnitsComponent implements OnInit {
   }
 
   saveUnit() {
-    console.log(this.unit);
     this.unitService.addUnit(this.unit).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.successToast("A new unit of measurement is added");
@@ -82,7 +81,7 @@ export class UnitsComponent implements OnInit {
   }
 
   updateUnit() {
-    return this.unitService.updateUnit(this.unit).subscribe((res: any) => {
+    this.unitService.updateUnit(this.unit).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.successToast("The category " + this.unit.title + " was updated");
         this.getUnitList();
@@ -93,7 +92,7 @@ export class UnitsComponent implements OnInit {
   }
 
   deleteUnit(unit: Unit) {
-    return this.unitService.deleteUnit(unit.uom_id).subscribe((res: any) => {
+    this.unitService.deleteUnit(unit.uom_id).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.dangerToast( "The category " + unit.title + " was deleted" );
         this.getUnitList();

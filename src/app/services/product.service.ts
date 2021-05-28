@@ -60,8 +60,14 @@ export class ProductService {
     formData.append("func", "getProductById");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
+        console.log(res["data"][0]);
         return res["data"][0];
       }));
+  }
+
+  getProductName(product_id: number) {
+    let result = this.products.find(product => product.product_id === product_id);
+    return result ? result.product_name : "";
   }
 
 }

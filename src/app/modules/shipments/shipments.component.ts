@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {WarehouseService} from "../../services/warehouse.service";
+import {CustomerService} from "../../services/customer.service";
+import {Shipment} from "../../models/shipment";
+import {ProductService} from "../../services/product.service";
+import {Unit} from "../../models/unit";
+import {UnitService} from "../../services/unit.service";
 declare var $: any;
 
 @Component({
@@ -7,13 +13,35 @@ declare var $: any;
   styleUrls: ['./shipments.component.scss']
 })
 export class ShipmentsComponent implements OnInit {
+  shipment: Shipment;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    public customerService:CustomerService,
+    public warehouseService:WarehouseService,
+    public productService:ProductService,
+    public unitService: UnitService,
+  ) {
+    this.shipment = new Shipment();
   }
 
-  newShipmentButtonHandler() {
+  ngOnInit(): void {
+    this.customerService.getCustomerList();
+    this.warehouseService.getAllWarehouse();
+    this.productService.getAllProduct();
+    this.unitService.getAllUnit();
+  }
 
+
+  newShipmentButtonHandler() {
+    $('#shipmentForm').modal('show');
+    $('.select2').select2();
+  }
+
+  save() {
+    console.log(this.shipment);
+  }
+
+  changeIssueDateHandler() {
+    console.log(this.shipment.issue_date);
   }
 }

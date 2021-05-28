@@ -18,7 +18,7 @@ export class ProductsComponent implements OnInit {
   product!: Product;
   isEmptyField!: boolean;
   tax: number = 0;
-  taxObj!: Tax;
+  taxSelected!: number;
 
   constructor(
     public productService: ProductService,
@@ -29,30 +29,34 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productService.getAllProduct();
     this.categoryService.getAllCategories();
     this.unitService.getAllUnit();
     this.taxService.getAllTax();
+    this.productService.getAllProduct();
     this.clearField();
   }
 
+
+
+
   clearField() {
     this.product = new Product();
-    this.isEmptyField =false;
+    this.isEmptyField = false;
   }
 
   newProductButtonHandler() {
     $('#productForm').modal('show');
+    this.taxSelected = this.taxService.taxes[0].tax_id;
     this.clearField();
     this.product.product_category_id = this.categoryService.categories[0].product_category_id;
     this.product.uom_id = this.unitService.units[0].uom_id;
     this.product.tax_id = this.taxService.taxes[0].tax_id;
-    this.taxObj = this.taxService.taxes[0];
-    this.tax = this.taxObj.rate;
+    const taxObj = this.taxService.taxes[0];
+    this.tax = taxObj.rate;
   }
 
   editProductButtonHandler(product_id: number) {
-    $('#unitForm').modal('show');
+    $('#productForm').modal('show');
     this.getProduct(product_id);
   }
 
@@ -61,9 +65,12 @@ export class ProductsComponent implements OnInit {
   }
 
   closeButtonHandler() {
-    $('#productForm').modal('hide');
+    this.closeDialog();
   }
 
+  closeDialog() {
+    $('#productForm').modal('hide');
+  }
 
   saveButtonHandler() {
     this.checkEmptyFields();
@@ -79,47 +86,57 @@ export class ProductsComponent implements OnInit {
   getProduct(product_id: number) {
     this.productService.getProductById(product_id).subscribe((res: Product) => {
       this.product = res;
+      this.taxService.getTaxById(res.tax_id).subscribe((res: Tax) => {
+        this.changeTaxSelectHandler(res.tax_id);
+      });
     });
   }
+
 
   getProductList() {
     this.productService.getAllProduct();
   }
 
   saveProduct() {
-    this.productService.addProduct(this.product).subscribe((res:any)=>{
+    this.productService.addProduct(this.product).subscribe((res: any) => {
       if (res["success"]) {
-        Toasts.successToast("A new tax of measurement is added");
+        Toasts.successToast("A new product of measurement is added.");
         this.getProductList();
+        this.closeDialog();
         this.clearField();
       }
     });
   }
 
   updateProduct() {
-    return this.productService.updateProduct(this.product).subscribe((res: any) => {
+    this.productService.updateProduct(this.product).subscribe((res: any) => {
       if (res["success"]) {
-        Toasts.successToast("The category " + this.product.product_name + " was updated");
+        Toasts.successToast("The product " + this.product.product_name + " was updated");
         this.getProductList();
+        this.closeDialog();
         this.clearField();
-        this. closeButtonHandler();
       }
     });
+
   }
 
   deleteProduct(product: Product) {
-    return this.productService.deleteProduct(product.product_id).subscribe((res: any) => {
-      if (res["success"]) {
-        Toasts.dangerToast( "The category " + product.product_name + " was deleted" );
-        this.getProductList();
-        this.clearField();
-      }
-    });
+    let result;
+    this.productService.deleteProduct(product.product_id)
+      .subscribe((res: any) => {
+        if (res["success"]) {
+          Toasts.dangerToast("The product " + product.product_name + " was deleted");
+          this.getProductList();
+          this.closeDialog();
+          this.clearField();
+        }
+      });
+    return result;
   }
 
   changeSellingPriceHandler(event: any) {
     const taxAmount = this.tax / 100.0 + 1;
-    let pPrice = parseFloat(event.target.value) / taxAmount;
+    let pPrice = parseFloat((parseFloat(event.target.value) / taxAmount).toFixed(2));
     this.product.purchasing_price = pPrice ? pPrice : 0;
   }
 
@@ -128,25 +145,27 @@ export class ProductsComponent implements OnInit {
     this.calculateSellingPrice();
   }
 
-  setTax(tax: Tax) {
-    this.tax = tax.rate;
-    this.product.tax_id = tax.tax_id;
+  changeTaxSelectHandler(tax_id: number) {
+    const taxObj = this.taxService.taxes.find(tax => tax.tax_id === tax_id);
+    this.taxSelected = taxObj ? taxObj.tax_id : 0;
+    if (taxObj) {
+      this.tax = taxObj.rate;
+      this.product.tax_id = taxObj.tax_id;
+    }
     this.calculateSellingPrice();
   }
 
   calculateSellingPrice() {
-    const taxAmount = this.tax / 100.0 + 1;
-    let sPrice = this.product.purchasing_price * taxAmount;
+    const taxAmount = (this.tax / 100.0 + 1);
+    let sPrice = 100.0 * (this.product.purchasing_price * taxAmount) / 100.0;
     this.product.selling_price = sPrice ? sPrice : 0;
   }
 
   checkEmptyFields() {
-    if(!this.product.product_name) {
+    if (!this.product.product_name) {
       this.isEmptyField = true;
     } else {
-      this.isEmptyField =false;
-
+      this.isEmptyField = false;
     }
   }
-
 }

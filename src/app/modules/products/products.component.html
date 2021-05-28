@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="card-body">
-            <table id="customerTable" class="table table-bordered table-striped">
+            <table id="customerTable" class="table table-bordered table-striped" appDatatable>
               <thead>
               <tr>
                 <th>Product Name</th>
@@ -49,9 +49,9 @@
               <tr *ngFor="let product of productService.products">
                 <td>{{product.product_name}}</td>
                 <td>{{product.initial_stock_amount}}</td>
-                <td>{{product.uom_id}}</td>
-                <td>{{product.purchasing_price}}</td>
-                <td>{{product.selling_price}}</td>
+                <td>{{unitService.getUnitString(product.uom_id)}}</td>
+                <td>{{product.purchasing_price}} ₺</td>
+                <td>{{product.selling_price}} ₺</td>
                 <td style="text-align: center">
                   <button class="btn btn-sm btn-success mr-2" (click)="editProductButtonHandler(product.product_id)"><i class="fas fa-edit"></i></button>
                   <button class="btn btn-sm btn-primary mr-2" ><i class="fas fa-book-open"></i></button>
@@ -61,9 +61,11 @@
               </tbody>
               <tfoot>
               <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Unit</th>
+                <th>Purchasing Price</th>
+                <th>Selling Price</th>
                 <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
               </tfoot>
@@ -82,7 +84,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">New Product</h4>
+        <h4 class="modal-title">{{ product.product_id ? "Edit Product" : "Add New Product" }}</h4>
         <button type="button" class="close" (click)="closeButtonHandler()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -94,6 +96,9 @@
             <div class="text-xs font-weight-bold  text-uppercase mb-1">PRODUCT NAME</div>
             <input [(ngModel)]="product.product_name" type="text" class="form-control form-control-sm"
                    id="product_name" placeholder="">
+            <div
+              class="text-xs text-danger font-weight-bold mb-1">{{isEmptyField && !product.product_name ? 'Product name cannot be left blank!' : '' }}</div>
+
           </div>
         </div>
 
@@ -174,10 +179,10 @@
           <div class="col mb-2">
             <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX</div>
             <select
-              [(ngModel)]="taxObj"
-              (ngModelChange)="setTax($event)"
+              [(ngModel)]="taxSelected"
+              (ngModelChange)="changeTaxSelectHandler($event)"
               id="product_tax_id" class="form-control form-control-sm">
-              <option *ngFor="let tax of taxService.taxes" [ngValue]="tax">{{tax.rate}}
+              <option *ngFor="let tax of taxService.taxes" [ngValue]="tax.tax_id">{{tax.rate}}
                 % {{tax.description}}</option>
             </select>
           </div>

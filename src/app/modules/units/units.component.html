@@ -87,14 +87,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Add New Unit Of Measurement</h4>
+        <h4 class="modal-title">{{ unit.uom_id ? "Edit Unit" : "Add New Unit" }}</h4>
         <button type="button" class="close" (click)="closeUnitButtonHandler()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="col mr-2 mb-2">
-          <div class="text-xs font-weight-bold  text-uppercase mb-1">UNIT OF MEASUREMENT TITILE</div>
+          <div class="text-xs font-weight-bold  text-uppercase mb-1">TITLE</div>
           <input [(ngModel)]="unit.title" type="text"
                  class="form-control form-control-sm {{isEmptyField && !unit.title ? 'is-invalid' :'' }}"
                  id="uom_title"

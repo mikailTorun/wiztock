@@ -3,12 +3,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Customers</h1>
+        <h1>Shipments</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a routerLink="/">DashBoard</a></li>
-          <li class="breadcrumb-item active">Product</li>
+          <li class="breadcrumb-item active">Shipments</li>
         </ol>
       </div>
     </div>
@@ -26,10 +26,10 @@
         <!-- Default box -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Product List</h3>
+            <h3 class="card-title">Shipment List</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-block btn-success btn-flat" (click)="newShipmentButtonHandler()">
-                New Product
+                New Shipment
               </button>
             </div>
           </div>
@@ -37,16 +37,18 @@
             <table id="customerTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Product Name</th>
-                <th>Amount</th>
-                <th>Unit</th>
-                <th>Purchasing Price</th>
-                <th>Sales Price</th>
+                <th>Shipment Number</th>
+                <th>Description</th>
+                <th>Issue Date</th>
+                <th>Shipment Date</th>
+                <th>Warehouse</th>
+                <th>Type</th>
                 <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
               </thead>
               <tbody>
               <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -61,9 +63,12 @@
               </tbody>
               <tfoot>
               <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
+                <th>Shipment Number</th>
+                <th>Description</th>
+                <th>Issue Date</th>
+                <th>Shipment Date</th>
+                <th>Warehouse</th>
+                <th>Type</th>
                 <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
               </tfoot>
@@ -78,8 +83,8 @@
 <!-- /.content -->
 
 
-<div class="modal fade" id="productForm" role="dialog" data-backdrop="static">
-  <div class="modal-dialog">
+<div class="modal fade" id="shipmentForm" role="dialog" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">New Product</h4>
@@ -88,100 +93,109 @@
         </button>
       </div>
       <div class="modal-body">
-
-        <div class="col row">
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">PRODUCT NAME</div>
-            <input type="text" class="form-control form-control-sm"
-                   id="product_name" placeholder="">
-          </div>
-        </div>
-
-        <div class="col row">
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">CATEGORY</div>
-            <select id="product_category_id" class="form-control form-control-sm">
-              <option>Category 1</option>
-              <option>Category 2</option>
-              <option>Category 3</option>
-              <option>Category 4</option>
-              <option>Category 5</option>
-            </select>
-          </div>
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">UNIT</div>
-            <select id="product_uom_id" class="form-control form-control-sm">
-              <option>kg</option>
-              <option>piece(s)</option>
-              <option>m</option>
-              <option>lt</option>
-              <option>box(es)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="col row">
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">CODE</div>
-            <input type="text" class="form-control form-control-sm"
-                   id="product_code" placeholder="">
-          </div>
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">BARCODE</div>
-            <input type="text" class="form-control form-control-sm"
-                   id="product_barcode" placeholder="">
-          </div>
-        </div>
-
-        <div class="col row">
-          <div class="col mb-2">
+        <div class="row justify-content-md-center">
+          <div class="col-md-6">
             <div class="form-group">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="product_is_inventory_tracking">
-                <label class="form-check-label text-xs font-weight-bold  text-uppercase mb-1">INVENTROY TRACKING</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="product_is_notifying">
-                <label class="form-check-label text-xs font-weight-bold  text-uppercase mb-1">NOTIFY</label>
-              </div>
+              <label>Supplier</label>
+              <select class="form-control select2" style="width: 100%;">
+                <option *ngFor="let customer of customerService.customerList">{{customer.name}}</option>
+              </select>
             </div>
           </div>
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">INITIAL AMOUNT</div>
-            <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty"
-                   id="product_initial_amount" placeholder="">
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Warehouse</label>
+              <select class="form-control select2" style="width: 100%;">
+                <option *ngFor="let warehouse of warehouseService.warehouses">{{warehouse.name}}</option>
+              </select>
+            </div>
           </div>
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">NOTIFICATION AMOUNT</div>
-            <input type="text" class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-empty"
-                   id="product_notification_amount" placeholder="">
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Freight Bill Number</label>
+              <input type="text" class="form-control" id="freight_bill_number">
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Issue Date</label>
+              <input [(ngModel)]="shipment.issue_date" type="date" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Shipment Date</label>
+              <input [(ngModel)]="shipment.shipment_date" type="date" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2 align-items-center"  >
+          <div class="col-12 align-self-center" style="border-bottom: solid 1px gray;">
+            <span class="align-middle h3">Products</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label>Product</label>
+              <select class="form-control select2" style="width: 100%;">
+                <option *ngFor="let product of productService.products">{{product.product_name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>Amount</label>
+              <input type="text" class="form-control" id="amount">
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>Unit</label>
+              <select class="form-control select2" style="width: 100%;">
+                <option *ngFor="let unit of unitService.units">{{unit.title}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3 pt-4">
+            <button type="button" class="btn btn-block btn-success btn-flat" (click)="newShipmentButtonHandler()">
+              Add Product
+            </button>
           </div>
         </div>
 
-        <div class="row col">
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">PURCHASING PRICE</div>
-            <input type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched"
-                   id="product_purchasing_price" placeholder="">
-          </div>
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">SELLING PRICE</div>
-            <input type="text" class="form-control form-control-sm ng-pristine ng-valid ng-empty ng-touched"
-                   id="product_selling_price" placeholder="">
-          </div>
-
-          <div class="col mb-2">
-            <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX</div>
-            <select id="product_tax_id" class="form-control form-control-sm">
-              <option>18% VAT</option>
-              <option>5% SCT</option>
-            </select>
-          </div>
+        <div class="col-12 table-responsive">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Product</th>
+              <th>Amount</th>
+              <th>Unit</th>
+              <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of shipment.shipment_item; let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{item.product.product_name}}</td>
+              <td>{{item.amount}}</td>
+              <td>{{unitService.getUnitString(item.product.uom_id)}}</td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" (click)="save()" class="btn btn-primary">Save</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -189,4 +203,5 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
 

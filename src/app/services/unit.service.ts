@@ -61,5 +61,10 @@ export class UnitService {
         return res["data"][0];
       }));
   }
+
+  getUnitString(uom_id: number) {
+    const result = this.units ?this.units.find(unit => unit.uom_id === uom_id) : null;
+    return result ? result.title : "Not define unit";
+  }
 }
 
