@@ -4,7 +4,6 @@ import {DefaultComponent} from "./default.component";
 import {RouterModule} from "@angular/router";
 import {SharedModule} from "../../shared/shared.module";
 import {AllModule} from "../../modules/all.module";
-import {MatDialogModule} from "@angular/material/dialog";
 
 
 
@@ -17,7 +16,6 @@ import {MatDialogModule} from "@angular/material/dialog";
     RouterModule,
     SharedModule,
     AllModule,
-    MatDialogModule,
   ],
 })
 export class DefaultModule { }

@@ -5,6 +5,14 @@ import {Shipment} from "../../models/shipment";
 import {ProductService} from "../../services/product.service";
 import {Unit} from "../../models/unit";
 import {UnitService} from "../../services/unit.service";
+import {Product} from "../../models/product";
+import {ShipmentItem} from "../../models/shipment-item";
+import {ShipmentService} from "../../services/shipment.service";
+import {Toasts} from "../../helpers/toasts";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {Customer} from "../../models/customer";
+import {Tax} from "../../models/tax";
+
 declare var $: any;
 
 @Component({
@@ -13,35 +21,185 @@ declare var $: any;
   styleUrls: ['./shipments.component.scss']
 })
 export class ShipmentsComponent implements OnInit {
-  shipment: Shipment;
+  shipment!: Shipment;
+
+  issueDate!: Date;
+  shipmentDate!: Date;
+  selectedProductId!: number;
+  selectedProductObj!: Product;
+
+  amount: number = 0;
+  unit: string = "-";
+  shipmentType: number;
+
+  TALLY_IN: boolean = false;
+  TALLY_OUT: boolean = false;
+  INTER_WAREHOUSE: boolean = false;
+  warningMessage: string ="";
+
+  isEmptyField: boolean =  false;
 
   constructor(
-    public customerService:CustomerService,
-    public warehouseService:WarehouseService,
-    public productService:ProductService,
+    public shipmentService: ShipmentService,
+    public customerService: CustomerService,
+    public warehouseService: WarehouseService,
+    public productService: ProductService,
     public unitService: UnitService,
   ) {
     this.shipment = new Shipment();
+    this.shipmentType = 0;
   }
 
   ngOnInit(): void {
-    this.customerService.getCustomerList();
+    this.shipmentService.getAllShipmentType();
+    this.customerService.getAllCustomer();
     this.warehouseService.getAllWarehouse();
     this.productService.getAllProduct();
     this.unitService.getAllUnit();
+
   }
 
+  clearShipmentItemField() {
+    this.selectedProductId = 0;
+    this.selectedProductObj = new Product();
+    this.amount = 0;
+    this.unit = "-";
+  }
 
-  newShipmentButtonHandler() {
+  saveButtonHandler() {
+    this.checkEmptyFields()
+    if (!this.isEmptyField) {
+      if(!this.shipment.shipment_items) {
+        this.saveShipment();
+      }else {
+        this.updateShipment();
+      }
+      this.clearShipmentItemField();
+    } else {
+
+    }
+  }
+
+  changeIssueDateHandler(event: any) {
+    this.shipment.issue_date = new Date(event.target.value);
+  }
+
+  changeShipmentDateHandler(event: any) {
+    this.shipment.shipment_date = new Date(event.target.value);
+  }
+
+  addItemHandler(product: Product, amount: number) {
+    const foundItem = this.shipment.shipment_items.find(item => item.product.product_id == product.product_id);
+    if(this.selectedProductId) {
+      if (!foundItem) {
+        const newItem: ShipmentItem = new ShipmentItem(product, amount);
+        this.shipment.shipment_items.push(newItem);
+        this.clearShipmentItemField();
+      } else {
+        this.warningMessage = `The product ${foundItem.product.product_name}
+        has already been added. Its amount is ${foundItem.amount} ${this.unitService.getUnitString(foundItem.product.uom_id)}`
+      }
+    }
+
+  }
+
+  changeProductHandler(product_id: number) {
+    const productObj = this.productService.products.find(p => p.product_id === product_id);
+    this.selectedProductObj = productObj ? productObj : new Product();
+    this.unit = this.unitService.getUnitString(this.selectedProductObj.uom_id);
+  }
+
+  deleteItemHandler(product_id: number) {
+    this.shipment.shipment_items = this.shipment.shipment_items.filter(function (item, index, arr) {
+      return item.product.product_id !== product_id;
+    });
+  }
+
+  openShipmentForm() {
     $('#shipmentForm').modal('show');
-    $('.select2').select2();
   }
 
-  save() {
+  closeShipmentForm() {
+    $('#shipmentForm').modal('show');
+  }
+
+  openShipmentFormHandler(shipment_type_id: number) {
+    switch (shipment_type_id) {
+      case 1:
+        this.TALLY_IN = true;
+        this.TALLY_OUT = false;
+        this.INTER_WAREHOUSE = false;
+        break;
+      case 2:
+        this.TALLY_IN = false;
+        this.TALLY_OUT = true;
+        this.INTER_WAREHOUSE = false;
+        break;
+      default:
+        this.TALLY_IN = false;
+        this.TALLY_OUT = false;
+        this.INTER_WAREHOUSE = true;
+        break;
+    }
+
+    if (!this.shipment.shipment_id) {
+      this.shipment = new Shipment();
+      this.shipment.shipment_type_id = shipment_type_id;
+    }
+
+    this.openShipmentForm();
+  }
+
+  saveShipment() {
     console.log(this.shipment);
+    this.shipmentService.addShipment(this.shipment).subscribe((res) => {
+      if (res && res["success"] === true) {
+        Toasts.successToast("The new shipment is added");
+        this.closeShipmentForm();
+      }
+    });
   }
 
-  changeIssueDateHandler() {
-    console.log(this.shipment.issue_date);
+  updateShipment() {
+    this.shipmentService.updateShipment(this.shipment).subscribe((res: any) => {
+      if (res["success"]) {
+        Toasts.successToast("The shipment was updated");
+        this.shipmentService.getAllShipment();
+        this.closeShipmentForm();
+        this.shipment = new Shipment();
+        this.clearShipmentItemField();
+      }
+    });
+
+  }
+
+  deleteShipment(shipment: Shipment) {
+    this.shipmentService.deleteShipment(shipment.shipment_id)
+      .subscribe((res: any) => {
+        if (res["success"]) {
+          Toasts.dangerToast("The shipment was deleted");
+          this.shipmentService.getAllShipment();
+        }
+      });
+  }
+
+  checkEmptyFields() {
+    this.isEmptyField = this.shipment.isThereAnyEmptyField();
+    console.log("test");
+  }
+
+  editShipmentButtonHandler(shipment_id: number) {
+    $('#shipmentForm').modal('show');
+    this.getShipment(shipment_id);
+  }
+
+  getShipment(shipment_id: number) {
+    this.shipmentService.getShipmentById(shipment_id).subscribe((res: Shipment) => {
+      this.shipment = res;
+    });
+  }
+
+  deleteShipmentButtonHandler(shipment: Shipment) {
+    this.deleteShipment(shipment);
   }
 }

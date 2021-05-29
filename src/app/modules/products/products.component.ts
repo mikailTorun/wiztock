@@ -121,7 +121,6 @@ export class ProductsComponent implements OnInit {
   }
 
   deleteProduct(product: Product) {
-    let result;
     this.productService.deleteProduct(product.product_id)
       .subscribe((res: any) => {
         if (res["success"]) {
@@ -131,7 +130,6 @@ export class ProductsComponent implements OnInit {
           this.clearField();
         }
       });
-    return result;
   }
 
   changeSellingPriceHandler(event: any) {

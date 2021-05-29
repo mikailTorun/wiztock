@@ -11,7 +11,7 @@ export class Shipment {
   customer_id: number;
   issue_date: Date;
   shipment_date: Date;
-  shipment_item: Array<ShipmentItem>;
+  shipment_items: Array<ShipmentItem>;
 
   constructor() {
     this.shipment_id = 0;
@@ -24,6 +24,20 @@ export class Shipment {
     this.issue_date= new Date();
     this.shipment_date = new Date();
     this.shipment_date.setDate(this.issue_date.getDate() + 7);
-    this.shipment_item =Array<ShipmentItem>();
+    this.shipment_items =Array<ShipmentItem>();
+  }
+
+  isThereAnyEmptyField(): boolean{
+   if(this.shipment_type_id===1 || this.shipment_type_id === 3) {
+     if(!this.destination_warehouse_id || !this.customer_id || !this.shipment_items.length) {
+       return true;
+     }
+   } else if (this.shipment_type_id===2 || this.shipment_type_id === 3) {
+     if(!this.source_warehouse_id || !this.customer_id || !this.shipment_items.length) {
+       return true;
+     }
+   }
+   return false;
+
   }
 }

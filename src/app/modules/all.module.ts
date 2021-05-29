@@ -17,6 +17,7 @@ import { TaxesComponent } from './taxes/taxes.component';
 import { CategoriesComponent } from './categories/categories.component';
 import {DatepickerDirective} from "../directives/datepicker.directive";
 import {DatatableDirective} from "../directives/datatable.directive";
+import {NgxMaskModule} from "ngx-mask";
 
 @NgModule({
   declarations: [

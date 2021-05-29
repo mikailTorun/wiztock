@@ -5,11 +5,13 @@ import {environment} from "../../environments/environment";
 
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
+import {Customer} from "../models/customer";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
+  customers: Array<Customer> = new Array<Customer>();
   customerList?: CustomerListData[];
   constructor(
     private http:HttpClient
@@ -89,5 +91,18 @@ export class CustomerService {
           console.warn("HATA KODUNUZ",data.err);
         }
       }));
+  }
+
+
+  getAllCustomer() {
+    let formData: any = new FormData();
+    formData.append("func", "getAllCustomer");
+    this.http.post(environment.apiUrl, formData)
+      .subscribe((res: any) => {
+        this.customers =res["data"];
+      });
+  }
+  getFistCustomer(): Customer {
+    return this.customers ? this.customers[0] : new Customer();
   }
 }

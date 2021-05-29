@@ -1,18 +1,37 @@
-export interface Customer {
+export class Customer {
   customer_id: number;
-  customer_email: string;
-  customer_phone: string;
-  customer_address: string;
-  customer_town: string;
-  customer_city: string;
-  customer_postal_code: string;
-  customer_is_corporate: number;
-  customer_is_customer: number;
-  customer_is_supplier: number;
-  corporate_title: string;
-  corporate_short_name: string;
-  corporate_tax_office: string;
-  corporate_tax_number: string;
-  individual_name_surname: string;
-  individual_ssn: string;
+  email: string;
+  phone: string;
+  address: string;
+  town: string;
+  city: string;
+  postal_code: string;
+  is_corporate: boolean;
+  is_customer: boolean;
+  is_supplier: boolean;
+  title: string;
+  short_name: string;
+  tax_office: string;
+  tax_number: string;
+  name_surname: string;
+  ssn: string;
+
+  constructor() {
+    this.customer_id = 0;
+    this.email = "";
+    this.phone = "";
+    this.address="";
+    this.town="";
+    this.city="";
+    this.postal_code="";
+    this.is_corporate=false;
+    this.is_customer=false;
+    this.is_supplier=false;
+    this.title = "";
+    this.short_name = "";
+    this.tax_office = "";
+    this.tax_number = "";
+    this.name_surname = "";
+    this.ssn = "";
+  }
 }

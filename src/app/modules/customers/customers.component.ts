@@ -19,15 +19,15 @@ export class CustomersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.customerTableInit();
+    this.customerService.getAllCustomer();
   }
 
   customerTableInit(): any {
-    this.customerService.getCustomerList();
+
   }
 
   openCreateCustomer(): any {
-    this.router.navigate(['/customers/create']);
+    console.log(this.customerService.customers);
   }
 
 }

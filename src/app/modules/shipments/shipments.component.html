@@ -28,9 +28,18 @@
           <div class="card-header">
             <h3 class="card-title">Shipment List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-block btn-success btn-flat" (click)="newShipmentButtonHandler()">
-                New Shipment
-              </button>
+
+              <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Create New Tally
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                  <button class="dropdown-item" *ngFor="let type of shipmentService.shipmentTypes"
+                          (click)="openShipmentFormHandler(type.shipment_type_id)">{{type.title}}</button>
+                </div>
+              </div>
+
             </div>
           </div>
           <div class="card-body">
@@ -38,36 +47,30 @@
               <thead>
               <tr>
                 <th>Shipment Number</th>
-                <th>Description</th>
                 <th>Issue Date</th>
                 <th>Shipment Date</th>
-                <th>Warehouse</th>
                 <th>Type</th>
                 <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+              <tr *ngFor="let shipment of this.shipmentService.shipments">
+                <td>{{shipment.shipment_id}}</td>
+                <td>{{shipment.issue_date}}</td>
+                <td>{{shipment.shipment_date}}</td>
+                <td>{{shipmentService.getShipmentTypeName(shipment.shipment_type_id)}}</td>
                 <td style="text-align: center">
-                  <button class="btn btn-sm btn-success mr-2"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-success mr-2" (click)="editShipmentButtonHandler(shipment.shipment_id)"><i class="fas fa-edit"></i></button>
                   <button class="btn btn-sm btn-primary mr-2"><i class="fas fa-book-open"></i></button>
-                  <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteShipmentButtonHandler(shipment)"><i class="fas fa-trash-alt"></i></button>
                 </td>
               </tr>
               </tbody>
               <tfoot>
               <tr>
                 <th>Shipment Number</th>
-                <th>Description</th>
                 <th>Issue Date</th>
                 <th>Shipment Date</th>
-                <th>Warehouse</th>
                 <th>Type</th>
                 <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
@@ -83,33 +86,68 @@
 <!-- /.content -->
 
 
-<div class="modal fade" id="shipmentForm" role="dialog" data-backdrop="static">
+<div class="modal fade" id="shipmentForm"  data-backdrop="static">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">New Product</h4>
+        <h4
+          class="modal-title">{{TALLY_IN ? "Add New Tally In" : TALLY_OUT ? "Add New Tally Out" : "Inter-Warehouse Transfer" }}</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center" *ngIf="TALLY_OUT || TALLY_IN">
           <div class="col-md-6">
             <div class="form-group">
-              <label>Supplier</label>
-              <select class="form-control select2" style="width: 100%;">
-                <option *ngFor="let customer of customerService.customerList">{{customer.name}}</option>
+              <label>{{TALLY_IN ? "Supplier" : "Customer"}}</label>
+              <select
+                [(ngModel)]="shipment.customer_id"
+                id="customer_id"
+                class="form-control" style="width: 100%;">
+                <option *ngFor="let customer of customerService.customers" value="{{customer.customer_id}}">
+                  {{customer.is_corporate ? customer.title : customer.name_surname}}
+                </option>
               </select>
+              <div class="text-xs text-danger font-weight-bold mb-1">
+                {{(isEmptyField && TALLY_IN && !shipment.customer_id) ? 'Supplier cannot be left blank!' :
+                (isEmptyField && TALLY_OUT && !shipment.customer_id) ? 'Customer cannot be left blank!' : ''}}
+              </div>
             </div>
           </div>
         </div>
-        <div class="row justify-content-md-center">
+
+        <div class="row justify-content-md-center" *ngIf="INTER_WAREHOUSE || TALLY_OUT">
           <div class="col-md-6">
             <div class="form-group">
-              <label>Warehouse</label>
-              <select class="form-control select2" style="width: 100%;">
-                <option *ngFor="let warehouse of warehouseService.warehouses">{{warehouse.name}}</option>
+              <label>{{INTER_WAREHOUSE ? "Source" : ""}} Warehouse </label>
+              <select
+                [(ngModel)]="shipment.source_warehouse_id"
+                class="form-control" style="width: 100%;">
+                <option *ngFor="let warehouse of warehouseService.warehouses"
+                        value="{{warehouse.warehouse_id}}">{{warehouse.name}}</option>
               </select>
+              <div class="text-xs text-danger font-weight-bold mb-1">
+                {{(isEmptyField && !INTER_WAREHOUSE && !shipment.source_warehouse_id) ? 'Warehouse cannot be left blank!' :
+                (isEmptyField && INTER_WAREHOUSE && !shipment.source_warehouse_id) ? 'Source warehouse cannot be left blank!' : ''}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-md-center" *ngIf="INTER_WAREHOUSE || TALLY_IN">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>{{INTER_WAREHOUSE ? "Destination" : ""}} Warehouse</label>
+              <select [(ngModel)]="shipment.destination_warehouse_id"
+                      class="form-control" style="width: 100%;">
+                <option *ngFor="let warehouse of warehouseService.warehouses"
+                        value="{{warehouse.warehouse_id}}">{{warehouse.name}}</option>
+              </select>
+              <div class="text-xs text-danger font-weight-bold mb-1">
+                {{(isEmptyField && !INTER_WAREHOUSE && !shipment.destination_warehouse_id) ? 'Warehouse cannot be left blank!' :
+                (isEmptyField && INTER_WAREHOUSE && !shipment.destination_warehouse_id) ? 'Destination warehouse cannot be left blank!' : ''}}
+              </div>
             </div>
           </div>
         </div>
@@ -117,7 +155,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Freight Bill Number</label>
-              <input type="text" class="form-control" id="freight_bill_number">
+              <input [(ngModel)]="shipment.freight_bill_number" type="text" class="form-control"
+                     id="freight_bill_number">
             </div>
           </div>
         </div>
@@ -125,47 +164,58 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Issue Date</label>
-              <input [(ngModel)]="shipment.issue_date" type="date" class="form-control">
+              <input (change)="changeIssueDateHandler($event)" type="date" class="form-control" name="shipmentDate"
+                     value="{{shipment.issue_date | date:'yyyy-MM-dd'}}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Shipment Date</label>
-              <input [(ngModel)]="shipment.shipment_date" type="date" class="form-control">
+              <input (change)="changeShipmentDateHandler($event)" type="date" class="form-control" name="shipmentDate"
+                     value="{{shipment.shipment_date | date:'yyyy-MM-dd'}}">
             </div>
           </div>
         </div>
-        <div class="row mb-2 align-items-center"  >
+        <div class="row mb-2 align-items-center">
           <div class="col-12 align-self-center" style="border-bottom: solid 1px gray;">
             <span class="align-middle h3">Products</span>
+            <div class="alert alert-warning alert-dismissible" *ngIf="warningMessage">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <h5><i class="icon fas fa-exclamation-triangle"></i>Warning</h5>
+              {{warningMessage}}
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-5">
             <div class="form-group">
               <label>Product</label>
-              <select class="form-control select2" style="width: 100%;">
-                <option *ngFor="let product of productService.products">{{product.product_name}}</option>
+              <select
+                [(ngModel)]="selectedProductId"
+                (ngModelChange)="changeProductHandler($event)"
+                id="product_id"
+                class="form-control" style="width: 100%;">
+                <option *ngFor="let product of productService.products"
+                        [ngValue]="product.product_id">{{product.product_name}}</option>
               </select>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>Amount</label>
-              <input type="text" class="form-control" id="amount">
+              <input [(ngModel)]="amount" type="text" class="form-control" id="amount">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>Unit</label>
-              <select class="form-control select2" style="width: 100%;">
-                <option *ngFor="let unit of unitService.units">{{unit.title}}</option>
-              </select>
+              <input [(ngModel)]="unit" type="text" class="form-control" readonly>
             </div>
           </div>
           <div class="col-md-3 pt-4">
-            <button type="button" class="btn btn-block btn-success btn-flat" (click)="newShipmentButtonHandler()">
-              Add Product
+            <button type="button" class="btn btn-block btn-success btn-flat"
+                    (click)="addItemHandler(selectedProductObj, amount)">
+              Add
             </button>
           </div>
         </div>
@@ -182,20 +232,26 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of shipment.shipment_item; let i = index">
+            <tr *ngFor="let item of shipment.shipment_items; let i = index">
               <td>{{i + 1}}</td>
               <td>{{item.product.product_name}}</td>
               <td>{{item.amount}}</td>
               <td>{{unitService.getUnitString(item.product.uom_id)}}</td>
-              <td></td>
+              <td>
+                <button class="btn btn-sm btn-danger" (click)="deleteItemHandler(item.product.product_id)"><i
+                  class="fas fa-trash-alt"></i></button>
+              </td>
             </tr>
             </tbody>
           </table>
+          <div class="text-xs text-danger font-weight-bold mb-1">
+            {{(isEmptyField && !shipment.shipment_items.length) ? 'The product list is empty. Please add product.' : ''}}
+          </div>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" (click)="save()" class="btn btn-primary">Save</button>
+        <button type="button" (click)="saveButtonHandler()" class="btn btn-primary">Save</button>
       </div>
     </div>
     <!-- /.modal-content -->

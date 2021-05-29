@@ -62,4 +62,9 @@ export class WarehouseService {
         return res["data"][0];
       }));
   }
+
+  getWarehouseName(warehouse_id: number){
+    const result = this.warehouses ?this.warehouses.find(w => w.warehouse_id === warehouse_id) : null;
+    return result ? result.name : "Not define unit";
+  }
 }

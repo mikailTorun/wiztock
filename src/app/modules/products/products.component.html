@@ -190,7 +190,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" (click)="closeButtonHandler()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveButtonHandler()">Save</button>
+        <button type="button" class="btn btn-primary" (click)="saveButtonHandler()">{{ product.product_id ? "Update" : "Save" }}</button>
       </div>
     </div>
     <!-- /.modal-content -->
