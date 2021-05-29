@@ -13,6 +13,7 @@ require_once 'Category.php';
 require_once 'Unit.php';
 require_once 'Tax.php';
 require_once 'Warehouse.php';
+require_once 'Shipment.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
@@ -49,6 +50,9 @@ if (strcmp($_POST["func"] , "funcInsertCustomer") == 0) {
 }
 if (strcmp($_POST["func"] , "getCustomerList") == 0) {
     AppPArent::dumpResponse( $Customer->getCustomerList());
+}
+if (strcmp($_POST["func"] , "getAllCustomer") == 0) {
+    AppPArent::dumpResponse( $Customer->getAllCustomer());
 }
 if (strcmp($_POST["func"] , "getCustomer") == 0) {
     AppPArent::dumpResponse( $Customer->getCustomer());

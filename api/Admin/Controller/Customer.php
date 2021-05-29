@@ -56,7 +56,38 @@ class Customer extends AppParent{
     public function __construct() {
         
     }
-    
+    function getAllCustomer(){
+        $db = new DatabaseFunc();
+
+        $q1 = " SELECT * FROM customer c, corporate cp
+                WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_customer=1 ";
+        $result1 = $db->db->rawQuery ($q1);
+
+
+        $q2 = "SELECT * FROM customer c, individual i
+                WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1";
+        $result2 = $db->db->rawQuery ($q2);
+
+        
+        if($result1 && $result2){
+            $response['data']=  array_merge($result1,$result2);
+            $response['success']  = true;
+            $response['errMsg']   = "";
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+
+            return $response;
+        }else{
+            
+            $response['data']=  "" ;
+            $response['success']  = false;
+            $response['errMsg']   = $db->db->getLastError();
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+
+            return $response;
+        }
+    }
     function getCustomer(){
         $db = new DatabaseFunc();
 
@@ -189,7 +220,7 @@ class Customer extends AppParent{
             if ($this->getIs_corporate() == 0) { // bireysel firmaysa
                 $individual = new Individual();
                 $individual->setIndividualID($this->getCustomer_id());
-                $individual->setNameSurname($_POST["individual_name"] ." ".$_POST["individual_surname"]);
+                $individual->setNameSurname($_POST["individual_name_surname"]);
                 $individual->setSsn($_POST["individual_ssn"]);
                 $individualID = $individual->insertIndividualRecord();
                 $data["individualID"] = $individual->getIndividualID();
