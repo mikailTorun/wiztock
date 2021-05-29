@@ -36,7 +36,11 @@ $Category   = new Category();
 $Unit       = new Unit();
 $tax        = new Tax();
 $warehouse  = new Warehouse();
+$shipment  = new Shipment();
 
+if (strcmp($_POST["func"] , "getAllShipmentType") == 0) {
+    AppPArent::dumpResponse( $shipment->getAllShipmentType());
+}
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
     AppPArent::dumpResponse( $login->login());
 }
