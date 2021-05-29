@@ -53,6 +53,15 @@ if (strcmp($_POST["func"] , "getCustomer") == 0) {
 if (strcmp($_POST["func"] , "addProduct") == 0) {
     AppPArent::dumpResponse( $Product->addProduct());
 }
+if (strcmp($_POST["func"] , "getProductById") == 0) {
+    AppPArent::dumpResponse( $Product->getProductById());
+}
+if (strcmp($_POST["func"] , "updateProduct") == 0) {
+    AppPArent::dumpResponse( $Product->updateProduct());
+}
+if (strcmp($_POST["func"] , "deleteProduct") == 0) {
+    AppPArent::dumpResponse( $Product->deleteProduct());
+}
 if (strcmp($_POST["func"] , "getAllProduct") == 0) {
     AppPArent::dumpResponse( $Product->getAllProduct());
 }

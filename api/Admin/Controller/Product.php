@@ -23,10 +23,10 @@ class Product extends AppParent{
 	private $code;
 	private $barcode;
 	private $img_url;
-	private $is_inventroy_tracking;
+	private $is_inventory_tracking;
 	private $inital_stock_amount;
 	private $is_notifying;
-	private $nofitication_amount;
+	private $notification_amount;
 	private $purchasing_price;
 	private $selling_price;
 	private $tax_id;
@@ -47,16 +47,16 @@ class Product extends AppParent{
 	function getBarcode() { return $this->barcode; }
 	function setImg_url($img_url) { $this->img_url = $img_url; }
 	function getImg_url() { return $this->img_url; }
-	function setis_inventroy_tracking($is_inventroy) { $this->is_inventroy_tracking = $is_inventroy; }
-	function getis_inventroy_tracking() { return $this->is_inventroy_tracking; }
+	function setis_inventory_tracking($is_inventory) { $this->is_inventory_tracking = $is_inventory; }
+	function getis_inventory_tracking() { return $this->is_inventory_tracking; }
 	function setTracking($tracking) { $this->tracking = $tracking; }
 	function getTracking() { return $this->tracking; }
 	function setInital_stock_amount($inital_stock_amount) { $this->inital_stock_amount = $inital_stock_amount; }
 	function getInital_stock_amount() { return $this->inital_stock_amount; }
 	function setIs_notifying($is_notifying) { $this->is_notifying = $is_notifying; }
 	function getIs_notifying() { return $this->is_notifying; }
-	function setNofitication_amount($nofitication_amount) { $this->nofitication_amount = $nofitication_amount; }
-	function getNofitication_amount() { return $this->nofitication_amount; }
+	function setNofitication_amount($notification_amount) { $this->notification_amount = $notification_amount; }
+	function getNofitication_amount() { return $this->notification_amount; }
 	function setPurchasing_price($purchasing_price) { $this->purchasing_price = $purchasing_price; }
 	function getPurchasing_price() { return $this->purchasing_price; }
 	function setSelling_price($selling_price) { $this->selling_price = $selling_price; }
@@ -71,9 +71,17 @@ class Product extends AppParent{
     }
 
 	function getAllProduct(){
-        $this->db->db->where('company_id', $_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        $product = $this->db->db->get("product");
-        
+        //$this->db->db->where('company_id', $_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        //$product = $this->db->db->get("product");
+        $query = "SELECT `product`.`product_id`,`product`.`company_id`,`product`.`product_category_id`,`product`.`product_name`,
+		`product`.`uom_id`,`product`.`code`,`product`.`barcode`,`product`.`img_url`,`product`.`is_inventory_tracking`,`product`.`initial_stock_amount`,
+		`product`.`is_notifying`,`product`.`notification_amount`,`product`.`purchasing_price`,`product`.`selling_price`,`product`.`tax_id`, 
+		SUM(`product_warehouse`.`quantity_in_stock`) as product_in_quantity from `product`, `product_warehouse` 
+		WHERE `product`.`product_id`=`product_warehouse`.`product_id` 
+		GROUP BY `product`.`product_id`";
+
+		$product = $this->db->db->rawQuery ($query);
+		
         if(!$product){
             $response['data']=  "" ;
             $response['success']  =false;
@@ -104,7 +112,7 @@ class Product extends AppParent{
 		$this->setCode($data["code"]);
 		$this->setBarcode($data["barcode"]);
 		$this->setImg_url("");
-		$this->setis_inventroy_tracking(intval($data["is_inventory_tracking"]));
+		$this->setis_inventory_tracking(intval($data["is_inventory_tracking"]));
 		$this->setInital_stock_amount(floatval( $data["initial_stock_amount"]));
 		$this->setIs_notifying(intval($data["is_notifying"]));
 		$this->setNofitication_amount( floatval($data["notification_amount"]));
@@ -121,10 +129,10 @@ class Product extends AppParent{
 			"code"					=>	$this->getCode(),
 			"barcode"				=>	$this->getBarcode(),
 			"img_url"				=>	$this->getImg_url(),
-			"is_inventroy_tracking"	=>	$this->getis_inventroy_tracking(),
+			"is_inventory_tracking"	=>	$this->getis_inventory_tracking(),
 			"initial_stock_amount"	=>	$this->getInital_stock_amount(),
 			"is_notifying"			=>	$this->getIs_notifying(),
-			"nofitication_amount"	=>	$this->getNofitication_amount(),
+			"notification_amount"	=>	$this->getNofitication_amount(),
 			"purchasing_price"		=>	$this->getPurchasing_price(),
 			"selling_price"			=>	$this->getSelling_price(),
 			"tax_id"				=>	$this->getTax_id()
@@ -175,6 +183,100 @@ class Product extends AppParent{
         }
 		
 		//s($_POST["product"],$data,intval($data["product_category_id"]));die;
+	}
+
+	function getProductById(){
+		$this->db->db->where('product_id',$_POST["product_id"]);
+        $product = $this->db->db->get("product");
+
+        if(!$product){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+           
+            $response['data']=  $product ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+	} 
+	function updateProduct(){
+        $post = json_decode($_POST["product"],true);
+		//s($post);die;
+        $data = array(
+			'product_category_id' => intval($post["product_category_id"]),// string (1) "8"
+			'product_name' => $post["product_name"],//string (6) "deneme"
+			'uom_id' => intval($post["uom_id"]),//integer 5
+			'code' => $post["code"],//string (3) "559"
+			'barcode' => $post["barcode"],//string (11) "asdsdfsd564"
+			'img_url' => "",//string (0) ""
+			'is_inventory_tracking' => intval($post["is_inventory_tracking"]),//integer 1
+			'initial_stock_amount' => floatval($post["initial_stock_amount"]),//string (3) "666"
+			'is_notifying' => intval($post["is_notifying"]),//integer 1
+			'notification_amount' => floatval($post["notification_amount"]),//string (3) "555"
+			'purchasing_price' => floatval($post["purchasing_price"]),//integer 77
+			'selling_price' => floatval($post["selling_price"]),//double 79.4178
+			'tax_id' => intval($post["tax_id"])//
+		);
+        
+        $this->db->db->where ('product_id', $post["product_id"]);
+        $update =  $this->db->db->update ('product', $data); 
+
+        if(!$update){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+
+			$this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+			$warehouse = $this->db->db->get("warehouse",1);
+
+			$data = array (
+				"warehouse_id" 		=> $warehouse[0]["warehouse_id"],
+				"product_id" 		=> $post["product_id"],
+				"quantity_in_stock" => floatval($post["initial_stock_amount"])
+			);
+			$this->db->db->where ('product_id', $post["product_id"]);
+			$warehousePrdct =  $this->db->db->update ('product_warehouse', $data);
+            $response['data']=  $update ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+    }
+	function deleteProduct(){
+		//s($_POST);die;
+        $this->db->db->where('product_id', intval($_POST["product_id"]));
+        $delete = $this->db->db->delete('product') ;
+        if($delete){
+            $response['data']=  $delete ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }else{
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }
 	}
 }
 		
