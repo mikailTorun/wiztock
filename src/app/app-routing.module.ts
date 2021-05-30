@@ -13,6 +13,7 @@ import {WarehousesComponent} from "./modules/warehouses/warehouses.component";
 import {ProductsComponent} from "./modules/products/products.component";
 import {ShipmentsComponent} from "./modules/shipments/shipments.component";
 import {CategoriesComponent} from "./modules/categories/categories.component";
+import {RegisterComponent} from "./modules/register/register.component";
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
     ], canActivate: [AuthGuard]
   },
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
   {path: "**", redirectTo: ''}
 ];
 

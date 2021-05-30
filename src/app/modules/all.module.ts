@@ -18,6 +18,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import {DatepickerDirective} from "../directives/datepicker.directive";
 import {DatatableDirective} from "../directives/datatable.directive";
 import {NgxMaskModule} from "ngx-mask";
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {NgxMaskModule} from "ngx-mask";
     TaxesComponent,
     CategoriesComponent,
     DatepickerDirective,
-    DatatableDirective
+    DatatableDirective,
+    RegisterComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,57 @@
+<div class="hold-transition register-page">
+  <div class="register-box">
+    <div class="register-logo">
+      <a href="../../index2.html"><b>Wiz</b>Tock</a>
+    </div>
+
+    <div class="card">
+      <div class="card-body register-card-body">
+        <p class="login-box-msg">Register a new membership</p>
+        <div class="input-group mb-3">
+          <input [(ngModel)]="company.title" type="text" class="form-control" placeholder="Company Name">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-building"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input [(ngModel)]="employee.name_surname" type="text" class="form-control" placeholder="Full name">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input [(ngModel)]="employee.email"  type="email" class="form-control" placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input [(ngModel)]="employee.password" type="password" class="form-control" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="button" class="btn btn-primary btn-block" (click)="registerButtonHandler()">Register</button>
+          </div>
+          <!-- /.col -->
+        </div>
+        <a routerLink="/login" class="text-center">I already have a membership</a>
+      </div>
+      <!-- /.form-box -->
+    </div><!-- /.card -->
+  </div>
+  <!-- /.register-box -->
+</div>

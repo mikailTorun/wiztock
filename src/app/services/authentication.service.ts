@@ -2,46 +2,55 @@ import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {catchError, map, tap} from "rxjs/operators";
-
+import {map, tap} from "rxjs/operators";
 import {environment} from "../../environments/environment";
-import {User} from "../models/user";
+import {Employee} from "../models/employee";
+import {Company} from "../models/company";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private userSubject: BehaviorSubject<User>
-  public user: Observable<User>;
+  private employeeSubject: BehaviorSubject<Employee>;
+  public employee: Observable<Employee>;
   constructor(
     private router: Router,
     private http: HttpClient
   ) {
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(<string>localStorage.getItem('user')));
-    this.user = this.userSubject.asObservable();
+    this.employeeSubject = new BehaviorSubject<Employee>(JSON.parse(<string>sessionStorage.getItem('employee')));
+    this.employee = this.employeeSubject.asObservable();
   }
 
-  public get userValue(): User {
-    return this.userSubject.value;
+  public get userValue(): Employee {
+    return this.employeeSubject.value;
   }
 
-  login(username: string, password: string) {
+  register(company: Company) {
+    let formData: FormData = new FormData();
+    formData.append("company", JSON.stringify(company));
+    formData.append("func", "register");
+    return this.http.post(`${environment.apiUrl}`, formData).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
 
+
+  login(email: string, password: string) {
     let formData: any = new FormData();
-    formData.append("username", username);
+    formData.append("username", email);
     formData.append("password", password);
     formData.append("func", "loginFunction");
     return  this.http.post<any>(`${environment.apiUrl}`, formData).pipe(
       tap( data => {
         if(data["success"]) {
-            let user: User;
-            user = data["admin"][0];
-            user.authData = window.btoa(username + ':' + password);
-            localStorage.setItem('user', JSON.stringify(user));
-            this.userSubject.next(user);
-
-
+            let employee: Employee;
+            employee = data["admin"][0];
+            employee.authData = window.btoa(email + ':' + password);
+            sessionStorage.setItem('employee', JSON.stringify(employee));
+            this.employeeSubject.next(employee);
         } else {
           console.warn("Login işlemi başarısız");
         }
@@ -62,9 +71,10 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('employee');
     // @ts-ignore
-    this.userSubject.next(null);
+    this.employeeSubject.next(null);
     this.router.navigate(['/login']);
+
   }
 }
