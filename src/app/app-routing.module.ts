@@ -14,6 +14,7 @@ import {ProductsComponent} from "./modules/products/products.component";
 import {ShipmentsComponent} from "./modules/shipments/shipments.component";
 import {CategoriesComponent} from "./modules/categories/categories.component";
 import {RegisterComponent} from "./modules/register/register.component";
+import {SuppliersComponent} from "./modules/suppliers/suppliers.component";
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
       {path: 'categories', component: CategoriesComponent},
       {path: 'warehouses', component: WarehousesComponent},
       {path: 'products', component: ProductsComponent},
-      {path: 'shipments', component:ShipmentsComponent}
+      {path: 'shipments', component:ShipmentsComponent},
+      {path: 'suppliers', component:SuppliersComponent},
 
     ], canActivate: [AuthGuard]
   },

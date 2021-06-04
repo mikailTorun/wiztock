@@ -62,7 +62,7 @@ export class CustomerCreateComponent implements OnInit {
       individual_name_surname: this.individual_name_surname,
       individual_ssn: this.individual_ssn
     }
-    this.customerService.addCustomer(customer);
+    this.customerService.addCustomer_(customer);
   }
 
   getCustomer() {
@@ -108,7 +108,7 @@ export class CustomerCreateComponent implements OnInit {
       individual_name_surname: this.individual_name_surname,
       individual_ssn: this.individual_ssn
     }
-    this.customerService.updateCustomer(customer);
+    this.customerService.updateCustomer_(customer);
   }
 
 }

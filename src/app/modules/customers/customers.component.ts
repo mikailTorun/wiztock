@@ -27,6 +27,7 @@ export class CustomersComponent implements OnInit {
   }
 
   openCreateCustomer(): any {
+    this.router.navigate(['/customers/create']);
     console.log(this.customerService.customers);
   }
 

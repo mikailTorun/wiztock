@@ -6,9 +6,9 @@ export class Customer {
   town: string;
   city: string;
   postal_code: string;
-  is_corporate: boolean;
-  is_customer: boolean;
-  is_supplier: boolean;
+  is_corporate: number;
+  is_customer: number;
+  is_supplier: number;
   title: string;
   short_name: string;
   tax_office: string;
@@ -24,9 +24,9 @@ export class Customer {
     this.town="";
     this.city="";
     this.postal_code="";
-    this.is_corporate=false;
-    this.is_customer=false;
-    this.is_supplier=false;
+    this.is_corporate=0;
+    this.is_customer=0;
+    this.is_supplier=0;
     this.title = "";
     this.short_name = "";
     this.tax_office = "";

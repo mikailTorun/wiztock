@@ -170,7 +170,6 @@ export class ShipmentsComponent implements OnInit {
         this.clearShipmentItemField();
       }
     });
-
   }
 
   deleteShipment(shipment: Shipment) {
