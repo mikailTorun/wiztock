@@ -1,1 +1,110 @@
-<p>company works!</p>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/">DashBoard</a></li>
+          <li class="breadcrumb-item"><a routerLink="/customers">Compnay</a></li>
+          <li class="breadcrumb-item active">Company Information</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="m-auto col-8">
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Company Information</h3>
+            <div class="card-tools">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">COMPANY TITLE</div>
+                <input [(ngModel)]="company.title" type="text" class="form-control form-control-sm" id="company_name"
+                       placeholder="">
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">COMPANY SHORT NAME</div>
+                <input [(ngModel)]="company.short_name" type="text" class="form-control form-control-sm" id="short_name"
+                       placeholder="">
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX OFFICE</div>
+                <input [(ngModel)]="company.tax_office" type="text" class="form-control form-control-sm" id="tax_office"
+                       placeholder="">
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX NUMBER</div>
+                <input [(ngModel)]="company.tax_number" type="text" class="form-control form-control-sm" id="tax_number"
+                       placeholder="">
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">EMAIL</div>
+                <input [(ngModel)]="company.email" type="text" class="form-control form-control-sm" id="email"
+                       placeholder="">
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">PHONE</div>
+                <input [(ngModel)]="company.phone" type="text" class="form-control form-control-sm" id="phone"
+                       placeholder="">
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <div class="text-xs font-weight-bold  text-uppercase mb-1">ADDRESS</div>
+                <textarea
+                  [(ngModel)]="company.address"
+                  class="form-control form-control-sm" rows="8" cols="35"
+                  style="margin-top: 0; margin-bottom: 0; height: 150px;"></textarea>
+                <div class="text-xs text-danger font-weight-bold mb-1"></div>
+              </div>
+              <div class="col-md-6 mb-2">
+
+                  <div class="text-xs font-weight-bold  text-uppercase mb-1">POSTAL CODE</div>
+                  <input [(ngModel)]="company.postal_code" type="text" class="form-control form-control-sm" id="postal_code"
+                         placeholder="">
+                  <div class="text-xs text-danger font-weight-bold mb-1"></div>
+
+
+              </div>
+            </div>
+
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn btn-danger">Close</button>
+            <button type="button" (click)="updateCompany()" class="btn btn-success float-right">Update</button>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+

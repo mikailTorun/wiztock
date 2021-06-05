@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Category} from "../models/category";
-import {map} from 'rxjs/operators';
-declare var $:any
+import {map} from "rxjs/operators";
+import {Employee} from "../models/employee";
+
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
-  categories!: Category[];
+export class EmployeesService {
+  employees!: Employee[];
   constructor(
     private http:HttpClient
   ) { }
 
-  addCategory(category:Category) {
+  addEmployee(employee:Employee) {
     let formData = new FormData();
-    formData.append('category', JSON.stringify(category));
-    formData.append('func', "addCategory");
+    formData.append('employee', JSON.stringify(employee));
+    formData.append('func', "addEmployee");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map((res: any)=> {
         return res;
       }));
   }
 
-  updateCategory(category: Category) {
+  updateEmployee(employee: Employee) {
     let formData = new FormData();
-    formData.append('category', JSON.stringify(category));
-    formData.append('func', "updateCategory");
+    formData.append('employee', JSON.stringify(employee));
+    formData.append('func', "updateEmployee");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map((res: any)=> {
         return res;
@@ -34,29 +34,29 @@ export class CategoryService {
 
   }
 
-  getAllCategories() {
+  getAllEmployee() {
     let formData: any = new FormData();
-    formData.append("func", "getAllCategories");
+    formData.append("func", "getAllEmployee");
     this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
-        this.categories = res["data"];
+        this.employees = res["data"] ? res["data"] : [] ;
       });
   }
 
-  getCategoryById(category_id: number) {
+  getEmployeeById(employee_id: number) {
     let formData: any = new FormData();
-    formData.append("product_category_id", category_id);
-    formData.append("func", "getCategoryById");
+    formData.append("product_employee_id", employee_id);
+    formData.append("func", "getEmployeeById");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
         return res["data"][0];
       }));
   }
 
-  deleteCategory(category_id: number) {
+  deleteEmployee(employee_id: number) {
     let formData: any = new FormData();
-    formData.append("product_category_id", category_id);
-    formData.append("func", "deleteCategory");
+    formData.append("product_employee_id", employee_id);
+    formData.append("func", "deleteEmployee");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
         return res;

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Company} from "../../models/company";
+import {CompanyService} from "../../services/company.service";
 
 @Component({
   selector: 'app-company',
@@ -6,10 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./company.component.scss']
 })
 export class CompanyComponent implements OnInit {
-
-  constructor() { }
+  company!: Company;
+  constructor(
+    public companyService: CompanyService,
+  ) { }
 
   ngOnInit(): void {
+    this.getCompany();
   }
 
+  updateCompany() {
+    this.companyService.updateCompany(this.company).subscribe( (res: any) => {
+
+    });
+  }
+
+  getCompany() {
+    this.companyService.getCompany().subscribe((res:Company) => {
+      this.company = res ? res : new Company();
+    });
+  }
 }

@@ -78,7 +78,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   updateCategory() {
-    return this.categoryService.updateCategories(this.category).subscribe((res: any) => {
+    return this.categoryService.updateCategory(this.category).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.successToast("The category " + this.category.title + " was updated");
         this.getCategoriesList();

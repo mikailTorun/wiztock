@@ -1,1 +1,147 @@
-<p>employees works!</p>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/">Dashboard</a></li>
+          <li class="breadcrumb-item active">Employees</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="m-auto col-8">
+        <!-- Default box -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Employees</h3>
+            <div class="card-tools">
+              <button
+                type="button"
+                class="btn btn-sm btn-block btn-success btn-flat"
+                (click)="newEmployeeButtonHandler()">
+                Add New Category
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="row" *ngIf="employeeService.employees">
+              <table class="table table-striped table-bordered table-hover text-xs">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Edit / Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let employee of employeeService.employees; let i = index">
+                  <td>{{i + 1}}</td>
+                  <td> {{employee.name_surname}}</td>
+                  <td>{{employee.email}}</td>
+                  <td style="width: 1px; white-space: nowrap;">
+                    <button (click)="editEmployeeButtonHandler(employee)"
+                            type="button"
+                            class="btn btn-sm btn-success mr-2"><i
+                      class="fas fa-edit"></i></button>
+                    <button (click)="deleteEmployeeButtonHandler(employee)"
+                            type="button"
+                            class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="callout callout-warning" *ngIf="!employeeService.employees">
+              <h5>Info</h5>
+
+              <p>There is no employee to list.</p>
+            </div>
+          </div>
+          <div class="card-footer">
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+
+
+
+<div class="modal fade" id="employeeForm" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{employee.employee_id ? "Edit Employee" : "Add New Employee"}}</h4>
+        <button type="button" class="close" (click)="closeEmployeeButtonHandler()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-6 m-auto">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">FULL NAME</div>
+            <input [(ngModel)]="employee.name_surname" type="text"
+                   class="form-control form-control-sm"
+                   id="full_name"
+                   placeholder="">
+            <div
+              class="text-xs text-danger font-weight-bold  mb-1"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 m-auto">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">EMAIL</div>
+            <input [(ngModel)]="employee.email" type="email"
+                   class="form-control form-control-sm"
+                   id="email"
+                   placeholder="">
+            <div
+              class="text-xs text-danger font-weight-bold  mb-1"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 m-auto">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">PASSWORD</div>
+            <input [(ngModel)]="employee.password" type="text"
+                   class="form-control form-control-sm"
+                   id="password"
+                   placeholder="">
+            <div
+              class="text-xs text-danger font-weight-bold  mb-1"></div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="closeEmployeeButtonHandler()">Close</button>
+        <button type="button" class="btn btn-primary"
+                (click)="saveButtonHandler()">{{ employee.employee_id ? "Update" : "Save" }}
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

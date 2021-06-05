@@ -28,8 +28,12 @@ export class RegisterComponent implements OnInit {
   }
 
   registerButtonHandler() {
-    this.company.employees.push(this.employee);
-    this.register();
+    if(!this.company.employees.length) {
+      this.company.employees.push(this.employee);
+      this.register();
+    }
+
+
   }
 
   register(){

@@ -5,7 +5,6 @@ import {DefaultComponent} from "./layouts/default/default.component";
 import {CustomersComponent} from "./modules/customers/customers.component";
 import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 import {AuthGuard} from "./helpers/auth.guard";
-import {CustomerCreateComponent} from "./modules/customers/customer-create/customer-create.component";
 import {CustomerPreviewComponent} from "./modules/customers/customer-preview/customer-preview.component";
 import {UnitsComponent} from "./modules/units/units.component";
 import {TaxesComponent} from "./modules/taxes/taxes.component";
@@ -24,8 +23,6 @@ const routes: Routes = [
     children: [
       {path: '', component: DashboardComponent},
       {path: 'customers', component: CustomersComponent},
-      {path: 'customers/create', component: CustomerCreateComponent},
-      {path: 'customers/edit/:id', component: CustomerCreateComponent},
       {path: 'customers/:id', component: CustomerPreviewComponent},
       {path: 'units', component: UnitsComponent},
       {path: 'taxes', component: TaxesComponent},

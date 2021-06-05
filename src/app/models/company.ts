@@ -6,7 +6,7 @@ export class Company {
   short_name: string;
   phone: string;
   email: string;
-  addres: string;
+  address: string;
   postal_code: string;
   tax_office: string;
   tax_number: string;
@@ -18,7 +18,7 @@ export class Company {
     this.short_name = "";
     this.phone = "";
     this.email = "";
-    this.addres = "";
+    this.address = "";
     this.postal_code = "";
     this.tax_office = "";
     this.tax_number = "";

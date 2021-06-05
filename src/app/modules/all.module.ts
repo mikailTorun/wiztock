@@ -5,7 +5,6 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 import {LoginComponent} from "./login/login.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PhonePipe} from "../helpers/phone.pipe";
-import { CustomerCreateComponent } from './customers/customer-create/customer-create.component';
 import {RouterModule} from "@angular/router";
 import {CustomerPreviewComponent} from "./customers/customer-preview/customer-preview.component";
 import { SuppliersComponent } from './suppliers/suppliers.component';
@@ -27,7 +26,6 @@ import {EmployeesComponent} from "./employees/employees.component";
     DashboardComponent,
     LoginComponent,
     PhonePipe,
-    CustomerCreateComponent,
     CustomerPreviewComponent,
     SuppliersComponent,
     ProductsComponent,
@@ -52,6 +50,7 @@ import {EmployeesComponent} from "./employees/employees.component";
     CustomersComponent,
     DashboardComponent,
     LoginComponent,
+
     PhonePipe,
     CustomerPreviewComponent,
     DatepickerDirective,
