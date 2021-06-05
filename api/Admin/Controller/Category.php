@@ -9,10 +9,10 @@ require_once 'AppParent.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Category extends AppParent{
-    private $db="";
+class Category extends DatabaseFunc{
+   
     public function __construct() {
-        $this->db = new DatabaseFunc();
+        parent::__construct();
     }
     
 
@@ -25,13 +25,13 @@ class Category extends AppParent{
         );
         
 
-        $id =  $this->db->db->insert ('product_category', $data);
+        $id =  $this->db->insert ('product_category', $data);
         
         if(!$id){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -46,14 +46,14 @@ class Category extends AppParent{
         }
 	}
     function getAllCategories(){
-        $this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        $category = $this->db->db->get("product_category");
+        $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $category = $this->db->get("product_category");
 
         if(!$category){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -70,14 +70,14 @@ class Category extends AppParent{
     function getCategoryById(){
         
         
-        $this->db->db->where('product_category_id',$_POST["product_category_id"]);
-        $category = $this->db->db->get("product_category");
+        $this->db->where('product_category_id',$_POST["product_category_id"]);
+        $category = $this->db->get("product_category");
 
         if(!$category){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -98,13 +98,13 @@ class Category extends AppParent{
             "title" => $post["title"],
             "description" => $post["description"]
         );
-        $this->db->db->where ('product_category_id', $post["product_category_id"]);
-        $update =  $this->db->db->update ('product_category', $data); 
+        $this->db->where ('product_category_id', $post["product_category_id"]);
+        $update =  $this->db->update ('product_category', $data); 
         if(!$update){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['warnMsg']  =$this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -120,8 +120,8 @@ class Category extends AppParent{
     }
     function deleteCategory(){
         
-        $this->db->db->where('product_category_id', intval($_POST["product_category_id"]));
-        $delete = $this->db->db->delete('product_category') ;
+        $this->db->where('product_category_id', intval($_POST["product_category_id"]));
+        $delete = $this->db->delete('product_category') ;
         if($delete){
             $response['data']=  $delete ;
             $response['success']  =true;
@@ -133,7 +133,7 @@ class Category extends AppParent{
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['warnMsg']  =$this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 

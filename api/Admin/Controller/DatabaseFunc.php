@@ -10,7 +10,6 @@ namespace Admin\Controller;
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
 require_once 'AppParent.php';
-require_once 'Employee.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
@@ -23,6 +22,8 @@ class DatabaseFunc extends AppParent{
 
     public function __construct ()
     {
+        parent::__construct();
+        
         $servername = "localhost";
         $database   = "wiztock";
         $username   = "root";
@@ -40,12 +41,10 @@ class DatabaseFunc extends AppParent{
     }
 
     function login(){
-        $parent = new AppParent();
-        //s("geldık",$_POST);die;
         $this->db->where('email',$_POST['username']);
         $this->db->where('password',$_POST['password']);
         $checkAdmin = $this->db->get("employee");
-        //s($checkAdmin,$_POST);die;
+        
         if(count($checkAdmin) ==0 ){
             $response['data']=  "";
             $response['success']  =false;

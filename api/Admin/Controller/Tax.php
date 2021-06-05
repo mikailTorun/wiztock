@@ -9,10 +9,10 @@ require_once 'AppParent.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Tax extends AppParent{
-    private $db="";
+class Tax extends DatabaseFunc{
+    //private $db="";
     public function __construct() {
-        $this->db = new DatabaseFunc();
+        parent::__construct();
     }
     
 
@@ -23,13 +23,13 @@ class Tax extends AppParent{
             "rate" => floatval( $post["rate"]),
             "description" => $post["description"]
         );
-        $id =  $this->db->db->insert ('tax', $data);
+        $id =  $this->db->insert ('tax', $data);
        
         if(!$id){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -45,14 +45,14 @@ class Tax extends AppParent{
 	}
     function getAllTax(){
         
-        $this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        $tax = $this->db->db->get("tax");
+        $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $tax = $this->db->get("tax");
         
         if(!$tax){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -69,14 +69,14 @@ class Tax extends AppParent{
     function getTaxById(){
         
        
-        $this->db->db->where('tax_id',$_POST["tax_id"]);
-        $tax = $this->db->db->get("tax");
+        $this->db->where('tax_id',$_POST["tax_id"]);
+        $tax = $this->db->get("tax");
 
         if(!$tax){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -99,14 +99,14 @@ class Tax extends AppParent{
             "description" => $post["description"]
         );
         
-        $this->db->db->where ('tax_id', $post["tax_id"]);
-        $update =  $this->db->db->update ('tax', $data); 
+        $this->db->where ('tax_id', $post["tax_id"]);
+        $update =  $this->db->update ('tax', $data); 
 
         if(!$update){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['warnMsg']  =$this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -122,8 +122,8 @@ class Tax extends AppParent{
     }
     function deleteTax(){
        
-        $this->db->db->where('tax_id', intval($_POST["tax_id"]));
-        $delete = $this->db->db->delete('tax') ;
+        $this->db->where('tax_id', intval($_POST["tax_id"]));
+        $delete = $this->db->delete('tax') ;
         if($delete){
             $response['data']=  $delete ;
             $response['success']  =true;
@@ -135,7 +135,7 @@ class Tax extends AppParent{
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['warnMsg']  =$this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 

@@ -13,8 +13,11 @@ require_once 'Customer.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
-class Corporate extends AppParent{
+class Corporate extends DatabaseFunc{
 
+    public function __construct(){
+        parent::__construct();
+    }
     private $corporate_id;
     private $title;
     private $short_name;
@@ -33,7 +36,6 @@ class Corporate extends AppParent{
     function getTax_number() { return $this->tax_number; }
 
     function insertCorporate(){
-        $db = new DatabaseFunc();
 
         $data = Array(
             "corporate_id"  => $this->getCorporate_id(),
@@ -42,17 +44,39 @@ class Corporate extends AppParent{
             "tax_office"	=> $this->getTax_office(),
             "tax_number"    => $this->getTax_number()
         );
-        $id = $db->db->insert("corporate",$data);
+        $id = $this->db->insert("corporate",$data);
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   = $db->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return $parent->dumpResponse(($response)); 
+            $response['data']       =  "" ;
+            $response['success']    = false;
+            $response['errMsg']     = $this->db->getLastError();
+            $response['warnMsg']    = null;
+            $response['errCode']    = 0;
+            return $response ; 
         }else{
             return $id;
         }
+    }
+    function updateCorporate(){
+        $data= Array(
+            //"corporate_id"  => $this->getCorporate_id(),
+        	"title"	        => $this->getTitle(),
+            "short_name"	=> $this->getShort_name(),
+            "tax_office"	=> $this->getTax_office(),
+            "tax_number"    => $this->getTax_number()
+        );
+        
+        $this->db->where ('corporate_id', $this->getCorporate_id());
+        $id = $this->db->update("corporate", $data);
+        if(!$id){
+            $response['data']       =  "" ;
+            $response['success']    =false;
+            $response['errMsg']     = $this->db->getLastError();
+            $response['warnMsg']    =null;
+            $response['errCode']    =0;
+            return $response ; 
+        }else{
+            return $id;
+        } 
     }
 
 

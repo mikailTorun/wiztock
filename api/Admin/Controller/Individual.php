@@ -13,7 +13,11 @@ require_once 'Customer.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
-class Individual extends AppParent{
+class Individual extends DatabaseFunc{
+
+    public function __construct() {
+        parent::__construct();
+    }
 
     private $individualID;
     private $nameSurname;
@@ -28,26 +32,46 @@ class Individual extends AppParent{
     
 
     function insertIndividualRecord(){
-        $db = new DatabaseFunc();
+      
         $data= Array(
             "individual_id"=>$this->getIndividualID(),
             "name_surname"=>$this->getNameSurname(),
             "ssn" => $this->getSsn()
         );
-        //s($data);die;
+        
 
-        $id = $db->db->insert("individual", $data);
+        $id = $this->db->insert("individual", $data);
         if(!$id){
             $response['data']=  "" ;
             $response['success']  =false;
-            $response['errMsg']   = $db->db->getLastError();
+            $response['errMsg']   = $this->db->getLastError();
             $response['warnMsg']  =null;
             $response['errCode']  =0;
-            return $parent->dumpResponse(($response)); 
+            return $response ; 
         }else{
             return $id;
         }
         
+    }
+    function updateIndividualRecord(){
+        $data= Array(
+            //"individual_id"=>$this->getIndividualID(),
+            "name_surname"=>$this->getNameSurname(),
+            "ssn" => $this->getSsn()
+        );
+        
+        $this->db->where ('individual_id', $this->getIndividualID());
+        $id = $this->db->update("individual", $data);
+        if(!$id){
+            $response['data']       =  "" ;
+            $response['success']    =false;
+            $response['errMsg']     = $this->db->getLastError();
+            $response['warnMsg']    =null;
+            $response['errCode']    =0;
+            return $response ; 
+        }else{
+            return $id;
+        } 
     }
 
 }

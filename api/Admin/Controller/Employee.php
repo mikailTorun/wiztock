@@ -1,14 +1,13 @@
 <?php
 
 namespace Admin\Controller;
+
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
 require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
-//use Exception;
-//use ArrayObject;
-//session_start();
-class Employee{
+
+class Employee extends DatabaseFunc {
+
     private $employeeId;
     private $companyId;
     private $nameSurname;
@@ -32,31 +31,37 @@ class Employee{
 
 
     public function __construct() {
-        
+        parent::__construct();
     }
-    function dumpResponse ($response) {
-        ob_clean();
-        echo json_encode($response);
-        return true;
-    }
+
     function insertEmployeeFromCustomer(){
         
-        $db = new DatabaseFunc();
-        $object = new \stdClass();
-        
-        $object->company_id = $this->getCompanyId();
-        $object->name_surname = $this->getNameSurname();
-        $object->email = $this->getEmail();
-        $object->password = $this->getPassword();
-        $object->is_main_user = $this->getIsMainUser();
-        $myArray[] = $object;
-//        s($myArray[0],$this->getEmail(),json_decode(json_encode($myArray[0]), true));die;
-        $empid = $db->db->insert ('employee', json_decode(json_encode($myArray[0]), true));
-        return $empid; 
+
+        $data = array(
+            "company_id"   => $this->getCompanyId(),
+            "name_surname" => $this->getNameSurname(),
+            "email"        => $this->getEmail(),
+            "password"     => $this->getPassword(),
+            "is_main_user" => $this->getIsMainUser()
+        );
+
+        $empid = $this->db->insert ('employee', $data);
+
+        if(!$empid){
+            $response['data']=  "" ;
+            $response['success']  = false;
+            $response['errMsg']   = $this->db->getLastError();
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return $response;
+        }else{
+            $response['data']     = $empid ;
+            $response['success']  = true;
+            $response['errMsg']   = $this->db->getLastError();
+            $response['warnMsg']  = null;
+            $response['errCode']  = 0;
+            return $response;
+        }
     }
 }
 
-//if (isset($_POST['funcInsertCompany'])) {
-//    $ajaxTalep = new DatabaseFunc(); 
-//    return $ajaxTalep->test();
-//}

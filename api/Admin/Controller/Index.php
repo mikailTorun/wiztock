@@ -37,8 +37,14 @@ $Category   = new Category();
 $Unit       = new Unit();
 $tax        = new Tax();
 $warehouse  = new Warehouse();
-$shipment  = new Shipment();
+$shipment   = new Shipment();
+$company   = new Company();
 
+
+
+if (strcmp($_POST["func"] , "register") == 0) {
+    AppPArent::dumpResponse( $company->addCompany());
+}
 if (strcmp($_POST["func"] , "getAllShipmentType") == 0) {
     AppPArent::dumpResponse( $shipment->getAllShipmentType());
 }
@@ -56,6 +62,15 @@ if (strcmp($_POST["func"] , "getAllCustomer") == 0) {
 }
 if (strcmp($_POST["func"] , "getCustomer") == 0) {
     AppPArent::dumpResponse( $Customer->getCustomer());
+}
+if (strcmp($_POST["func"] , "addCustomer") == 0) {
+    AppPArent::dumpResponse( $Customer->addCustomer());
+}
+if (strcmp($_POST["func"] , "getAllSupplier") == 0) {
+    AppPArent::dumpResponse( $Customer->getAllSupplier());
+}
+if (strcmp($_POST["func"] , "updateCustomer") == 0) {
+    AppPArent::dumpResponse( $Customer->updateCustomer());
 }
 
 if (strcmp($_POST["func"] , "addProduct") == 0) {

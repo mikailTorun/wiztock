@@ -13,7 +13,8 @@ require_once 'Individual.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Customer extends AppParent{
+class Customer extends DatabaseFunc{
+   
 
     private $customer_id;
     private $company_id;
@@ -54,22 +55,22 @@ class Customer extends AppParent{
 
 
     public function __construct() {
-        
+        parent::__construct();
     }
     function getAllCustomer(){
-        $db = new DatabaseFunc();
+        //$db = new DatabaseFunc();
 
         $q1 = " SELECT * FROM customer c, corporate cp
                 WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_customer=1 ";
-        $result1 = $db->db->rawQuery ($q1);
+        $result1 = $this->db->rawQuery ($q1);
 
 
         $q2 = "SELECT * FROM customer c, individual i
                 WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1";
-        $result2 = $db->db->rawQuery ($q2);
+        $result2 = $this->db->rawQuery ($q2);
 
         
-        if($result1 && $result2){
+        if($result1 || $result2){
             $response['data']=  array_merge($result1,$result2);
             $response['success']  = true;
             $response['errMsg']   = "";
@@ -81,7 +82,39 @@ class Customer extends AppParent{
             
             $response['data']=  "" ;
             $response['success']  = false;
-            $response['errMsg']   = $db->db->getLastError();
+            $response['errMsg']   = $this->db->getLastError();
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+
+            return $response;
+        }
+    }
+    function getAllSupplier(){
+        //$db = new DatabaseFunc();
+
+        $q1 = " SELECT * FROM customer c, corporate cp
+                WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_supplier=1 ";
+        $result1 = $this->db->rawQuery ($q1);
+
+
+        $q2 = "SELECT * FROM customer c, individual i
+                WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_supplier=1";
+        $result2 = $this->db->rawQuery ($q2);
+
+        
+        if($result1 || $result2){
+            $response['data']=  array_merge($result1,$result2);
+            $response['success']  = true;
+            $response['errMsg']   = "";
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+
+            return $response;
+        }else{
+            
+            $response['data']=  "" ;
+            $response['success']  = false;
+            $response['errMsg']   = $this->db->getLastError();
             $response['warnMsg']  =null;
             $response['errCode']  =0;
 
@@ -111,7 +144,7 @@ class Customer extends AppParent{
             )";
         }
 
-        $results = $db->db->rawQuery ($q,$params);
+        $results = $this->db->rawQuery ($q,$params);
 
         if($results){
             $response['data']=  $results ;
@@ -125,7 +158,7 @@ class Customer extends AppParent{
             
             $response['data']=  $results ;
             $response['success']  = false;
-            $response['errMsg']   = $db->db->getLastError();
+            $response['errMsg']   = $this->db->getLastError();
             $response['warnMsg']  =null;
             $response['errCode']  =0;
 
@@ -133,7 +166,7 @@ class Customer extends AppParent{
         }
     }
     function getCustomerList(){
-        $db = new DatabaseFunc();
+        //$db = new DatabaseFunc();
 
         // will handle any SQL query
         $params = Array(10, 1, 10, 11, 2, 10);
@@ -147,7 +180,7 @@ class Customer extends AppParent{
                 WHERE 
                     c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1
         )";
-        $results = $db->db->rawQuery ($q);
+        $results = $this->db->rawQuery ($q);
        // s ($results);die; // contains Array of returned rows
         if($results){
             $response['data']=  $results ;
@@ -161,7 +194,7 @@ class Customer extends AppParent{
             
             $response['data']=  $results ;
             $response['success']  = false;
-            $response['errMsg']   = $db->db->getLastError();
+            $response['errMsg']   = $this->db->getLastError();
             $response['warnMsg']  =null;
             $response['errCode']  =0;
 
@@ -169,22 +202,20 @@ class Customer extends AppParent{
         }
 
     }
-    function insertCustomer(){
+    function addCustomer(){
 
-        $db = new DatabaseFunc();
+        $post = json_decode($_POST["customer"],true);
 
-        //$this->setCustomer_id = 0; // insert edildikten sonra girilecek
         $this->setCompany_id ($_SESSION["Admin_Company"]["company"][0]["company_id"]);
-       // s($this->getCompany_id());die;
-        $this->setEmail ( $_POST["customer_email"]);
-        $this->setPhone ( $_POST["customer_phone"]);
-        $this->setAdress ( $_POST["customer_address"]);
-        $this->setTown ( $_POST["customer_town"]);
-        $this->setCity ( $_POST["customer_city"]);
-        $this->setPostal_code ( $_POST["customer_postal_code"]);
-        $this->setIs_corporate ( intval($_POST["customer_is_corporate"]));
-        $this->setIs_customer ( intval($_POST["customer_is_customer"]));
-        $this->setIs_supplier ( intval($_POST["customer_is_supplier"]));
+        $this->setEmail ( $post["email"]);
+        $this->setPhone ( $post["phone"]);
+        $this->setAdress ( $post["address"]);
+        $this->setTown ( $post["town"]);
+        $this->setCity ( $post["city"]);
+        $this->setPostal_code ( $post["postal_code"]);
+        $this->setIs_corporate ( intval($post["is_corporate"]));
+        $this->setIs_customer ( intval($post["is_customer"]));
+        $this->setIs_supplier ( intval($post["is_supplier"]));
         
         $data = Array(
             "company_id" =>  $this->getCompany_id(),
@@ -199,51 +230,44 @@ class Customer extends AppParent{
             "is_supplier" => $this->getIs_supplier()
         );
 
-        //s($data, $_POST, $this->getIs_corporate() );die;
+        $customer = $this->db->insert ('Customer', $data);
 
-        $customer = $db->db->insert ('Customer', $data);
-
-        //s($customer,$db->db->getLastError(),$this);die;
-        //$customer=true;
         if(!$customer){
             $response['data']=  "" ;
             $response['success']  = false;
-            $response['errMsg']   = $db->db->getLastError();
+            $response['errMsg']   = $this->db->getLastError();
             $response['warnMsg']  =null;
             $response['errCode']  =0;
-
             return $response;
         }else{
-
             $this->setCustomer_id ($customer);
-
             if ($this->getIs_corporate() == 0) { // bireysel firmaysa
                 $individual = new Individual();
                 $individual->setIndividualID($this->getCustomer_id());
-                $individual->setNameSurname($_POST["individual_name_surname"]);
-                $individual->setSsn($_POST["individual_ssn"]);
+                $individual->setNameSurname($post["name_surname"]);
+                $individual->setSsn($post["ssn"]);
                 $individualID = $individual->insertIndividualRecord();
                 $data["individualID"] = $individual->getIndividualID();
                 $data["individual_name_surname"] = $individual->getNameSurname();
                 $data["individual_ssn"] = $individual->getSsn();
                 $data["customer_id"] = $this->getCustomer_id();
 
-                $response['data']=  $data ;
-                $response['success']  = true;
-                $response['errMsg']   = null;
-                $response['warnMsg']  =null;
-                $response['errCode']  =0;
+                $response['data']       = $data ;
+                $response['success']    = true;
+                $response['errMsg']     = null;
+                $response['warnMsg']    = null;
+                $response['errCode']    = 0;
     
                 return $response;
-               
+             
             }else{
 				
                 $corporate = new Corporate();
                 $corporate -> setCorporate_id($this->getCustomer_id());
-                $corporate -> setTitle($_POST["corporate_title"]);
-                $corporate -> setShort_name($_POST["corporate_short_name"]);
-                $corporate -> setTax_office($_POST["corporate_tax_office"]);
-                $corporate -> setTax_number($_POST["corporate_tax_number"]);
+                $corporate -> setTitle($post["title"]);
+                $corporate -> setShort_name($post["short_name"]);
+                $corporate -> setTax_office($post["tax_office"]);
+                $corporate -> setTax_number($post["tax_number"]);
 
                 $corporateID = $corporate->insertCorporate();
                 $data["corporate_id"] = $corporate->getCorporate_id();
@@ -264,5 +288,91 @@ class Customer extends AppParent{
         }
         
 
+    }
+    function updateCustomer(){
+
+        $post = json_decode($_POST["customer"],true);
+
+        $this->setCompany_id ($_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $this->setCustomer_id ($post["customer_id"]);
+        $this->setEmail ( $post["email"]);
+        $this->setPhone ( $post["phone"]);
+        $this->setAdress ( $post["address"]);
+        $this->setTown ( $post["town"]);
+        $this->setCity ( $post["city"]);
+        $this->setPostal_code ( $post["postal_code"]);
+        $this->setIs_corporate ( intval($post["is_corporate"]));
+        $this->setIs_customer ( intval($post["is_customer"]));
+        $this->setIs_supplier ( intval($post["is_supplier"]));
+        //s($post);die;
+        $data = array (
+            "company_id" =>  $this->getCompany_id(),
+            "email"      => $this->getEmail(),
+            "phone"      => $this->getPhone(),
+            "address"     => $this->getAdress(),
+            "town"       =>	$this->getTown(),
+            "city"	     => $this->getCity(),
+            "postal_code"=>	$this->getPostal_code(),
+            "is_corporate"=>$this->getIs_corporate(),
+            "is_customer" => $this->getIs_customer(),
+            "is_supplier" => $this->getIs_supplier()
+        );
+        $this->db->where ('customer_id', $post["customer_id"]);
+        $update =  $this->db->update ('customer', $data); 
+        if(!$update){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =$this->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+           
+            
+            if ($this->getIs_corporate() == 0) { // bireysel firmaysa
+                $individual = new Individual();
+                $individual->setIndividualID($this->getCustomer_id());
+                $individual->setNameSurname($post["name_surname"]);
+                $individual->setSsn($post["ssn"]);
+                $individualID = $individual->updateIndividualRecord();
+                $data["individualID"] = $individual->getIndividualID();
+                $data["individual_name_surname"] = $individual->getNameSurname();
+                $data["individual_ssn"] = $individual->getSsn();
+                $data["customer_id"] = $this->getCustomer_id();
+
+                $response['data']       = $data ;
+                $response['success']    = true;
+                $response['errMsg']     = null;
+                $response['warnMsg']    = null;
+                $response['errCode']    = 0;
+    
+                return $response;
+            }else{
+				
+                $corporate = new Corporate();
+                $corporate -> setCorporate_id($this->getCustomer_id());
+                $corporate -> setTitle($post["title"]);
+                $corporate -> setShort_name($post["short_name"]);
+                $corporate -> setTax_office($post["tax_office"]);
+                $corporate -> setTax_number($post["tax_number"]);
+
+                $corporateID = $corporate->updateCorporate();
+                $data["corporate_id"] = $corporate->getCorporate_id();
+                $data["getTitle"]     = $corporate->getTitle();
+                $data["short_name"]   = $corporate->getShort_name();
+                $data["tax_office"]   = $corporate->getTax_office();
+                $data["tax_number"]   = $corporate->getTax_number();
+
+                $response['data']    =  $data ;
+                $response['success'] =  true;
+                $response['errMsg']  =  null;
+                $response['warnMsg'] =  null;
+                $response['errCode'] =  0;
+    
+                return $response;
+
+            }
+        }
     }
 }

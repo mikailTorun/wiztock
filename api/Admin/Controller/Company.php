@@ -9,8 +9,8 @@ require_once 'Employee.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
-class Company extends AppParent{
-//    public  $db;
+class Company extends DatabaseFunc{
+
     private $id;
     private $title;
     private $shortName;
@@ -42,15 +42,14 @@ class Company extends AppParent{
 
 
     public function __construct() {
-        
+        parent::__construct();
     }
-    function insertCompany(){
+    function addCompany(){
+        $post = json_decode($_POST["company"],true);
+
         
-        $db = new DatabaseFunc();
-        $parent = new AppParent();
-        
-        $db->db->where('email',$_POST['employeeEmail']);
-        $checkAdmin = $db->db->get("employee");
+        $this->db->where('email',$post['employees'][0]["email"]);
+        $checkAdmin = $this->db->get("employee");
         
         if(count($checkAdmin) !=0 ){
             $response['data']=  "";
@@ -59,42 +58,43 @@ class Company extends AppParent{
             $response['warnMsg']  ="Bu email adresi daha önce sistem kayıt edilmiştir.";
             $response['errCode']  =0;
 
-            return $parent->dumpResponse($response);
+            return $response;
         } 
-        $this->setTitle($_POST['companyTitle']);
+        $this->setTitle($post['title']);
         
         $data = Array (
             "title"=> $this->getTitle()
         );
-        $id = $db->db->insert ('company', $data);
+        $id = $this->db->insert ('company', $data);
 
         if(!$id){
             $response['data']=  "" ;
             $response['success']  = true;
-            $response['errMsg']   = $db->db->getLastError();
+            $response['errMsg']   = $this->db->getLastError();
             $response['warnMsg']  =null;
             $response['errCode']  =0;
 
-            return $parent->dumpResponse(($response));
+            return $response ;
         }else{
+
             $this->setId($id);
             
             $employee = new Employee();
             $employee->setCompanyId($this->getId());
-            $employee->setNameSurname($_POST['employeeNameSurname']);
-            $employee->setEmail($_POST['employeeEmail']);
-            $employee->setPassword($_POST['emplyeePassword']);
-            $employee->setIsMainUser(1);
+            $employee->setNameSurname($post['employees'][0]["name_surname"]);
+            $employee->setEmail($post['employees'][0]["email"]);
+            $employee->setPassword($post['employees'][0]["password"]);
+            $employee->setIsMainUser( 1 );
             
             $empid = $employee->insertEmployeeFromCustomer();
             if(!$empid){
                 $response['data']=  "" ;
                 $response['success']  =true;
                 $response['errMsg']   =null;
-                $response['warnMsg']  =$db->db->getLastError();
+                $response['warnMsg']  =$this->db->getLastError();
                 $response['errCode']  =0;
 
-                return $parent->dumpResponse(($response)); 
+                return $response; 
             }else{
                 $resData = array('employeeID' =>  $empid, 'companyID' => $this->getId());
 
@@ -103,13 +103,8 @@ class Company extends AppParent{
                 $response['errMsg']   =null;
                 $response['warnMsg']  =null;
                 $response['errCode']  =0;
-                return $parent->dumpResponse(($response)); 
+                return $response; 
             }
         }
     }
-}
-
-if (isset($_POST['funcInsertCompany'])) {
-    $ajaxTalep = new Company(); 
-    return $ajaxTalep->insertCompany();
 }

@@ -13,8 +13,8 @@ require_once 'Individual.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Product extends AppParent{
-	private $db="";
+class Product extends DatabaseFunc{
+	
 	private $product_id;
 	private $company_id;
 	private $product_category_id; // cast edilecek
@@ -67,12 +67,12 @@ class Product extends AppParent{
 
 
     public function __construct() {
-        $this->db = new DatabaseFunc();
+        parent::__construct();
     }
 
 	function getAllProduct(){
-        //$this->db->db->where('company_id', $_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        //$product = $this->db->db->get("product");
+        //$this->db->where('company_id', $_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        //$product = $this->db->get("product");
         $query = "SELECT `product`.`product_id`,`product`.`company_id`,`product`.`product_category_id`,`product`.`product_name`,
 		`product`.`uom_id`,`product`.`code`,`product`.`barcode`,`product`.`img_url`,`product`.`is_inventory_tracking`,`product`.`initial_stock_amount`,
 		`product`.`is_notifying`,`product`.`notification_amount`,`product`.`purchasing_price`,`product`.`selling_price`,`product`.`tax_id`, 
@@ -80,13 +80,13 @@ class Product extends AppParent{
 		WHERE `product`.`product_id`=`product_warehouse`.`product_id` 
 		GROUP BY `product`.`product_id`";
 
-		$product = $this->db->db->rawQuery ($query);
+		$product = $this->db->rawQuery ($query);
 		
         if(!$product){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -138,34 +138,34 @@ class Product extends AppParent{
 			"tax_id"				=>	$this->getTax_id()
         );
 		
-        $id =  $this->db->db->insert ('product', $data);
+        $id =  $this->db->insert ('product', $data);
        
         if(!$id){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
         }else{
 
 
-			$this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-			$warehouse = $this->db->db->get("warehouse",1);
+			$this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+			$warehouse = $this->db->get("warehouse",1);
 
 			$data = array (
 				"warehouse_id" 		=> $warehouse[0]["warehouse_id"],
 				"product_id" 		=> $id,
 				"quantity_in_stock" => $this->getInital_stock_amount()
 			);
-			$warehousePrdct =  $this->db->db->insert ('product_warehouse', $data);
+			$warehousePrdct =  $this->db->insert ('product_warehouse', $data);
 
 			if(!$warehousePrdct){
 				$response['data']=  "" ;
 				$response['success']  =false;
 				$response['errMsg']   =null;
-				$response['warnMsg']  = $this->db->db->getLastError();
+				$response['warnMsg']  = $this->db->getLastError();
 				$response['errCode']  =0;
 	
 				return (($response)); 
@@ -186,14 +186,14 @@ class Product extends AppParent{
 	}
 
 	function getProductById(){
-		$this->db->db->where('product_id',$_POST["product_id"]);
-        $product = $this->db->db->get("product");
+		$this->db->where('product_id',$_POST["product_id"]);
+        $product = $this->db->get("product");
 
         if(!$product){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -226,29 +226,29 @@ class Product extends AppParent{
 			'tax_id' => intval($post["tax_id"])//
 		);
         
-        $this->db->db->where ('product_id', $post["product_id"]);
-        $update =  $this->db->db->update ('product', $data); 
+        $this->db->where ('product_id', $post["product_id"]);
+        $update =  $this->db->update ('product', $data); 
 
         if(!$update){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['warnMsg']  =$this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
         }else{
 
-			$this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-			$warehouse = $this->db->db->get("warehouse",1);
+			$this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+			$warehouse = $this->db->get("warehouse",1);
 
 			$data = array (
 				"warehouse_id" 		=> $warehouse[0]["warehouse_id"],
 				"product_id" 		=> $post["product_id"],
 				"quantity_in_stock" => floatval($post["initial_stock_amount"])
 			);
-			$this->db->db->where ('product_id', $post["product_id"]);
-			$warehousePrdct =  $this->db->db->update ('product_warehouse', $data);
+			$this->db->where ('product_id', $post["product_id"]);
+			$warehousePrdct =  $this->db->update ('product_warehouse', $data);
             $response['data']=  $update ;
             $response['success']  =true;
             $response['errMsg']   =null;
@@ -259,8 +259,8 @@ class Product extends AppParent{
     }
 	function deleteProduct(){
 		//s($_POST);die;
-        $this->db->db->where('product_id', intval($_POST["product_id"]));
-        $delete = $this->db->db->delete('product') ;
+        $this->db->where('product_id', intval($_POST["product_id"]));
+        $delete = $this->db->delete('product') ;
         if($delete){
             $response['data']=  $delete ;
             $response['success']  =true;
@@ -272,7 +272,7 @@ class Product extends AppParent{
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
+            $response['warnMsg']  =$this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
