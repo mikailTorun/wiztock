@@ -14,6 +14,7 @@ export class CompanyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.company = new Company();
     this.getCompany();
   }
 
