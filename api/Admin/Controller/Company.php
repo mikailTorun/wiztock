@@ -107,4 +107,27 @@ class Company extends DatabaseFunc{
             }
         }
     }
+
+    function getCompany(){
+        $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $company = $this->db->get("company");
+
+        if(!$company){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  = $this->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+           
+            $response['data']=  $company ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+    }
 }

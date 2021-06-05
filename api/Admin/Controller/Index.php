@@ -45,6 +45,9 @@ $company   = new Company();
 if (strcmp($_POST["func"] , "register") == 0) {
     AppPArent::dumpResponse( $company->addCompany());
 }
+if (strcmp($_POST["func"] , "getCompany") == 0) {
+    AppPArent::dumpResponse( $company->getCompany());
+}
 if (strcmp($_POST["func"] , "getAllShipmentType") == 0) {
     AppPArent::dumpResponse( $shipment->getAllShipmentType());
 }
