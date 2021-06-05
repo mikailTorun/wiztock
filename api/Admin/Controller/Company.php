@@ -107,6 +107,39 @@ class Company extends DatabaseFunc{
             }
         }
     }
+    function updateCompany(){
+        $post = json_decode($_POST["company"],true);
+        
+        $data = array (
+            "title"         =>  $post["title"],
+            "short_name"    =>  $post["short_name"],
+            "phone"         =>  $post["phone"],
+            "email"         =>  $post["email"],
+            "address"       =>  $post["address"],
+            "postal_code"   =>  $post["postal_code"],
+            "tax_office"    =>  $post["tax_office"],
+            "tax_number"    =>  $post["tax_number"]
+        );
+        $this->db->where ('company_id', $post["company_id"]);
+        $update =  $this->db->update ('company', $data); 
+        if(!$update){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =$this->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+           
+            $response['data']=  $update ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+    }
 
     function getCompany(){
         $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);

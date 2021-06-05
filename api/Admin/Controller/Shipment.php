@@ -9,19 +9,19 @@ require_once 'AppParent.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Shipment extends AppParent{
-    private $db="";
+class Shipment extends DatabaseFunc{
+    
     public function __construct() {
-        $this->db = new DatabaseFunc();
+        parent::__construct();
     }
     function getAllShipmentType(){
-        $shipmentType = $this->db->db->get("shipment_type");
+        $shipmentType = $this->db->get("shipment_type");
         
         if(!$shipmentType){
             $response['data']=  "" ;
             $response['success']  =false;
             $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
+            $response['warnMsg']  = $this->db->getLastError();
             $response['errCode']  =0;
 
             return (($response)); 
@@ -35,4 +35,30 @@ class Shipment extends AppParent{
             return (($response)); 
         }
 	}
+    function addShipment(){
+        $post = json_decode($_POST["shipment"],true);
+        s($post);die;
+    }
+    function getAllShipment(){
+        $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $shipment = $this->db->get("shipment");
+
+        if(!$shipment){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  = $this->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+           
+            $response['data']=  $shipment ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+    }
 }

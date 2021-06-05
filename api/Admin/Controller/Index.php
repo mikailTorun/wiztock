@@ -38,10 +38,30 @@ $Unit       = new Unit();
 $tax        = new Tax();
 $warehouse  = new Warehouse();
 $shipment   = new Shipment();
-$company   = new Company();
+$company    = new Company();
+$employee    = new Employee();
 
-
-
+if (strcmp($_POST["func"] , "addShipment") == 0) {
+    AppPArent::dumpResponse( $shipment->addShipment());
+}
+if (strcmp($_POST["func"] , "getAllShipment") == 0) {
+    AppPArent::dumpResponse( $shipment->getAllShipment());
+}
+if (strcmp($_POST["func"] , "updateEmployee") == 0) {
+    AppPArent::dumpResponse( $employee->updateEmployee());
+}
+if (strcmp($_POST["func"] , "deleteEmployee") == 0) {
+    AppPArent::dumpResponse( $employee->deleteEmployee());
+}
+if (strcmp($_POST["func"] , "getAllEmployee") == 0) {
+    AppPArent::dumpResponse( $employee->getAllEmployee());
+}
+if (strcmp($_POST["func"] , "addEmployee") == 0) {
+    AppPArent::dumpResponse( $employee->addEmployee());
+}
+if (strcmp($_POST["func"] , "updateCompany") == 0) {
+    AppPArent::dumpResponse( $company->updateCompany());
+}
 if (strcmp($_POST["func"] , "register") == 0) {
     AppPArent::dumpResponse( $company->addCompany());
 }
