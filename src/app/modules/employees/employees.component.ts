@@ -18,6 +18,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.employee = new Employee();
+    this.employeeService.getAllEmployee();
   }
 
   newEmployeeButtonHandler() {
