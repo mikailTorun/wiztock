@@ -45,7 +45,7 @@ export class EmployeesService {
 
   getEmployeeById(employee_id: number) {
     let formData: any = new FormData();
-    formData.append("product_employee_id", employee_id);
+    formData.append("employee_id", employee_id);
     formData.append("func", "getEmployeeById");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
@@ -55,7 +55,7 @@ export class EmployeesService {
 
   deleteEmployee(employee_id: number) {
     let formData: any = new FormData();
-    formData.append("product_employee_id", employee_id);
+    formData.append("employee_id", employee_id);
     formData.append("func", "deleteEmployee");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
