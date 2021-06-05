@@ -69,7 +69,7 @@ export class ShipmentsComponent implements OnInit {
   saveButtonHandler() {
     this.checkEmptyFields()
     if (!this.isEmptyField) {
-      if(!this.shipment.shipment_items) {
+      if(!this.shipment.shipment_id) {
         this.saveShipment();
       }else {
         this.updateShipment();
