@@ -18,6 +18,8 @@ import { CategoriesComponent } from './categories/categories.component';
 import {DatepickerDirective} from "../directives/datepicker.directive";
 import {DatatableDirective} from "../directives/datatable.directive";
 import { RegisterComponent } from './register/register.component';
+import {CompanyComponent} from "./company/company.component";
+import {EmployeesComponent} from "./employees/employees.component";
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { RegisterComponent } from './register/register.component';
     DatepickerDirective,
     DatatableDirective,
     RegisterComponent,
+    CompanyComponent,
+    EmployeesComponent,
   ],
   imports: [
     CommonModule,

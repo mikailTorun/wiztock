@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import {DefaultModule} from "./layouts/default/default.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomerPreviewComponent } from './modules/customers/customer-preview/customer-preview.component';
+import { CompanyComponent } from './modules/company/company.component';
+import { EmployeesComponent } from './modules/employees/employees.component';
 
 
 

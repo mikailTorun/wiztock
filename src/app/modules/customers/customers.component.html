@@ -3,25 +3,24 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Customers</h1>
+        <h1>Customer</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a routerLink="/">DashBoard</a></li>
-          <li class="breadcrumb-item active">Customers</li>
+          <li class="breadcrumb-item active">Customer</li>
         </ol>
       </div>
     </div>
   </div><!-- /.container-fluid -->
 </section>
 
+
 <!-- Main content -->
 <section class="content">
-
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-
 
         <!-- Default box -->
         <div class="card">
@@ -31,7 +30,7 @@
               <button
                 type="button"
                 class="btn btn-block btn-success btn-flat"
-                (click)="openCreateCustomer()">
+                (click)="newCustomerButtonHandler()">
                 New Customer
               </button>
             </div>
@@ -40,6 +39,7 @@
             <table id="customerTable" class="table table-bordered table-striped">
               <thead>
               <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -47,21 +47,23 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let customer of customerService.customers">
-                <td>{{customer.is_corporate ? customer.title : customer.name_surname}}</td>
-                <td>{{customer.phone}}</td>
-                <td>{{customer.email}}</td>
+              <tr *ngFor="let customer of customerService.customers; let i = index">
+                <td>{{i + 1 }}</td>
+                <td>{{this.customer.is_corporate ? this.customer.title : this.customer.name_surname}}</td>
+                <td>{{this.customer.phone}}</td>
+                <td>{{this.customer.email}}</td>
                 <td style="text-align: center">
-                  <a routerLink="edit/{{customer.customer_id}}" class="btn btn-sm btn-success mr-2"><i
-                    class="fas fa-edit"></i></a>
-                  <a routerLink="{{customer.customer_id}}" class="btn btn-sm btn-primary mr-2"><i
-                    class="fas fa-book-open"></i></a>
-                  <button type="button" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                  <button (click)="editCustomerButtonHandler(this.customer)" class="btn btn-sm btn-success mr-2"><i
+                    class="fas fa-edit"></i></button>
+                  <button (click)="previewCustomerButtonHandler(this.customer)" routerLink="" class="btn btn-sm btn-primary mr-2"><i
+                    class="fas fa-book-open"></i></button>
+                  <button (click)="deleteCustomerButtonHandler(this.customer)" type="button" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </td>
               </tr>
               </tbody>
               <tfoot>
               <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -78,3 +80,130 @@
 </section>
 <!-- /.content -->
 
+<!-- Customer Form -->
+<div class="modal fade" id="customerForm" role="dialog" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{customer.customer_id ? "Update Customer" : "New Customer"}}</h4>
+        <button type="button" class="close" (click)="closeCustomerFormButtonHandler()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">CUSTOMER TYPE</div>
+            <select
+              [(ngModel)]="customer.is_corporate"
+              id="customerType" class="form-control form-control-sm">
+              <option [ngValue]="1">Corporate</option>
+              <option [ngValue]="0">Individual</option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="customer.is_corporate">
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">COMPANY TITLE</div>
+              <input [(ngModel)]="customer.title" type="text" class="form-control form-control-sm" id="company_name"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+            <div class="col-md-6 mb-2">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">COMPANY SHORT NAME</div>
+              <input [(ngModel)]="customer.short_name" type="text" class="form-control form-control-sm" id="short_name"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX OFFICE</div>
+              <input [(ngModel)]="customer.tax_office" type="text" class="form-control form-control-sm" id="tax_office"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+            <div class="col-md-6 mb-2">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">TAX NUMBER</div>
+              <input [(ngModel)]="customer.tax_number" type="text" class="form-control form-control-sm" id="tax_number"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!customer.is_corporate">
+          <div class="col-md-6 mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">FULL NAME</div>
+            <input [(ngModel)]="customer.name_surname" type="text" class="form-control form-control-sm"
+                   id="name_surname" placeholder="">
+            <div class="text-xs text-danger font-weight-bold mb-1"></div>
+          </div>
+          <div class="col-md-6 mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">SSN</div>
+            <input [(ngModel)]="customer.ssn" type="text" class="form-control form-control-sm" id="ssn" placeholder="">
+            <div class="text-xs text-danger font-weight-bold mb-1"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">EMAIL</div>
+            <input [(ngModel)]="customer.email" type="text" class="form-control form-control-sm" id="email"
+                   placeholder="">
+            <div class="text-xs text-danger font-weight-bold mb-1"></div>
+          </div>
+          <div class="col-md-6 mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">PHONE</div>
+            <input [(ngModel)]="customer.phone" type="text" class="form-control form-control-sm" id="phone"
+                   placeholder="">
+            <div class="text-xs text-danger font-weight-bold mb-1"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <div class="text-xs font-weight-bold  text-uppercase mb-1">ADDRESS</div>
+            <textarea
+              [(ngModel)]="customer.address"
+              class="form-control form-control-sm" rows="8" cols="35"
+              style="margin-top: 0; margin-bottom: 0; height: 150px;"></textarea>
+            <div class="text-xs text-danger font-weight-bold mb-1"></div>
+          </div>
+          <div class="col-md-6 mb-2">
+            <div class="row mb-2">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">TOWN</div>
+              <input [(ngModel)]="customer.town" type="text" class="form-control form-control-sm" id="town"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+            <div class="row mb-2">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">CITY</div>
+              <input [(ngModel)]="customer.city" type="text" class="form-control form-control-sm" id="city"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+            <div class="row">
+              <div class="text-xs font-weight-bold  text-uppercase mb-1">POSTAL CODE</div>
+              <input [(ngModel)]="customer.postal_code" type="text" class="form-control form-control-sm" id="postal_code"
+                     placeholder="">
+              <div class="text-xs text-danger font-weight-bold mb-1"></div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="closeCustomerFormButtonHandler()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveCustomerButtonHandler()">{{customer.customer_id ? "Update" : "Save"}}</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- /.Customer Form -->

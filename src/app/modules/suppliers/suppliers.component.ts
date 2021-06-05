@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {Customer} from "../../models/customer";
 import {Toasts} from "../../helpers/toasts";
 import {CustomerService} from "../../services/customer.service";
-import {Category} from "../../models/category";
 
 declare var $: any;
 
@@ -36,14 +35,15 @@ export class SuppliersComponent implements OnInit {
 
   saveSupplierButtonHandler() {
     if (this.supplier.customer_id) {
-      this.updateCategory();
+      this.updateSupplier();
     } else {
-      this.saveCategory();
+      this.saveSupplier();
     }
   }
 
   editSupplierButtonHandler(supplier: Customer) {
     this.supplier = supplier;
+    $('#supplierForm').modal('show');
   }
 
   deleteSupplierButtonHandler(supplier: Customer) {
@@ -59,7 +59,7 @@ export class SuppliersComponent implements OnInit {
     });
   }
 
-  saveCategory() {
+  saveSupplier() {
     this.supplierService.addCustomer(this.supplier).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.successToast("A new customer is added.");
@@ -68,7 +68,7 @@ export class SuppliersComponent implements OnInit {
     });
   }
 
-  updateCategory() {
+  updateSupplier() {
     this.supplierService.updateCustomer(this.supplier).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.successToast("The customer is update.");

@@ -20,8 +20,8 @@
     <!-- SidebarSearch Form -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <ng-template ngFor let-item [ngForOf]="sidebarItems" ]>
-          <li class="nav-header" *ngIf="item.label">EXAMPLES</li>
+        <ng-template ngFor let-item [ngForOf]="sidebarItems" >
+          <li class="nav-header" *ngIf="item.label">{{item.label}}</li>
           <li class="nav-item" *ngIf="!item.label">
             <a href="{{item.path}}" class="nav-link">
               <i class="nav-icon {{item.icon}}"></i>

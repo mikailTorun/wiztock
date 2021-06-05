@@ -17,16 +17,6 @@ export class CustomerService {
     private http:HttpClient
   ) { }
 
-
-  getCustomerList(): void {
-    let formData: any = new FormData();
-    formData.append("func", "getCustomerList");
-    this.http.post(environment.apiUrl, formData)
-      .subscribe((res: any) => {
-        this.customerList =res["data"];
-      });
-  }
-
   addCustomer_(customer: any): void {
     let formData = new FormData();
     formData.append("customer_email", customer.customer_email);
@@ -77,7 +67,7 @@ export class CustomerService {
     formData.append("func", "getAllCustomer");
     this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
-        this.customers =res["data"];
+        this.customers =res["data"] ? res["data"]: [];
       });
   }
 
@@ -86,7 +76,7 @@ export class CustomerService {
     formData.append("func", "getAllSupplier");
     this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
-        this.customers =res["data"];
+        this.customers =res["data"] ? res["data"] : [];
       });
   }
 
@@ -97,7 +87,7 @@ export class CustomerService {
     formData.append("func", "getCustomerById");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
-        return res["data"][0];
+        return res["data"][0] ;
       }));
   }
 
@@ -153,7 +143,6 @@ export class CustomerService {
         }
       }));
   }
-
 
 
   getFistCustomer(): Customer {

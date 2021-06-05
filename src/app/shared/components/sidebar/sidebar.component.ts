@@ -58,6 +58,14 @@ export class SidebarComponent implements OnInit {
         {
           title:'Categories',
           path: '/categories'
+        },
+        {
+          title:'Company Information',
+          path: '/company'
+        },
+        {
+          title:'Employees',
+          path: '/employees'
         }
       ]
     }
