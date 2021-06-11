@@ -70,4 +70,25 @@ export class ProductService {
     return result ? result.product_name : "";
   }
 
+  getProductStockInformationById(product_id: number) {
+    let formData: any = new FormData();
+    formData.append("product_id", product_id);
+    formData.append("func", "getProductStockInformationById");
+    return this.http.post(environment.apiUrl, formData)
+      .pipe(map ((res: any) => {
+        console.log(res["data"][0]);
+        return res["data"][0];
+      }));
+  }
+
+  getInventoryTrackingProducts() {
+    let formData: any = new FormData();
+    formData.append("func", "getInventoryTrackingProducts");
+    return this.http.post(environment.apiUrl, formData)
+      .pipe(map ((res: any) => {
+        console.log(res["data"][0]);
+        return res["data"][0];
+      }));
+  }
+
 }
