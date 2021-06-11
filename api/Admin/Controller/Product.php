@@ -70,9 +70,31 @@ class Product extends DatabaseFunc{
         parent::__construct();
     }
 
+	function getProductStockInformationById(){
+
+
+		$query = "SELECT `warehouse`.`name` , `warehouse`.`warehouse_id` , `product_warehouse`.`quantity_in_stock` from `warehouse`, `product_warehouse` 
+		WHERE `product_warehouse`.`product_id` = " . intval($_POST["product_id"]) . " " ;
+		$product = $this->db->rawQuery ($query);
+
+        if(!$product){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  = $this->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+            $response['data']=  $product ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+	}
 	function getAllProduct(){
-        //$this->db->where('company_id', $_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        //$product = $this->db->get("product");
         $query = "SELECT `product`.`product_id`,`product`.`company_id`,`product`.`product_category_id`,`product`.`product_name`,
 		`product`.`uom_id`,`product`.`code`,`product`.`barcode`,`product`.`img_url`,`product`.`is_inventory_tracking`,`product`.`initial_stock_amount`,
 		`product`.`is_notifying`,`product`.`notification_amount`,`product`.`purchasing_price`,`product`.`selling_price`,`product`.`tax_id`, 

@@ -29,6 +29,17 @@ class Employee extends DatabaseFunc {
     function getIsMainUser() { return $this->isMainUser; }
 
 
+/*
+    public function __get($name)
+    {
+        return $this->$name;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->$name = htmlspecialchars(strip_tags($value));
+    }
+*/
 
     public function __construct() {
         parent::__construct();
@@ -114,6 +125,37 @@ class Employee extends DatabaseFunc {
             $response['errCode']  = 0;
             return $response;
         }  
+    }
+
+    function login(){
+        $this->db->where('email',$_POST['username']);
+        $this->db->where('password',$_POST['password']);
+        $checkAdmin = $this->db->get("employee");
+        
+        if(count($checkAdmin) ==0 ){
+            $response['data']=  "";
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  ="Bu email adresi daha önce sistem kayıt edilmiştir.";
+            $response['errCode']  =0;
+
+            return $response;
+        } 
+        $this->db->where('company_id',$checkAdmin[0]['company_id']);
+        $company = $this->db->get("company");
+        if (count($company) == 0) {
+            $response['data']=  "";
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  ="Company bilgisine ulaşılamadı. Yöneticinize bildiriniz.";
+            $response['errCode']  =0;
+
+            return $response;
+        }
+        $response = Array( "success" => true,"admin" => $checkAdmin, "company" => $company , "forwardLink"=>"http://localhost/wiztock/#!/Dashboard");
+        $_SESSION["Admin_Company"] = $response;
+        
+        return $response;
     }
     function getAllEmployee(){
         $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);

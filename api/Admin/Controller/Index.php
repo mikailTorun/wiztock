@@ -41,6 +41,9 @@ $shipment   = new Shipment();
 $company    = new Company();
 $employee    = new Employee();
 
+if (strcmp($_POST["func"] , "getProductStockInformationById") == 0) {
+    AppPArent::dumpResponse( $Product->getProductStockInformationById());
+}
 if (strcmp($_POST["func"] , "addShipment") == 0) {
     AppPArent::dumpResponse( $shipment->addShipment());
 }
@@ -72,7 +75,7 @@ if (strcmp($_POST["func"] , "getAllShipmentType") == 0) {
     AppPArent::dumpResponse( $shipment->getAllShipmentType());
 }
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
-    AppPArent::dumpResponse( $login->login());
+    AppPArent::dumpResponse( $employee->login());
 }
 if (strcmp($_POST["func"] , "funcInsertCustomer") == 0) {
     AppPArent::dumpResponse( $Customer->insertCustomer());
