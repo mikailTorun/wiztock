@@ -19,6 +19,7 @@ export class ProductsComponent implements OnInit {
   isEmptyField!: boolean;
   tax: number = 0;
   taxSelected!: number;
+  stock!: any;
 
   constructor(
     public productService: ProductService,
@@ -165,5 +166,16 @@ export class ProductsComponent implements OnInit {
     } else {
       this.isEmptyField = false;
     }
+  }
+
+  viewProductButtonHandler(product_id: number) {
+    $('#productInformation').modal('show');
+    this.productService.getProductStockInformationById(product_id).subscribe( (res: any) => {
+      console.log(res);
+    });
+  }
+
+  closeProductInformationButtonHandler() {
+    $('#productInformation').modal('hide');
   }
 }

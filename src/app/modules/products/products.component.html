@@ -20,8 +20,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-
-
         <!-- Default box -->
         <div class="card">
           <div class="card-header">
@@ -53,7 +51,7 @@
                 <td>{{product.selling_price}} ₺</td>
                 <td style="text-align: center">
                   <button class="btn btn-sm btn-success mr-2" (click)="editProductButtonHandler(product.product_id)"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-sm btn-primary mr-2" ><i class="fas fa-book-open"></i></button>
+                  <button class="btn btn-sm btn-primary mr-2" (click)="viewProductButtonHandler(product.product_id)"><i class="fas fa-book-open"></i></button>
                   <button class="btn btn-sm btn-danger" (click)="deleteProductButtonHandler(product)"><i class="fas fa-trash-alt"></i></button>
                 </td>
               </tr>
@@ -78,7 +76,7 @@
 </section>
 <!-- /.content -->
 
-
+<!-- Product Form Data -->
 <div class="modal fade" id="productForm" role="dialog" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -198,3 +196,24 @@
 </div>
 <!-- /.modal -->
 
+<!-- Product Information Data -->
+<div class="modal fade" id="productInformation" role="dialog" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Product Information</h4>
+        <button type="button" class="close" (click)="closeProductInformationButtonHandler()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

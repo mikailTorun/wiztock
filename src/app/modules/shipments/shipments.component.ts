@@ -3,15 +3,11 @@ import {WarehouseService} from "../../services/warehouse.service";
 import {CustomerService} from "../../services/customer.service";
 import {Shipment} from "../../models/shipment";
 import {ProductService} from "../../services/product.service";
-import {Unit} from "../../models/unit";
 import {UnitService} from "../../services/unit.service";
 import {Product} from "../../models/product";
 import {ShipmentItem} from "../../models/shipment-item";
 import {ShipmentService} from "../../services/shipment.service";
 import {Toasts} from "../../helpers/toasts";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {Customer} from "../../models/customer";
-import {Tax} from "../../models/tax";
 
 declare var $: any;
 

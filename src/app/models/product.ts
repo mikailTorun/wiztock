@@ -13,6 +13,7 @@ export class Product {
   purchasing_price:number;
   selling_price:number;
   tax_id:number;
+  product_in_quantity:number;
 
   constructor() {
     this.product_id=0;
@@ -29,6 +30,7 @@ export class Product {
     this.purchasing_price = 0;
     this.selling_price =0.0;
     this.tax_id=0;
+    this.product_in_quantity=0.0;
   }
 }
 
