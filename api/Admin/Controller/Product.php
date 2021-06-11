@@ -74,7 +74,7 @@ class Product extends DatabaseFunc{
 
 
 		$query = "SELECT `warehouse`.`name` , `warehouse`.`warehouse_id` , `product_warehouse`.`quantity_in_stock` from `warehouse`, `product_warehouse` 
-		WHERE `product_warehouse`.`product_id` = " . intval($_POST["product_id"]) . " " ;
+		WHERE `warehouse`.`warehouse_id` = `product_warehouse`.`warehouse_id` and `product_warehouse`.`product_id` = " . intval($_POST["product_id"]) . " " ;
 		$product = $this->db->rawQuery ($query);
 
         if(!$product){
