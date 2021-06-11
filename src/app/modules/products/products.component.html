@@ -45,7 +45,7 @@
               <tbody>
               <tr *ngFor="let product of productService.products">
                 <td>{{product.product_name}}</td>
-                <td>{{product.initial_stock_amount}}</td>
+                <td>{{product.product_in_quantity}}</td>
                 <td>{{unitService.getUnitString(product.uom_id)}}</td>
                 <td>{{product.purchasing_price}} ₺</td>
                 <td>{{product.selling_price}} ₺</td>
