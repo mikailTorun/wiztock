@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+  employeeName!: string;
 
   sidebarItems: any = [
     {
@@ -74,6 +75,12 @@ export class SidebarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    let temp = sessionStorage.getItem("employee");
+
+    if (temp != null) {
+      this.employeeName = JSON.parse(temp).name_surname;
+    }
+
   }
 
 }

@@ -21,6 +21,8 @@ export class ProductsComponent implements OnInit {
   taxSelected!: number;
   stock!: any;
 
+  productInformation: any;
+
   constructor(
     public productService: ProductService,
     public categoryService: CategoryService,
@@ -168,10 +170,11 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  viewProductButtonHandler(product_id: number) {
+  viewProductButtonHandler(product: Product) {
+    this.product = product;
     $('#productInformation').modal('show');
-    this.productService.getProductStockInformationById(product_id).subscribe( (res: any) => {
-      console.log(res);
+    this.productService.getProductStockInformationById(product.product_id).subscribe( (res: any) => {
+      this.productInformation = res;
     });
   }
 

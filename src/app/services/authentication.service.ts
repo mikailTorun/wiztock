@@ -57,17 +57,6 @@ export class AuthenticationService {
       }),
     );
 
-    /*
-
-    return this.http.post<any>(`${environment.apiUrl}`, {username:username, password:password, func:'loginFunction'})
-      .pipe(map((user: User) => {
-        user.authData = window.btoa(username + ':' + password);
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userSubject.next(user);
-        return user;
-      }));
-
-     */
   }
 
   logout() {

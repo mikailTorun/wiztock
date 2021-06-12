@@ -39,6 +39,7 @@ export class SuppliersComponent implements OnInit {
     } else {
       this.saveSupplier();
     }
+
   }
 
   editSupplierButtonHandler(supplier: Customer) {
@@ -54,7 +55,7 @@ export class SuppliersComponent implements OnInit {
     return this.supplierService.deleteCustomer(supplier.customer_id).subscribe((res: any) => {
       if (res["success"]) {
         Toasts.dangerToast( "The supplier " + supplier.is_corporate? supplier.title : supplier.name_surname  + " was deleted" );
-
+        this.supplierService.getAllSupplier();
       }
     });
   }
@@ -64,6 +65,7 @@ export class SuppliersComponent implements OnInit {
       if (res["success"]) {
         Toasts.successToast("A new customer is added.");
         $('#supplierForm').modal('hide');
+        this.supplierService.getAllSupplier();
       }
     });
   }
@@ -73,6 +75,7 @@ export class SuppliersComponent implements OnInit {
       if (res["success"]) {
         Toasts.successToast("The customer is update.");
         $('#supplierForm').modal('hide');
+        this.supplierService.getAllSupplier();
       }
     });
   }

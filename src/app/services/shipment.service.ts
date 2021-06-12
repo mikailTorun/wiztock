@@ -64,7 +64,7 @@ export class ShipmentService {
     formData.append("func", "getShipmentById");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
-        return res["data"][0];
+        return res["data"];
       }));
   }
 

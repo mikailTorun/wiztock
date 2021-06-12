@@ -50,7 +50,7 @@
                 <th>Issue Date</th>
                 <th>Shipment Date</th>
                 <th>Type</th>
-                <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
+                <th style="width: 1px; white-space: nowrap;">Edit</th>
               </tr>
               </thead>
               <tbody>
@@ -61,8 +61,6 @@
                 <td>{{shipmentService.getShipmentTypeName(shipment.shipment_type_id)}}</td>
                 <td style="text-align: center">
                   <button class="btn btn-sm btn-success mr-2" (click)="editShipmentButtonHandler(shipment.shipment_id)"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-sm btn-primary mr-2"><i class="fas fa-book-open"></i></button>
-                  <button class="btn btn-sm btn-danger" (click)="deleteShipmentButtonHandler(shipment)"><i class="fas fa-trash-alt"></i></button>
                 </td>
               </tr>
               </tbody>
@@ -92,7 +90,7 @@
       <div class="modal-header">
         <h4
           class="modal-title">{{TALLY_IN ? "Add New Tally In" : TALLY_OUT ? "Add New Tally Out" : "Inter-Warehouse Transfer" }}</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" (click) = "closeShipmentForm()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -105,6 +103,9 @@
                 [(ngModel)]="shipment.customer_id"
                 id="customer_id"
                 class="form-control" style="width: 100%;">
+                <option value="0">
+                  Please choose a {{TALLY_IN ? "supplier" : "customer" }}
+                </option>
                 <option *ngFor="let customer of customerService.customers" value="{{customer.customer_id}}">
                   {{customer.is_corporate ? customer.title : customer.name_surname}}
                 </option>
@@ -250,7 +251,7 @@
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" (click) = "closeShipmentForm()">Close</button>
         <button type="button" (click)="saveButtonHandler()" class="btn btn-primary">Save</button>
       </div>
     </div>

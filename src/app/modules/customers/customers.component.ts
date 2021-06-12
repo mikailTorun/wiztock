@@ -64,6 +64,7 @@ export class CustomersComponent implements OnInit {
       if (res["success"]) {
         Toasts.successToast("A new customer is added.");
         $('#customerForm').modal('hide');
+        this.customerService.getAllCustomer();
       }
     });
   }
@@ -73,6 +74,7 @@ export class CustomersComponent implements OnInit {
       if (res["success"]) {
         Toasts.successToast("The customer is update.");
         $('#customerForm').modal('hide');
+        this.customerService.getAllCustomer();
       }
     });
   }

@@ -47,8 +47,8 @@ export class ShipmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.shipmentService.getAllShipment();
     this.shipmentService.getAllShipmentType();
-    this.customerService.getAllCustomer();
     this.warehouseService.getAllWarehouse();
     this.productService.getAllProduct();
     this.unitService.getAllUnit();
@@ -71,8 +71,8 @@ export class ShipmentsComponent implements OnInit {
         this.updateShipment();
       }
       this.clearShipmentItemField();
+      this.closeShipmentForm();
     } else {
-
     }
   }
 
@@ -116,7 +116,8 @@ export class ShipmentsComponent implements OnInit {
   }
 
   closeShipmentForm() {
-    $('#shipmentForm').modal('show');
+    $('#shipmentForm').modal('hide');
+    this.shipment = new Shipment();
   }
 
   openShipmentFormHandler(shipment_type_id: number) {
@@ -125,11 +126,13 @@ export class ShipmentsComponent implements OnInit {
         this.TALLY_IN = true;
         this.TALLY_OUT = false;
         this.INTER_WAREHOUSE = false;
+        this.customerService.getAllSupplier();
         break;
       case 2:
         this.TALLY_IN = false;
         this.TALLY_OUT = true;
         this.INTER_WAREHOUSE = false;
+        this.customerService.getAllCustomer();
         break;
       default:
         this.TALLY_IN = false;
@@ -138,7 +141,10 @@ export class ShipmentsComponent implements OnInit {
         break;
     }
 
-    if (!this.shipment.shipment_id) {
+    console.log(this.shipment);
+
+    if (this.shipment.shipment_id === 0) {
+      console.log("test");
       this.shipment = new Shipment();
       this.shipment.shipment_type_id = shipment_type_id;
     }
@@ -152,6 +158,7 @@ export class ShipmentsComponent implements OnInit {
       if (res && res["success"] === true) {
         Toasts.successToast("The new shipment is added");
         this.closeShipmentForm();
+        this.shipmentService.getAllShipment();
       }
     });
   }
@@ -164,6 +171,7 @@ export class ShipmentsComponent implements OnInit {
         this.closeShipmentForm();
         this.shipment = new Shipment();
         this.clearShipmentItemField();
+        this.shipmentService.getAllShipment();
       }
     });
   }
@@ -173,6 +181,7 @@ export class ShipmentsComponent implements OnInit {
       .subscribe((res: any) => {
         if (res["success"]) {
           Toasts.dangerToast("The shipment was deleted");
+          this.shipmentService.getAllShipment();
           this.shipmentService.getAllShipment();
         }
       });
@@ -189,9 +198,14 @@ export class ShipmentsComponent implements OnInit {
   }
 
   getShipment(shipment_id: number) {
-    this.shipmentService.getShipmentById(shipment_id).subscribe((res: Shipment) => {
-      this.shipment = res;
-    });
+    this.shipmentService.getShipmentById(shipment_id).subscribe((res: any) => {
+      this.shipment = res["shipment"][0];
+      this.openShipmentFormHandler(res["shipment"][0]["shipment_type_id"]);
+      this.shipment.shipment_items = new Array<ShipmentItem>();
+      res["shipment_detail"].forEach( (item:any) => {
+        let shipmentItem: ShipmentItem = new ShipmentItem(item, item.amount);
+        this.shipment.shipment_items.push(shipmentItem);
+      })});
   }
 
   deleteShipmentButtonHandler(shipment: Shipment) {

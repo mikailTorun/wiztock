@@ -5,7 +5,6 @@ import {DefaultComponent} from "./layouts/default/default.component";
 import {CustomersComponent} from "./modules/customers/customers.component";
 import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 import {AuthGuard} from "./helpers/auth.guard";
-import {CustomerPreviewComponent} from "./modules/customers/customer-preview/customer-preview.component";
 import {UnitsComponent} from "./modules/units/units.component";
 import {TaxesComponent} from "./modules/taxes/taxes.component";
 import {WarehousesComponent} from "./modules/warehouses/warehouses.component";
@@ -23,7 +22,6 @@ const routes: Routes = [
     children: [
       {path: '', component: DashboardComponent},
       {path: 'customers', component: CustomersComponent},
-      {path: 'customers/:id', component: CustomerPreviewComponent},
       {path: 'units', component: UnitsComponent},
       {path: 'taxes', component: TaxesComponent},
       {path: 'categories', component: CategoriesComponent},

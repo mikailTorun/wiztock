@@ -76,8 +76,8 @@ export class ProductService {
     formData.append("func", "getProductStockInformationById");
     return this.http.post(environment.apiUrl, formData)
       .pipe(map ((res: any) => {
-        console.log(res["data"][0]);
-        return res["data"][0];
+        console.log(res["data"]);
+        return res["data"];
       }));
   }
 

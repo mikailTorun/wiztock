@@ -39,7 +39,7 @@
                 <th>Unit</th>
                 <th>Purchasing Price</th>
                 <th>Selling Price</th>
-                <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
+                <th style="width: 1px; white-space: nowrap;">Edit/Preview</th>
               </tr>
               </thead>
               <tbody>
@@ -51,8 +51,7 @@
                 <td>{{product.selling_price}} ₺</td>
                 <td style="text-align: center">
                   <button class="btn btn-sm btn-success mr-2" (click)="editProductButtonHandler(product.product_id)"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-sm btn-primary mr-2" (click)="viewProductButtonHandler(product.product_id)"><i class="fas fa-book-open"></i></button>
-                  <button class="btn btn-sm btn-danger" (click)="deleteProductButtonHandler(product)"><i class="fas fa-trash-alt"></i></button>
+                  <button class="btn btn-sm btn-primary mr-2" (click)="viewProductButtonHandler(product)"><i class="fas fa-book-open"></i></button>
                 </td>
               </tr>
               </tbody>
@@ -208,6 +207,26 @@
       </div>
       <div class="modal-body">
 
+        <table id="productInfoTable" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Warehouse Name</th>
+            <th>Amount</th>
+            <th>Unit</th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let detail of productInformation let i = index">
+            <td>{{i + 1 }}</td>
+            <td>{{detail.name}}</td>
+            <td>{{detail.quantity_in_stock}}</td>
+            <td>{{unitService.getUnitString(product.uom_id)}}</td>
+
+          </tr>
+          </tbody>
+        </table>
 
       </div>
 
