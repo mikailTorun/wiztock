@@ -136,7 +136,7 @@ class Shipment extends DatabaseFunc{
                         $prdctDB = $this->db->get("product_warehouse");
 
                         $data = array(  
-                            "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] - intfloat($post["shipment_items"][$i]["amount"])
+                            "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] - floatval($post["shipment_items"][$i]["amount"])
                         );
 
                         $this->db->where ('product_id', intval($post["shipment_items"][$i]["product"]["product_id"]));
@@ -159,7 +159,7 @@ class Shipment extends DatabaseFunc{
 
 
                         $data = array(  
-                            "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] + intfloat($post["shipment_items"][$i]["amount"])
+                            "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] + floatval($post["shipment_items"][$i]["amount"])
                         );
 
                         $this->db->where ('product_id', intval($post["shipment_items"][$i]["product"]["product_id"]));
@@ -177,7 +177,7 @@ class Shipment extends DatabaseFunc{
                         $prdctDB = $this->db->get("product_warehouse");
 
                         $data = array(  
-                            "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] - intfloat($post["shipment_items"][$i]["amount"])
+                            "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] - floatval($post["shipment_items"][$i]["amount"])
                         );
 
                         $this->db->where ('product_id', intval($post["shipment_items"][$i]["product"]["product_id"]));
@@ -220,6 +220,36 @@ class Shipment extends DatabaseFunc{
         }else{
            
             $response['data']=  $shipment ;
+            $response['success']  =true;
+            $response['errMsg']   =null;
+            $response['warnMsg']  =null;
+            $response['errCode']  =0;
+            return (($response)); 
+        }
+    }
+
+    function getShipmentById(){
+        $this->db->where('shipment_id',intval($_POST["shipment_id"]));
+        $shipment = $this->db->get("shipment");
+
+        $query = "SELECT `product`.*, `shipment_detail`.`amount` FROM `product`, `shipment_detail`
+		WHERE `product`.`product_id` = `shipment_detail`.`product_id` AND 
+        `shipment_detail`.`shipment_id` = " . intval($_POST["shipment_id"]);
+		$product = $this->db->rawQuery ($query);
+
+        if(!$shipment){
+            $response['data']=  "" ;
+            $response['success']  =false;
+            $response['errMsg']   =null;
+            $response['warnMsg']  = $this->db->getLastError();
+            $response['errCode']  =0;
+
+            return (($response)); 
+        }else{
+            $data["shipment"] = $shipment;
+            $data["shipment_detail"] = $product;
+
+            $response['data'] = $data;
             $response['success']  =true;
             $response['errMsg']   =null;
             $response['warnMsg']  =null;

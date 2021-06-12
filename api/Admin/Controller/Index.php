@@ -42,10 +42,14 @@ $company    = new Company();
 $employee    = new Employee();
 
 if (strcmp($_POST["func"] , "getProductStockInformationById") == 0) {
-    AppPArent::dumpResponse( $Product->getProductStockInformationById());
+    //AppPArent::dumpResponse( $Product->getProductStockInformationById());
+    $Product->getProductStockInformationById();
 }
 if (strcmp($_POST["func"] , "addShipment") == 0) {
     AppPArent::dumpResponse( $shipment->addShipment());
+}
+if (strcmp($_POST["func"] , "getShipmentById") == 0) {
+    AppPArent::dumpResponse( $shipment->getShipmentById());
 }
 if (strcmp($_POST["func"] , "getAllShipment") == 0) {
     AppPArent::dumpResponse( $shipment->getAllShipment());
@@ -100,19 +104,24 @@ if (strcmp($_POST["func"] , "updateCustomer") == 0) {
 }
 
 if (strcmp($_POST["func"] , "addProduct") == 0) {
-    AppPArent::dumpResponse( $Product->addProduct());
+    //AppPArent::dumpResponse( $Product->addProduct());
+    $Product->addProduct();
 }
 if (strcmp($_POST["func"] , "getProductById") == 0) {
-    AppPArent::dumpResponse( $Product->getProductById());
+    //AppPArent::dumpResponse( $Product->getProductById());
+    $Product->getProductById();
 }
 if (strcmp($_POST["func"] , "updateProduct") == 0) {
-    AppPArent::dumpResponse( $Product->updateProduct());
+    //AppPArent::dumpResponse( $Product->updateProduct());
+    $Product->updateProduct();
 }
 if (strcmp($_POST["func"] , "deleteProduct") == 0) {
-    AppPArent::dumpResponse( $Product->deleteProduct());
+    //AppPArent::dumpResponse( $Product->deleteProduct());
+    $Product->deleteProduct();
 }
 if (strcmp($_POST["func"] , "getAllProduct") == 0) {
-    AppPArent::dumpResponse( $Product->getAllProduct());
+    //AppPArent::dumpResponse( $Product->getAllProduct());
+    $Product->getAllProduct();
 }
 if (strcmp($_POST["func"] , "addCategory") == 0) {
     AppPArent::dumpResponse( $Category->addCategory());

@@ -16,13 +16,13 @@ require_once 'AppParent.php';
 use Exception;
 use ArrayObject;
 session_start();
-class DatabaseFunc extends AppParent{
+class DatabaseFunc{
 
     public $db;
 
     public function __construct ()
     {
-        parent::__construct();
+        //parent::__construct();
         
         $servername = "localhost";
         $database   = "wiztock";
@@ -39,4 +39,18 @@ class DatabaseFunc extends AppParent{
 //                'prefix' => 'my_',
                 'charset' => 'utf8'));   
     }
+    public function response ($data = "" , $success= false , $errorMsg =null ){
+
+        $response['data']       =  $data ;
+        $response['success']    =  $success;
+        $response['errMsg']     =  $errorMsg;
+        
+        $this->dumpResponse( $response);
+    }
+    private function dumpResponse ($response) {
+        ob_clean();
+        echo json_encode($response);
+        return true;
+    }
+
 }

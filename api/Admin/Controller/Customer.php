@@ -78,6 +78,7 @@ class Customer extends DatabaseFunc{
             $response['errCode']  =0;
 
             return $response;
+            
         }else{
             
             $response['data']=  "" ;

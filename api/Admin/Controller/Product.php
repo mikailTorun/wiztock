@@ -78,20 +78,9 @@ class Product extends DatabaseFunc{
 		$product = $this->db->rawQuery ($query);
 
         if(!$product){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+			$this->response( "" , false, $this->db->getLastError()  );
         }else{
-            $response['data']=  $product ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+			$this->response( $product , true, ""  );
         }
 	}
 	function getAllProduct(){
@@ -105,22 +94,10 @@ class Product extends DatabaseFunc{
 		$product = $this->db->rawQuery ($query);
 		
         if(!$product){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+			$this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $product ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
-        }
+			$this->response($product , true);
+		}
 	}
 	function addProduct(){
 		
@@ -163,16 +140,8 @@ class Product extends DatabaseFunc{
         $id =  $this->db->insert ('product', $data);
        
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+			$this->response( "" , false, $this->db->getLastError()  );
         }else{
-
-
 			$this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
 			$warehouse = $this->db->get("warehouse",1);
 
@@ -184,27 +153,12 @@ class Product extends DatabaseFunc{
 			$warehousePrdct =  $this->db->insert ('product_warehouse', $data);
 
 			if(!$warehousePrdct){
-				$response['data']=  "" ;
-				$response['success']  =false;
-				$response['errMsg']   =null;
-				$response['warnMsg']  = $this->db->getLastError();
-				$response['errCode']  =0;
-	
-				return (($response)); 
+				$this->response( "" , false, $this->db->getLastError()  );
 			}else{
 			   
-				$response['data']=  $warehousePrdct ;
-				$response['success']  =true;
-				$response['errMsg']   =null;
-				$response['warnMsg']  =null;
-				$response['errCode']  =0;
-				return (($response)); 
+				$this->response( $warehousePrdct , true, ""  );
 			}
-
-
         }
-		
-		//s($_POST["product"],$data,intval($data["product_category_id"]));die;
 	}
 
 	function getProductById(){
@@ -212,26 +166,13 @@ class Product extends DatabaseFunc{
         $product = $this->db->get("product");
 
         if(!$product){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+			$this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $product ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+			$this->response( $product , true, ""  );
         }
 	} 
 	function updateProduct(){
         $post = json_decode($_POST["product"],true);
-		//s($post);die;
         $data = array(
 			'product_category_id' => intval($post["product_category_id"]),// string (1) "8"
 			'product_name' => $post["product_name"],//string (6) "deneme"
@@ -252,13 +193,7 @@ class Product extends DatabaseFunc{
         $update =  $this->db->update ('product', $data); 
 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+			$this->response( "" , false, $this->db->getLastError()  );
         }else{
 
 			$this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
@@ -271,33 +206,18 @@ class Product extends DatabaseFunc{
 			);
 			$this->db->where ('product_id', $post["product_id"]);
 			$warehousePrdct =  $this->db->update ('product_warehouse', $data);
-            $response['data']=  $update ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+			
+			$this->response( $update , true, ""  );
         }
     }
 	function deleteProduct(){
-		//s($_POST);die;
+		
         $this->db->where('product_id', intval($_POST["product_id"]));
         $delete = $this->db->delete('product') ;
         if($delete){
-            $response['data']=  $delete ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+			$this->response( $delete , true, ""  );
         }else{
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+			$this->response( "" , false, $this->db->getLastError()  );
         }
 	}
 }
