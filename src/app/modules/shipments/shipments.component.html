@@ -50,7 +50,7 @@
                 <th>Issue Date</th>
                 <th>Shipment Date</th>
                 <th>Type</th>
-                <th style="width: 1px; white-space: nowrap;">Edit</th>
+
               </tr>
               </thead>
               <tbody>
@@ -59,9 +59,6 @@
                 <td>{{shipment.issue_date}}</td>
                 <td>{{shipment.shipment_date}}</td>
                 <td>{{shipmentService.getShipmentTypeName(shipment.shipment_type_id)}}</td>
-                <td style="text-align: center">
-                  <button class="btn btn-sm btn-success mr-2" (click)="editShipmentButtonHandler(shipment.shipment_id)"><i class="fas fa-edit"></i></button>
-                </td>
               </tr>
               </tbody>
               <tfoot>
@@ -70,7 +67,6 @@
                 <th>Issue Date</th>
                 <th>Shipment Date</th>
                 <th>Type</th>
-                <th style="width: 1px; white-space: nowrap;">Edit/Preview/Delete</th>
               </tr>
               </tfoot>
             </table>
