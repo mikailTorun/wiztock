@@ -31,9 +31,9 @@ export class ShipmentsComponent implements OnInit {
   TALLY_IN: boolean = false;
   TALLY_OUT: boolean = false;
   INTER_WAREHOUSE: boolean = false;
-  warningMessage: string ="";
+  warningMessage: string = "";
 
-  isEmptyField: boolean =  false;
+  isEmptyField: boolean = false;
 
   constructor(
     public shipmentService: ShipmentService,
@@ -63,17 +63,16 @@ export class ShipmentsComponent implements OnInit {
   }
 
   saveButtonHandler() {
-    this.checkEmptyFields()
-    if (!this.isEmptyField) {
-      if(!this.shipment.shipment_id) {
-        this.saveShipment();
-      }else {
-        this.updateShipment();
-      }
-      this.clearShipmentItemField();
-      this.closeShipmentForm();
+
+
+    if (!this.shipment.shipment_id) {
+      this.saveShipment();
     } else {
+      this.updateShipment();
     }
+    this.clearShipmentItemField();
+    this.closeShipmentForm();
+
   }
 
   changeIssueDateHandler(event: any) {
@@ -86,7 +85,7 @@ export class ShipmentsComponent implements OnInit {
 
   addItemHandler(product: Product, amount: number) {
     const foundItem = this.shipment.shipment_items.find(item => item.product.product_id == product.product_id);
-    if(this.selectedProductId) {
+    if (this.selectedProductId) {
       if (!foundItem) {
         const newItem: ShipmentItem = new ShipmentItem(product, amount);
         this.shipment.shipment_items.push(newItem);
@@ -171,7 +170,6 @@ export class ShipmentsComponent implements OnInit {
         this.closeShipmentForm();
         this.shipment = new Shipment();
         this.clearShipmentItemField();
-        this.shipmentService.getAllShipment();
       }
     });
   }
@@ -202,10 +200,11 @@ export class ShipmentsComponent implements OnInit {
       this.shipment = res["shipment"][0];
       this.openShipmentFormHandler(res["shipment"][0]["shipment_type_id"]);
       this.shipment.shipment_items = new Array<ShipmentItem>();
-      res["shipment_detail"].forEach( (item:any) => {
+      res["shipment_detail"].forEach((item: any) => {
         let shipmentItem: ShipmentItem = new ShipmentItem(item, item.amount);
         this.shipment.shipment_items.push(shipmentItem);
-      })});
+      })
+    });
   }
 
   deleteShipmentButtonHandler(shipment: Shipment) {
