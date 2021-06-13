@@ -47,7 +47,7 @@ export class AuthenticationService {
       tap( data => {
         if(data["success"]) {
             let employee: Employee;
-            employee = data["admin"][0];
+            employee = data["data"]["admin"][0];
             employee.authData = window.btoa(email + ':' + password);
             sessionStorage.setItem('employee', JSON.stringify(employee));
             this.employeeSubject.next(employee);
