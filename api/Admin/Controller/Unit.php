@@ -3,16 +3,15 @@
 namespace Admin\Controller;
 //require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 
 use Exception;
 use ArrayObject;
 //session_start();
-class Unit extends AppParent{
-    private $db="";
+class Unit extends BaseClass{
     public function __construct() {
-        $this->db = new DatabaseFunc();
+        parent::__construct();
     }
     
 
@@ -23,71 +22,34 @@ class Unit extends AppParent{
             "title" => $post["title"],
             "description" => $post["description"]
         );
-        $id =  $this->db->db->insert ('unit_of_measurement', $data);
+        $id =  $this->db->insert ('unit_of_measurement', $data);
        
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
            
-            $response['data']=  $id ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $id ,true  );
         }
 	}
     function getAllUnit(){
         
-        $this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        $unit = $this->db->db->get("unit_of_measurement");
+        $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $unit = $this->db->get("unit_of_measurement");
         
         if(!$unit){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $unit ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $unit ,true  );
         }
 	}
     function getUnitById(){
-        
-       
-        $this->db->db->where('uom_id',$_POST["uom_id"]);
-        $unit = $this->db->db->get("unit_of_measurement");
+        $this->db->where('uom_id',$_POST["uom_id"]);
+        $unit = $this->db->get("unit_of_measurement");
 
         if(!$unit){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $unit ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response($unit , true);
         }
     }
     function updateUnit(){
@@ -97,46 +59,23 @@ class Unit extends AppParent{
             "title" => $post["title"],
             "description" => $post["description"]
         );
-        $this->db->db->where ('uom_id', $post["uom_id"]);
-        $update =  $this->db->db->update ('unit_of_measurement', $data); 
+        $this->db->where ('uom_id', $post["uom_id"]);
+        $update =  $this->db->update ('unit_of_measurement', $data); 
 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $update ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $update ,true);
         }
     }
     function deleteUnit(){
        
-        $this->db->db->where('uom_id', intval($_POST["uom_id"]));
-        $delete = $this->db->db->delete('unit_of_measurement') ;
+        $this->db->where('uom_id', intval($_POST["uom_id"]));
+        $delete = $this->db->delete('unit_of_measurement') ;
         if($delete){
-            $response['data']=  $delete ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $delete, true );
         }else{
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }
 
     }

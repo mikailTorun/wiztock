@@ -3,8 +3,8 @@
 namespace Admin\Controller;
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 require_once 'Employee.php';
 require_once 'Company.php';
 require_once 'Corporate.php';
@@ -13,7 +13,7 @@ require_once 'Customer.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
-class Individual extends DatabaseFunc{
+class Individual extends BaseClass{
 
     public function __construct() {
         parent::__construct();
@@ -42,12 +42,7 @@ class Individual extends DatabaseFunc{
 
         $id = $this->db->insert("individual", $data);
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return $response ; 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
             return $id;
         }
@@ -63,12 +58,7 @@ class Individual extends DatabaseFunc{
         $this->db->where ('individual_id', $this->getIndividualID());
         $id = $this->db->update("individual", $data);
         if(!$id){
-            $response['data']       =  "" ;
-            $response['success']    =false;
-            $response['errMsg']     = $this->db->getLastError();
-            $response['warnMsg']    =null;
-            $response['errCode']    =0;
-            return $response ; 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
             return $id;
         } 

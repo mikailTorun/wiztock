@@ -3,19 +3,17 @@
 namespace Admin\Controller;
 //require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 
 use Exception;
 use ArrayObject;
 //session_start();
-class Warehouse extends AppParent{
-    private $db="";
+class Warehouse extends BaseClass{
+   
     public function __construct() {
-        $this->db = new DatabaseFunc();
+        parent::__construct();
     }
-    
-
 	function addWarehouse(){
         $post = json_decode( $_POST["warehouse_of_measurement"],true);
         $data = array (
@@ -27,71 +25,33 @@ class Warehouse extends AppParent{
             "postal_code" => $post["postal_code"]
         );
         
-        $id =  $this->db->db->insert ('warehouse', $data);
+        $id =  $this->db->insert ('warehouse', $data);
        
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $id ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $id ,true  );
         }
 	}
     function getAllWarehouse(){
         
-        $this->db->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
-        $warehouse = $this->db->db->get("warehouse");
+        $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
+        $warehouse = $this->db->get("warehouse");
         
         if(!$warehouse){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
            
-            $response['data']=  $warehouse ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $warehouse ,true  );
         }
 	}
     function getWarehouseById(){
-        
-       
-        $this->db->db->where('warehouse_id',$_POST["uom_id"]);
-        $warehouse = $this->db->db->get("warehouse");
-
+        $this->db->where('warehouse_id',$_POST["uom_id"]);
+        $warehouse = $this->db->get("warehouse");
         if(!$warehouse){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $warehouse ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $warehouse , true  );
         }
     }
     function updateWarehouse(){
@@ -105,46 +65,23 @@ class Warehouse extends AppParent{
             "postal_code" => $post["postal_code"]
         );
         
-        $this->db->db->where ('warehouse_id', $post["warehouse_id"]);
-        $update =  $this->db->db->update ('warehouse', $data); 
+        $this->db->where ('warehouse_id', $post["warehouse_id"]);
+        $update =  $this->db->update ('warehouse', $data); 
 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $update ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $update ,true  );
         }
     }
     function deleteWarehouse(){
        
-        $this->db->db->where('warehouse_id', intval($_POST["warehouse_id"]));
-        $delete = $this->db->db->delete('warehouse') ;
+        $this->db->where('warehouse_id', intval($_POST["warehouse_id"]));
+        $delete = $this->db->delete('warehouse') ;
         if($delete){
-            $response['data']=  $delete ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $delete , true  );
         }else{
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }
 
     }

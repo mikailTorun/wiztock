@@ -3,13 +3,13 @@
 namespace Admin\Controller;
 //require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 
 use Exception;
 use ArrayObject;
 //session_start();
-class Category extends DatabaseFunc{
+class Category extends BaseClass{
    
     public function __construct() {
         parent::__construct();
@@ -23,26 +23,12 @@ class Category extends DatabaseFunc{
             "title" => $post["title"],
             "description" => $post["description"]
         );
-        
-
         $id =  $this->db->insert ('product_category', $data);
         
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $id ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response( $id, true  );
         }
 	}
     function getAllCategories(){
@@ -50,21 +36,9 @@ class Category extends DatabaseFunc{
         $category = $this->db->get("product_category");
 
         if(!$category){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $category ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response( $category, true  );
         }
 	}
     function getCategoryById(){
@@ -74,21 +48,9 @@ class Category extends DatabaseFunc{
         $category = $this->db->get("product_category");
 
         if(!$category){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $category ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response( $category , true  );
         }
     }
     function updateCategory(){
@@ -101,21 +63,9 @@ class Category extends DatabaseFunc{
         $this->db->where ('product_category_id', $post["product_category_id"]);
         $update =  $this->db->update ('product_category', $data); 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $update ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response( $update , true  );
         }
     }
     function deleteCategory(){
@@ -123,20 +73,9 @@ class Category extends DatabaseFunc{
         $this->db->where('product_category_id', intval($_POST["product_category_id"]));
         $delete = $this->db->delete('product_category') ;
         if($delete){
-            $response['data']=  $delete ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response( $delete ,true  );
         }else{
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }
 
     }

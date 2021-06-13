@@ -4,9 +4,9 @@ namespace Admin\Controller;
 
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
+require_once 'BaseClass.php';
 
-class Employee extends DatabaseFunc {
+class Employee extends BaseClass {
 
     private $employeeId;
     private $companyId;
@@ -58,19 +58,9 @@ class Employee extends DatabaseFunc {
         $empid = $this->db->insert ('employee', $data);
 
         if(!$empid){
-            $response['data']       =  "" ;
-            $response['success']    = false;
-            $response['errMsg']     = $this->db->getLastError();
-            $response['warnMsg']    = null;
-            $response['errCode']    = 0;
-            return $response;
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-            $response['data']     = $empid ;
-            $response['success']  = true;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  = null;
-            $response['errCode']  = 0;
-            return $response;
+            return $this->response( $empid, true );
         }
     }
     function deleteEmployee(){
@@ -80,21 +70,9 @@ class Employee extends DatabaseFunc {
         $removed = $this->db->delete("employee");
 
         if(!$removed){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   = "You cannot remove main user";
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $removed ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $removed,true);
         }
     }
     function updateEmployee(){
@@ -108,80 +86,42 @@ class Employee extends DatabaseFunc {
         
         $this->db->where("employee_id" , $post["employee_id"]);
         $updated = $this->db->update("employee",$data);
-       
 
         if(!$updated){
-            $response['data']       =  "" ;
-            $response['success']    = false;
-            $response['errMsg']     = $this->db->getLastError();
-            $response['warnMsg']    = null;
-            $response['errCode']    = 0;
-            return $response;
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-            $response['data']     = $updated ;
-            $response['success']  = true;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  = null;
-            $response['errCode']  = 0;
-            return $response;
+            return $this->response( $updated , true  );
         }  
     }
-
     function login(){
         $this->db->where('email',$_POST['username']);
         $this->db->where('password',$_POST['password']);
         $checkAdmin = $this->db->get("employee");
-        
+        //s(count($checkAdmin) ==0);die;
         if(count($checkAdmin) ==0 ){
-            $response['data']=  "";
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  ="Bu email adresi daha önce sistem kayıt edilmiştir.";
-            $response['errCode']  =0;
-
-            return $response;
+           return $this->response( "" , false, "Kullanıcı kayıtlı değil"  );
         } 
         $this->db->where('company_id',$checkAdmin[0]['company_id']);
         $company = $this->db->get("company");
         if (count($company) == 0) {
-            $response['data']=  "";
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  ="Company bilgisine ulaşılamadı. Yöneticinize bildiriniz.";
-            $response['errCode']  =0;
-
-            return $response;
+            return $this->response( "" , false, $this->db->getLastError()  );
         }
         $response = Array( "success" => true,"admin" => $checkAdmin, "company" => $company , "forwardLink"=>"http://localhost/wiztock/#!/Dashboard");
         $_SESSION["Admin_Company"] = $response;
         
-        return $response;
+        return $this->response( $response , true);
     }
     function getAllEmployee(){
         $this->db->where('company_id',$_SESSION["Admin_Company"]["company"][0]["company_id"]);
         $employee = $this->db->get("employee");
 
         if(!$employee){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $employee ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $employee, true  );
         }
     }
     function insertEmployeeFromCustomer(){
-        
-
         $data = array(
             "company_id"   => $this->getCompanyId(),
             "name_surname" => $this->getNameSurname(),
@@ -193,19 +133,9 @@ class Employee extends DatabaseFunc {
         $empid = $this->db->insert ('employee', $data);
 
         if(!$empid){
-            $response['data']=  "" ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return $response;
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-            $response['data']     = $empid ;
-            $response['success']  = true;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  = null;
-            $response['errCode']  = 0;
-            return $response;
+            return $this->response( $empid, true  );
         }
     }
 }

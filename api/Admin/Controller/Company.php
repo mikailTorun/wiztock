@@ -3,13 +3,13 @@
 namespace Admin\Controller;
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 require_once 'Employee.php';
 //use Exception;
 //use ArrayObject;
 //session_start();
-class Company extends DatabaseFunc{
+class Company extends BaseClass{
 
     private $id;
     private $title;
@@ -52,13 +52,8 @@ class Company extends DatabaseFunc{
         $checkAdmin = $this->db->get("employee");
         
         if(count($checkAdmin) !=0 ){
-            $response['data']=  "";
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  ="Bu email adresi daha önce sistem kayıt edilmiştir.";
-            $response['errCode']  =0;
 
-            return $response;
+            $this->response( "" , false, $this->db->getLastError()  );
         } 
         $this->setTitle($post['title']);
         
@@ -68,13 +63,7 @@ class Company extends DatabaseFunc{
         $id = $this->db->insert ('company', $data);
 
         if(!$id){
-            $response['data']=  "" ;
-            $response['success']  = true;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response ;
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
 
             $this->setId($id);
@@ -88,22 +77,11 @@ class Company extends DatabaseFunc{
             
             $empid = $employee->insertEmployeeFromCustomer();
             if(!$empid){
-                $response['data']=  "" ;
-                $response['success']  =true;
-                $response['errMsg']   =null;
-                $response['warnMsg']  =$this->db->getLastError();
-                $response['errCode']  =0;
-
-                return $response; 
+                $this->response( "" , false, $this->db->getLastError()  );
             }else{
                 $resData = array('employeeID' =>  $empid, 'companyID' => $this->getId());
 
-                $response['data']=  $resData ;
-                $response['success']  =true;
-                $response['errMsg']   =null;
-                $response['warnMsg']  =null;
-                $response['errCode']  =0;
-                return $response; 
+                $this->response( $resData, true  );
             }
         }
     }
@@ -123,21 +101,9 @@ class Company extends DatabaseFunc{
         $this->db->where ('company_id', $post["company_id"]);
         $update =  $this->db->update ('company', $data); 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $update ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response($update,true);
         }
     }
 
@@ -146,21 +112,9 @@ class Company extends DatabaseFunc{
         $company = $this->db->get("company");
 
         if(!$company){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $company ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            $this->response( $company ,true  );
         }
     }
 }

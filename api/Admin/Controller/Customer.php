@@ -3,7 +3,7 @@
 namespace Admin\Controller;
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
+require_once 'BaseClass.php';
 require_once 'AppParent.php';
 require_once 'Employee.php';
 require_once 'Company.php';
@@ -13,7 +13,7 @@ require_once 'Individual.php';
 use Exception;
 use ArrayObject;
 //session_start();
-class Customer extends DatabaseFunc{
+class Customer extends BaseClass{
    
 
     private $customer_id;
@@ -58,7 +58,6 @@ class Customer extends DatabaseFunc{
         parent::__construct();
     }
     function getAllCustomer(){
-        //$db = new DatabaseFunc();
 
         $q1 = " SELECT * FROM customer c, corporate cp
                 WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_customer=1 ";
@@ -71,28 +70,12 @@ class Customer extends DatabaseFunc{
 
         
         if($result1 || $result2){
-            $response['data']=  array_merge($result1,$result2);
-            $response['success']  = true;
-            $response['errMsg']   = "";
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
-            
+            $this->response(  array_merge($result1,$result2) ,true  );
         }else{
-            
-            $response['data']=  "" ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response("" ,false , $this->db->getLastError()  );
         }
     }
     function getAllSupplier(){
-        //$db = new DatabaseFunc();
-
         $q1 = " SELECT * FROM customer c, corporate cp
                 WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_supplier=1 ";
         $result1 = $this->db->rawQuery ($q1);
@@ -104,26 +87,12 @@ class Customer extends DatabaseFunc{
 
         
         if($result1 || $result2){
-            $response['data']=  array_merge($result1,$result2);
-            $response['success']  = true;
-            $response['errMsg']   = "";
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response(  array_merge($result1,$result2) ,true  );
         }else{
-            
-            $response['data']=  "" ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response( ""   ,false, $this->db->getLastError() );
         }
     }
     function getCustomer(){
-        $db = new DatabaseFunc();
 
         $params = array(intval($_POST["customer_id"]));
 
@@ -148,28 +117,12 @@ class Customer extends DatabaseFunc{
         $results = $this->db->rawQuery ($q,$params);
 
         if($results){
-            $response['data']=  $results ;
-            $response['success']  = true;
-            $response['errMsg']   = "";
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response( $result   ,true );
         }else{
-            
-            $response['data']=  $results ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response( $result   ,false, $this->db->getLastError() );
         }
     }
     function getCustomerList(){
-        //$db = new DatabaseFunc();
-
-        // will handle any SQL query
         $params = Array(10, 1, 10, 11, 2, 10);
         $q = "(
             SELECT cp.title name, c.customer_id, c.email , c.phone , c.is_corporate FROM customer c, corporate cp
@@ -182,24 +135,10 @@ class Customer extends DatabaseFunc{
                     c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1
         )";
         $results = $this->db->rawQuery ($q);
-       // s ($results);die; // contains Array of returned rows
         if($results){
-            $response['data']=  $results ;
-            $response['success']  = true;
-            $response['errMsg']   = "";
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response( $results , true, $this->db->getLastError()  );
         }else{
-            
-            $response['data']=  $results ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-
-            return $response;
+            $this->response( $results , false, $this->db->getLastError()  );
         }
 
     }
@@ -234,12 +173,7 @@ class Customer extends DatabaseFunc{
         $customer = $this->db->insert ('Customer', $data);
 
         if(!$customer){
-            $response['data']=  "" ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return $response;
+            $this->response( "" , false, $this->db->getLastError()  );
         }else{
             $this->setCustomer_id ($customer);
             if ($this->getIs_corporate() == 0) { // bireysel firmaysa
@@ -253,13 +187,7 @@ class Customer extends DatabaseFunc{
                 $data["individual_ssn"] = $individual->getSsn();
                 $data["customer_id"] = $this->getCustomer_id();
 
-                $response['data']       = $data ;
-                $response['success']    = true;
-                $response['errMsg']     = null;
-                $response['warnMsg']    = null;
-                $response['errCode']    = 0;
-    
-                return $response;
+                $this->response( $data  , true );
              
             }else{
 				
@@ -277,13 +205,7 @@ class Customer extends DatabaseFunc{
                 $data["tax_office"]   = $corporate->getTax_office();
                 $data["tax_number"]   = $corporate->getTax_number();
 
-                $response['data']    =  $data ;
-                $response['success'] =  true;
-                $response['errMsg']  =  null;
-                $response['warnMsg'] =  null;
-                $response['errCode'] =  0;
-    
-                return $response;
+                $this->response( $data  , true );
 
             }
         }
@@ -321,13 +243,7 @@ class Customer extends DatabaseFunc{
         $this->db->where ('customer_id', $post["customer_id"]);
         $update =  $this->db->update ('customer', $data); 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            $this->response( ""  , false , $this->db->getLastError() );
         }else{
            
             
@@ -342,13 +258,8 @@ class Customer extends DatabaseFunc{
                 $data["individual_ssn"] = $individual->getSsn();
                 $data["customer_id"] = $this->getCustomer_id();
 
-                $response['data']       = $data ;
-                $response['success']    = true;
-                $response['errMsg']     = null;
-                $response['warnMsg']    = null;
-                $response['errCode']    = 0;
-    
-                return $response;
+                $this->response( $data   , true  );
+                
             }else{
 				
                 $corporate = new Corporate();
@@ -365,13 +276,7 @@ class Customer extends DatabaseFunc{
                 $data["tax_office"]   = $corporate->getTax_office();
                 $data["tax_number"]   = $corporate->getTax_number();
 
-                $response['data']    =  $data ;
-                $response['success'] =  true;
-                $response['errMsg']  =  null;
-                $response['warnMsg'] =  null;
-                $response['errCode'] =  0;
-    
-                return $response;
+                $this->response( $data   , true  );
 
             }
         }

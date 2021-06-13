@@ -3,8 +3,7 @@
 namespace Admin\Controller;
 require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+
 require_once 'Employee.php';
 require_once 'Company.php';
 require_once 'Customer.php';
@@ -14,23 +13,7 @@ require_once 'Unit.php';
 require_once 'Tax.php';
 require_once 'Warehouse.php';
 require_once 'Shipment.php';
-//use Exception;
-//use ArrayObject;
-//session_start();
 
-/*
-class Index extends AppParent{
-    public function __construct() {
-        
-    }
-    public function dumpResponse ($response) {
-        ob_clean();
-        echo json_encode($response);
-        return true;
-    }
-}
-*/
-$login      = new DatabaseFunc();
 $Customer   = new Customer();
 $Product    = new Product();
 $Category   = new Category();
@@ -42,144 +25,138 @@ $company    = new Company();
 $employee    = new Employee();
 
 if (strcmp($_POST["func"] , "getProductStockInformationById") == 0) {
-    //AppPArent::dumpResponse( $Product->getProductStockInformationById());
     $Product->getProductStockInformationById();
 }
 if (strcmp($_POST["func"] , "addShipment") == 0) {
-    AppPArent::dumpResponse( $shipment->addShipment());
+    $shipment->addShipment();
 }
 if (strcmp($_POST["func"] , "getShipmentById") == 0) {
-    AppPArent::dumpResponse( $shipment->getShipmentById());
+    $shipment->getShipmentById();
 }
 if (strcmp($_POST["func"] , "getAllShipment") == 0) {
-    AppPArent::dumpResponse( $shipment->getAllShipment());
+    $shipment->getAllShipment();
 }
 if (strcmp($_POST["func"] , "updateEmployee") == 0) {
-    AppPArent::dumpResponse( $employee->updateEmployee());
+    $employee->updateEmployee();
 }
 if (strcmp($_POST["func"] , "deleteEmployee") == 0) {
-    AppPArent::dumpResponse( $employee->deleteEmployee());
+    $employee->deleteEmployee();
 }
 if (strcmp($_POST["func"] , "getAllEmployee") == 0) {
-    AppPArent::dumpResponse( $employee->getAllEmployee());
+    $employee->getAllEmployee();
 }
 if (strcmp($_POST["func"] , "addEmployee") == 0) {
-    AppPArent::dumpResponse( $employee->addEmployee());
+    $employee->addEmployee();
 }
 if (strcmp($_POST["func"] , "updateCompany") == 0) {
-    AppPArent::dumpResponse( $company->updateCompany());
+    $company->updateCompany();
 }
 if (strcmp($_POST["func"] , "register") == 0) {
-    AppPArent::dumpResponse( $company->addCompany());
+    $company->addCompany();
 }
 if (strcmp($_POST["func"] , "getCompany") == 0) {
-    AppPArent::dumpResponse( $company->getCompany());
+    $company->getCompany();
 }
 if (strcmp($_POST["func"] , "getAllShipmentType") == 0) {
-    AppPArent::dumpResponse( $shipment->getAllShipmentType());
+    $shipment->getAllShipmentType();
 }
 if (strcmp($_POST["func"] , "loginFunction") == 0) {
-    AppPArent::dumpResponse( $employee->login());
+    $employee->login();
 }
 if (strcmp($_POST["func"] , "funcInsertCustomer") == 0) {
-    AppPArent::dumpResponse( $Customer->insertCustomer());
+    $Customer->insertCustomer();
 }
 if (strcmp($_POST["func"] , "getCustomerList") == 0) {
-    AppPArent::dumpResponse( $Customer->getCustomerList());
+    $Customer->getCustomerList();
 }
 if (strcmp($_POST["func"] , "getAllCustomer") == 0) {
-    AppPArent::dumpResponse( $Customer->getAllCustomer());
+    $Customer->getAllCustomer();
 }
 if (strcmp($_POST["func"] , "getCustomer") == 0) {
-    AppPArent::dumpResponse( $Customer->getCustomer());
+    $Customer->getCustomer();
 }
 if (strcmp($_POST["func"] , "addCustomer") == 0) {
-    AppPArent::dumpResponse( $Customer->addCustomer());
+    $Customer->addCustomer();
 }
 if (strcmp($_POST["func"] , "getAllSupplier") == 0) {
-    AppPArent::dumpResponse( $Customer->getAllSupplier());
+    $Customer->getAllSupplier();
 }
 if (strcmp($_POST["func"] , "updateCustomer") == 0) {
-    AppPArent::dumpResponse( $Customer->updateCustomer());
+    $Customer->updateCustomer();
 }
 
 if (strcmp($_POST["func"] , "addProduct") == 0) {
-    //AppPArent::dumpResponse( $Product->addProduct());
     $Product->addProduct();
 }
 if (strcmp($_POST["func"] , "getProductById") == 0) {
-    //AppPArent::dumpResponse( $Product->getProductById());
     $Product->getProductById();
 }
 if (strcmp($_POST["func"] , "updateProduct") == 0) {
-    //AppPArent::dumpResponse( $Product->updateProduct());
     $Product->updateProduct();
 }
 if (strcmp($_POST["func"] , "deleteProduct") == 0) {
-    //AppPArent::dumpResponse( $Product->deleteProduct());
     $Product->deleteProduct();
 }
 if (strcmp($_POST["func"] , "getAllProduct") == 0) {
-    //AppPArent::dumpResponse( $Product->getAllProduct());
     $Product->getAllProduct();
 }
 if (strcmp($_POST["func"] , "addCategory") == 0) {
-    AppPArent::dumpResponse( $Category->addCategory());
+    $Category->addCategory();
 }
 if (strcmp($_POST["func"] , "getAllCategories") == 0) {
-    AppPArent::dumpResponse( $Category->getAllCategories());
+    $Category->getAllCategories();
 }
 if (strcmp($_POST["func"] , "getCategoryById") == 0) {
-    AppPArent::dumpResponse( $Category->getCategoryById());
+    $Category->getCategoryById();
 }
 if (strcmp($_POST["func"] , "updateCategory") == 0) {
-    AppPArent::dumpResponse( $Category->updateCategory());
+    $Category->updateCategory();
 }
 if (strcmp($_POST["func"] , "deleteCategory") == 0) {
-    AppPArent::dumpResponse( $Category->deleteCategory());
+    $Category->deleteCategory();
 }
 if (strcmp($_POST["func"] , "addUnit") == 0) {
-    AppPArent::dumpResponse( $Unit->addUnit());
+    $Unit->addUnit();
 }
 if (strcmp($_POST["func"] , "getAllUnit") == 0) {
-    AppPArent::dumpResponse( $Unit->getAllUnit());
+    $Unit->getAllUnit();
 }
 if (strcmp($_POST["func"] , "getUnitById") == 0) {
-    AppPArent::dumpResponse( $Unit->getUnitById());
+    $Unit->getUnitById();
 }
 if (strcmp($_POST["func"] , "updateUnit") == 0) {
-    AppPArent::dumpResponse( $Unit->updateUnit());
+    $Unit->updateUnit();
 }
 if (strcmp($_POST["func"] , "deleteUnit") == 0) {
-    AppPArent::dumpResponse( $Unit->deleteUnit());
+    $Unit->deleteUnit();
 }
 if (strcmp($_POST["func"] , "getAllTax") == 0) {
-    AppPArent::dumpResponse( $tax->getAllTax());
+    $tax->getAllTax();
 }
 if (strcmp($_POST["func"] , "addTax") == 0) {
-    AppPArent::dumpResponse( $tax->addTax());
+    $tax->addTax();
 }
 if (strcmp($_POST["func"] , "deleteTax") == 0) {
-    AppPArent::dumpResponse( $tax->deleteTax());
+    $tax->deleteTax();
 }
 if (strcmp($_POST["func"] , "getTaxById") == 0) {
-    AppPArent::dumpResponse( $tax->getTaxById());
+    $tax->getTaxById();
 }
 if (strcmp($_POST["func"] , "updateTax") == 0) {
-    AppPArent::dumpResponse( $tax->updateTax());
+    $tax->updateTax();
 }
 if (strcmp($_POST["func"] , "getAllWarehouse") == 0) {
-    AppPArent::dumpResponse( $warehouse->getAllWarehouse());
+    $warehouse->getAllWarehouse();
 }
 if (strcmp($_POST["func"] , "addWarehouse") == 0) {
-    AppPArent::dumpResponse( $warehouse->addWarehouse());
+    $warehouse->addWarehouse();
 }
 if (strcmp($_POST["func"] , "getWarehouseById") == 0) {
-    AppPArent::dumpResponse( $warehouse->getWarehouseById());
+    $warehouse->getWarehouseById();
 }
 if (strcmp($_POST["func"] , "updateWarehouse") == 0) {
-    AppPArent::dumpResponse( $warehouse->updateWarehouse());
+    $warehouse->updateWarehouse();
 }
 if (strcmp($_POST["func"] , "deleteWarehouse") == 0) {
-    AppPArent::dumpResponse( $warehouse->deleteWarehouse());
+    $warehouse->deleteWarehouse();
 }

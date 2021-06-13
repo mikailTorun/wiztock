@@ -3,13 +3,13 @@
 namespace Admin\Controller;
 //require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 
 use Exception;
 use ArrayObject;
 //session_start();
-class Tax extends DatabaseFunc{
+class Tax extends BaseClass{
     //private $db="";
     public function __construct() {
         parent::__construct();
@@ -27,20 +27,9 @@ class Tax extends DatabaseFunc{
        
         if(!$id){
             $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $id ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $id , true);
         }
 	}
     function getAllTax(){
@@ -49,45 +38,18 @@ class Tax extends DatabaseFunc{
         $tax = $this->db->get("tax");
         
         if(!$tax){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $tax ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $tax, true);
         }
 	}
     function getTaxById(){
-        
-       
         $this->db->where('tax_id',$_POST["tax_id"]);
         $tax = $this->db->get("tax");
-
         if(!$tax){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $tax ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $tax , true);
         }
     }
     function updateTax(){
@@ -103,44 +65,19 @@ class Tax extends DatabaseFunc{
         $update =  $this->db->update ('tax', $data); 
 
         if(!$update){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
-        }else{
-           
-            $response['data']=  $update ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
+        }else{ 
+            return $this->response( $update , true );
         }
     }
     function deleteTax(){
-       
         $this->db->where('tax_id', intval($_POST["tax_id"]));
         $delete = $this->db->delete('tax') ;
         if($delete){
-            $response['data']=  $delete ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $delete ,true);
         }else{
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =$this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }
-
     }
 }
 		

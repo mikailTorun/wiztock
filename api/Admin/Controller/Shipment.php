@@ -3,13 +3,13 @@
 namespace Admin\Controller;
 //require_once '../../DB/MysqliDb.php';
 require_once '../../vendor/autoload.php';
-require_once 'DatabaseFunc.php';
-require_once 'AppParent.php';
+require_once 'BaseClass.php';
+
 
 use Exception;
 use ArrayObject;
 //session_start();
-class Shipment extends DatabaseFunc{
+class Shipment extends BaseClass{
     
     public function __construct() {
         parent::__construct();
@@ -18,21 +18,9 @@ class Shipment extends DatabaseFunc{
         $shipmentType = $this->db->get("shipment_type");
         
         if(!$shipmentType){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $shipmentType ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $shipmentType , true );
         }
 	}
     
@@ -59,15 +47,8 @@ class Shipment extends DatabaseFunc{
         $shipment = $this->db->insert ('shipment', $data);
 
         if(!$shipment){
-            $response['data']=  "" ;
-            $response['success']  = false;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return $response;
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-
-
             for($i=0 ; $i < count($post["shipment_items"]) ; $i++){
 
                 $data = array(
@@ -78,12 +59,7 @@ class Shipment extends DatabaseFunc{
         
                 $shipment_detail = $this->db->insert ('shipment_detail', $data);
                 if(!$shipment_detail){
-                    $response['data']       =  "" ;
-                    $response['success']    = false;
-                    $response['errMsg']     = $this->db->getLastError();
-                    $response['warnMsg']    = null;
-                    $response['errCode']    = 0;
-                    return $response;
+                    return $this->response( "" , false, $this->db->getLastError()  );
                 }else{   
 
                     if( intval( $post["shipment_type_id"] ) ==  1){// tallyIN
@@ -102,17 +78,9 @@ class Shipment extends DatabaseFunc{
 
                             $insert = $this->db->insert("product_warehouse" , $data);
                             if(!$insert){
-                                $response['data']=  "" ;
-                                $response['success']  = false;
-                                $response['errMsg']   = $this->db->getLastError();
-                                $response['warnMsg']  =null;
-                                $response['errCode']  =0;
-                                return $response;
+                                return $this->response( "" , false, $this->db->getLastError()  );
                             }
                         }
-
-
-
                         $data = array(  
                             "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] + floatval($post["shipment_items"][$i]["amount"])
                         );
@@ -121,12 +89,7 @@ class Shipment extends DatabaseFunc{
                         $this->db->where("warehouse_id" ,intval($post["destination_warehouse_id"]) );
                         $updateAmount = $this->db->update ('product_warehouse', $data);
                         if (!$updateAmount){
-                            $response['data']=  "" ;
-                            $response['success']  = false;
-                            $response['errMsg']   = $this->db->getLastError();
-                            $response['warnMsg']  =null;
-                            $response['errCode']  =0;
-                            return $response;
+                            return $this->response( "" , false, $this->db->getLastError()  );
                         }else{
 
                         }
@@ -142,12 +105,7 @@ class Shipment extends DatabaseFunc{
                         $this->db->where ('product_id', intval($post["shipment_items"][$i]["product"]["product_id"]));
                         $updateAmount = $this->db->update ('product_warehouse', $data);
                         if (!$updateAmount){
-                            $response['data']=  "" ;
-                            $response['success']  = false;
-                            $response['errMsg']   = $this->db->getLastError();
-                            $response['warnMsg']  =null;
-                            $response['errCode']  =0;
-                            return $response;
+                            return $this->response( "" , false, $this->db->getLastError()  );
                         }else{
                             
                         }
@@ -157,7 +115,6 @@ class Shipment extends DatabaseFunc{
                         $this->db->where("warehouse_id" ,intval($post["destination_warehouse_id"]) );
                         $prdctDB = $this->db->get("product_warehouse");
 
-
                         $data = array(  
                             "quantity_in_stock"     =>  $prdctDB[0]["quantity_in_stock"] + floatval($post["shipment_items"][$i]["amount"])
                         );
@@ -165,12 +122,7 @@ class Shipment extends DatabaseFunc{
                         $this->db->where ('product_id', intval($post["shipment_items"][$i]["product"]["product_id"]));
                         $updateAmount = $this->db->update ('product_warehouse', $data);
                         if (!$updateAmount){
-                            $response['data']=  "" ;
-                            $response['success']  = false;
-                            $response['errMsg']   = $this->db->getLastError();
-                            $response['warnMsg']  =null;
-                            $response['errCode']  =0;
-                            return $response;
+                            return $this->response( "" , false, $this->db->getLastError()  );
                         }
                         $this->db->where("product_id" ,  intval($post["shipment_items"][$i]["product"]["product_id"]) );
                         $this->db->where("warehouse_id" ,intval($post["source_warehouse_id"]) );
@@ -183,26 +135,13 @@ class Shipment extends DatabaseFunc{
                         $this->db->where ('product_id', intval($post["shipment_items"][$i]["product"]["product_id"]));
                         $updateAmount = $this->db->update ('product_warehouse', $data);
                         if (!$updateAmount){
-                            $response['data']=  "" ;
-                            $response['success']  = false;
-                            $response['errMsg']   = $this->db->getLastError();
-                            $response['warnMsg']  =null;
-                            $response['errCode']  =0;
-                            return $response;
+                            return $this->response( "" , false, $this->db->getLastError()  );
                         }
                     } 
                 }
             
             }
-
-
-
-            $response['data']     = "" ;
-            $response['success']  = true;
-            $response['errMsg']   = $this->db->getLastError();
-            $response['warnMsg']  = null;
-            $response['errCode']  = 0;
-            return $response;
+            return $this->response( "" , true );
         }
     }
     function getAllShipment(){
@@ -210,21 +149,9 @@ class Shipment extends DatabaseFunc{
         $shipment = $this->db->get("shipment");
 
         if(!$shipment){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-           
-            $response['data']=  $shipment ;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $shipment, true);
         }
     }
 
@@ -238,23 +165,11 @@ class Shipment extends DatabaseFunc{
 		$product = $this->db->rawQuery ($query);
 
         if(!$shipment){
-            $response['data']=  "" ;
-            $response['success']  =false;
-            $response['errMsg']   =null;
-            $response['warnMsg']  = $this->db->getLastError();
-            $response['errCode']  =0;
-
-            return (($response)); 
+            return $this->response( "" , false, $this->db->getLastError()  );
         }else{
             $data["shipment"] = $shipment;
             $data["shipment_detail"] = $product;
-
-            $response['data'] = $data;
-            $response['success']  =true;
-            $response['errMsg']   =null;
-            $response['warnMsg']  =null;
-            $response['errCode']  =0;
-            return (($response)); 
+            return $this->response( $data , true  );
         }
     }
 }
