@@ -48,10 +48,19 @@ export class ProductService {
   getAllProduct() {
     let formData: any = new FormData();
     formData.append("func", "getAllProduct");
-    this.http.post(environment.apiUrl, formData)
+    return this.http.post(environment.apiUrl, formData)
       .subscribe((res: any) => {
         this.products = res["data"];
       });
+  }
+
+  getDashboardProduct() {
+    let formData: any = new FormData();
+    formData.append("func", "getAllProduct");
+    return this.http.post(environment.apiUrl, formData)
+      .pipe(map ((res: any) => {
+        return res["data"];
+      }));
   }
 
   getProductById(product_id: number) {
