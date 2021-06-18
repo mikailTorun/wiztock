@@ -74,8 +74,8 @@ class Product extends BaseClass{
 
 
 		$query = "SELECT `warehouse`.`name` , `warehouse`.`warehouse_id` , `product_warehouse`.`quantity_in_stock` from `warehouse`, `product_warehouse` 
-		WHERE `warehouse`.`warehouse_id` = `product_warehouse`.`warehouse_id` and `product_warehouse`.`product_id` = " . intval($_POST["product_id"]) . " " ;
-		$product = $this->db->rawQuery ($query);
+		WHERE `product`.`company_id`=? and `warehouse`.`warehouse_id` = `product_warehouse`.`warehouse_id` and `product_warehouse`.`product_id` = ? " ;
+		$product = $this->db->rawQuery ($query,Array($_SESSION["Admin_Company"]["company"][0]["company_id"], intval($_POST["product_id"])));
 
         if(!$product){
 			$this->response( "" , false, $this->db->getLastError()  );
@@ -88,10 +88,10 @@ class Product extends BaseClass{
 		`product`.`uom_id`,`product`.`code`,`product`.`barcode`,`product`.`img_url`,`product`.`is_inventory_tracking`,`product`.`initial_stock_amount`,
 		`product`.`is_notifying`,`product`.`notification_amount`,`product`.`purchasing_price`,`product`.`selling_price`,`product`.`tax_id`, 
 		SUM(`product_warehouse`.`quantity_in_stock`) as product_in_quantity from `product`, `product_warehouse` 
-		WHERE `product`.`product_id`=`product_warehouse`.`product_id` 
+		WHERE `product`.`product_id`=`product_warehouse`.`product_id` and `product`.`company_id`=?
 		GROUP BY `product`.`product_id`";
 
-		$product = $this->db->rawQuery ($query);
+		$product = $this->db->rawQuery ($query,Array($_SESSION["Admin_Company"]["company"][0]["company_id"]));
 		
         if(!$product){
 			$this->response( "" , false, $this->db->getLastError()  );

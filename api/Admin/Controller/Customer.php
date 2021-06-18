@@ -60,13 +60,13 @@ class Customer extends BaseClass{
     function getAllCustomer(){
 
         $q1 = " SELECT * FROM customer c, corporate cp
-                WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_customer=1 ";
-        $result1 = $this->db->rawQuery ($q1);
+                WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_customer=1  AND c.company_id=?";
+        $result1 = $this->db->rawQuery ($q1,Array($_SESSION["Admin_Company"]["company"][0]["company_id"]));
 
 
         $q2 = "SELECT * FROM customer c, individual i
-                WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1";
-        $result2 = $this->db->rawQuery ($q2);
+                WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_customer=1 AND c.company_id=?";
+        $result2 = $this->db->rawQuery ($q2,Array($_SESSION["Admin_Company"]["company"][0]["company_id"]));
 
         
         if($result1 || $result2){
@@ -77,13 +77,13 @@ class Customer extends BaseClass{
     }
     function getAllSupplier(){
         $q1 = " SELECT * FROM customer c, corporate cp
-                WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_supplier=1 ";
-        $result1 = $this->db->rawQuery ($q1);
+                WHERE c.customer_id=cp.corporate_id  AND c.is_corporate = 1 AND c.is_supplier=1  AND c.company_id=?";
+        $result1 = $this->db->rawQuery ($q1,Array($_SESSION["Admin_Company"]["company"][0]["company_id"]));
 
 
         $q2 = "SELECT * FROM customer c, individual i
-                WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_supplier=1";
-        $result2 = $this->db->rawQuery ($q2);
+                WHERE c.customer_id=i.individual_id  AND c.is_corporate = 0 AND c.is_supplier=1  AND c.company_id=?";
+        $result2 = $this->db->rawQuery ($q2,Array($_SESSION["Admin_Company"]["company"][0]["company_id"]));
 
         
         if($result1 || $result2){
