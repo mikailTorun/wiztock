@@ -131,11 +131,12 @@ class Employee extends BaseClass {
         );
 
         $empid = $this->db->insert ('employee', $data);
-
+        
         if(!$empid){
             return $this->response( "" , false, $this->db->getLastError()  );
         }else{
-            return $this->response( $empid, true  );
+            //return $this->response( $empid, true  );
+            return $empid;
         }
     }
 }

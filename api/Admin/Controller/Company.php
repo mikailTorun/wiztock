@@ -76,12 +76,13 @@ class Company extends BaseClass{
             $employee->setIsMainUser( 1 );
             
             $empid = $employee->insertEmployeeFromCustomer();
+            //s($empid, $this->db->getLastError());die;
             if(!$empid){
-                $this->response( "" , false, $this->db->getLastError()  );
+                return $this->response( "" , false, $this->db->getLastError()  );
             }else{
                 $resData = array('employeeID' =>  $empid, 'companyID' => $this->getId());
 
-                $this->response( $resData, true  );
+                return  $this->response( $resData, true  );
             }
         }
     }
