@@ -74,8 +74,8 @@ class Product extends BaseClass{
 
 
 		$query = "SELECT `warehouse`.`name` , `warehouse`.`warehouse_id` , `product_warehouse`.`quantity_in_stock` from `warehouse`, `product_warehouse` 
-		WHERE `product`.`company_id`=? and `warehouse`.`warehouse_id` = `product_warehouse`.`warehouse_id` and `product_warehouse`.`product_id` = ? " ;
-		$product = $this->db->rawQuery ($query,Array($_SESSION["Admin_Company"]["company"][0]["company_id"], intval($_POST["product_id"])));
+		WHERE `warehouse`.`warehouse_id` = `product_warehouse`.`warehouse_id` and `product_warehouse`.`product_id` = ? " ;
+		$product = $this->db->rawQuery ($query,Array( intval($_POST["product_id"])));
 
         if(!$product){
 			$this->response( "" , false, $this->db->getLastError()  );
